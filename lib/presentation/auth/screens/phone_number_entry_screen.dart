@@ -26,15 +26,29 @@ class _PhoneNumberEntryScreenState extends State<PhoneNumberEntryScreen> {
   void initState() {
     super.initState();
     _phoneController.addListener(_onPhoneChanged);
+    // Keep keyboard always open by refocusing when focus is lost
+    _phoneFocusNode.addListener(_onFocusChange);
     // Request focus after the first frame to ensure keyboard opens
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _phoneFocusNode.requestFocus();
     });
   }
 
+  void _onFocusChange() {
+    // If focus is lost, immediately refocus to keep keyboard open
+    if (!_phoneFocusNode.hasFocus) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          _phoneFocusNode.requestFocus();
+        }
+      });
+    }
+  }
+
   @override
   void dispose() {
     _phoneController.removeListener(_onPhoneChanged);
+    _phoneFocusNode.removeListener(_onFocusChange);
     _phoneController.dispose();
     _phoneFocusNode.dispose();
     _isButtonEnabled.dispose();
@@ -168,7 +182,7 @@ class _PhoneNumberEntryScreenState extends State<PhoneNumberEntryScreen> {
                     padding: EdgeInsets.symmetric(horizontal: 16.w),
                     child: Text(
                       '"By pressing "Continue" I accept the BTB Bank Licence Agreement conditions"',
-                      style: AppTextStyles.legalDisclaimer(context),
+                      style: AppTextStyles.buttonTitle(context),
                       textAlign: TextAlign.center,
                     ),
                   ),

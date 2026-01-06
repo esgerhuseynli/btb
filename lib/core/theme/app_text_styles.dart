@@ -12,15 +12,15 @@ class AppTextStyles {
   /// Screen title style - H2/Medium
   /// Used for main screen titles
   /// - Font size: 20.sp
-  /// - Font weight: Semibold (600)
-  /// - Line height: 1.4
+  /// - Font weight: Semibold (590)
+  /// - Line height: 28px (1.4)
   /// - Color: Black (#000000)
   static TextStyle screenTitle(BuildContext context) {
     return TextStyle(
       fontFamily: 'SFPro',
       fontSize: 20.sp,
-      fontWeight: FontWeight.w600,
-      height: 1.4,
+      fontWeight: FontWeight.w600, // 590 = Semibold
+      height: 1.4, // 28px / 20px
       letterSpacing: 0,
       color: const Color(0xFF000000),
     );
@@ -33,7 +33,7 @@ class AppTextStyles {
   /// - Color: AppTheme.textColor
   static TextStyle phoneNumberDisplay(BuildContext context) {
     return TextStyle(
-      fontSize: 24.sp,
+      fontSize: 32.sp,
       fontWeight: FontWeight.bold,
       color: AppTheme.textColor,
       letterSpacing: 0,
@@ -48,7 +48,7 @@ class AppTextStyles {
   static TextStyle phoneNumberInput(BuildContext context) {
     return TextStyle(
       color: AppTheme.textColor,
-      fontSize: 24.sp,
+      fontSize: 32.sp,
       fontWeight: FontWeight.bold,
       letterSpacing: 0,
     );
@@ -78,15 +78,15 @@ class AppTextStyles {
   /// Button title style - Body/Large
   /// Used for button titles and primary action text
   /// - Font size: 16.sp
-  /// - Font weight: Semibold (600)
-  /// - Line height: 1.0
+  /// - Font weight: Semibold (590)
+  /// - Line height: 100% (1.0)
   /// - Custom color can be applied
   static TextStyle buttonTitle(BuildContext context, {Color? color}) {
     return TextStyle(
       fontFamily: 'SFPro',
       fontSize: 16.sp,
-      fontWeight: FontWeight.w600,
-      height: 1.0,
+      fontWeight: FontWeight.w600, // 590 = Semibold
+      height: 1.0, // 100%
       letterSpacing: 0,
       color: color,
     );
@@ -95,17 +95,84 @@ class AppTextStyles {
   /// Button subtitle style - Body/Small
   /// Used for button subtitles and secondary action text
   /// - Font size: 14.sp
-  /// - Font weight: Medium (500)
-  /// - Line height: 1.71
+  /// - Font weight: Medium (510)
+  /// - Line height: 24px (1.71)
   /// - Custom color can be applied
   static TextStyle buttonSubtitle(BuildContext context, {Color? color}) {
     return TextStyle(
       fontFamily: 'SFPro',
       fontSize: 14.sp,
-      fontWeight: FontWeight.w500,
-      height: 1.71,
+      fontWeight: FontWeight.w500, // 510 = Medium
+      height: 1.71, // 24px / 14px
       letterSpacing: 0,
       color: color,
+    );
+  }
+
+  /// Input label style - Body/Small/Inter
+  /// Used for input field labels
+  /// - Font size: 14.sp
+  /// - Font weight: Regular (400)
+  /// - Line height: 20px (1.43)
+  /// - Font family: Inter
+  /// - Color: #BDBDBD (icon-disabled)
+  static TextStyle inputLabel(BuildContext context) {
+    return TextStyle(
+      fontFamily: 'Inter',
+      fontSize: 14.sp,
+      fontWeight: FontWeight.w400,
+      height: 1.43, // 20px / 14px
+      letterSpacing: 0,
+      color: const Color(0xFFBDBDBD),
+    );
+  }
+
+  /// Display style - Large display text
+  /// Used for large phone number displays
+  /// - Font size: 32.sp
+  /// - Font weight: Bold (700)
+  /// - Line height: 28px (0.875)
+  /// - Color: Black (#000000)
+  static TextStyle display(BuildContext context, {Color? color}) {
+    return TextStyle(
+      fontFamily: 'SFPro',
+      fontSize: 32.sp,
+      fontWeight: FontWeight.bold, // 700
+      height: 0.875, // 28px / 32px
+      letterSpacing: 0,
+      color: color ?? const Color(0xFF000000),
+    );
+  }
+
+  /// Input text style - Body/Large
+  /// Used for text input fields
+  /// - Font size: 16.sp
+  /// - Font weight: Semibold (590)
+  /// - Font family: SFPro
+  /// - Custom color can be applied
+  static TextStyle inputText(BuildContext context, {Color? color}) {
+    return TextStyle(
+      fontFamily: 'SFPro',
+      fontSize: 16.sp,
+      fontWeight: FontWeight.w600, // 590 = Semibold
+      letterSpacing: 0,
+      color: Colors.black
+    );
+  }
+
+  /// Input hint style - Body/Large
+  /// Used for input field hint text
+  /// - Font size: 16.sp
+  /// - Font weight: Semibold (590)
+  /// - Font family: SFPro
+  /// - Color: #C4C4C4 (disabled background)
+  static TextStyle inputHint(BuildContext context) {
+    return TextStyle(
+      fontFamily: 'SFPro',
+      fontSize: 16.sp,
+      fontWeight: FontWeight.w600, // 590 = Semibold
+      letterSpacing: 0,
+      color: const Color(0xFFC4C4C4),
     );
   }
 }

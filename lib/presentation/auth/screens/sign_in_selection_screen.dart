@@ -42,8 +42,8 @@ class SignInSelectionScreen extends StatelessWidget {
                     titleColor: AppTheme.white,
                     subtitleColor: AppTheme.white.withOpacity(0.8),
                     onTap: () {
-                      // Navigate to sign-in form with phone
-                      context.push('/sign-in?phone=$phone');
+                      // Navigate to password entry screen
+                      context.push('/password-entry?phone=$phone');
                     },
                   ),
                   SizedBox(height: 20.h),
@@ -123,10 +123,10 @@ class SignInSelectionScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Title - Body/Large
+                      // Title - Body/Large (using inputText)
                       Text(
                         title,
-                        style: AppTextStyles.buttonTitle(context, color: titleColor),
+                        style: AppTextStyles.inputText(context, color: titleColor),
                       ),
                       SizedBox(height: 4.h),
                       // Subtitle - Body/Small

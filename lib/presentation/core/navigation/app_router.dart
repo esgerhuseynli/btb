@@ -10,6 +10,7 @@ import '../../auth/screens/sign_up_pin_screen.dart';
 import '../../auth/screens/sign_in_pin_screen.dart';
 import '../../auth/screens/phone_number_entry_screen.dart';
 import '../../auth/screens/sign_in_selection_screen.dart';
+import '../../auth/screens/password_entry_screen.dart';
 import '../../home/screens/home_screen.dart';
 import '../../../data/models/card_send_request.dart';
 
@@ -30,6 +31,13 @@ class AppRouter {
         builder: (context, state) {
           final phone = state.uri.queryParameters['phone'];
           return SignInSelectionScreen(phone: phone);
+        },
+      ),
+      GoRoute(
+        path: '/password-entry',
+        builder: (context, state) {
+          final phone = state.uri.queryParameters['phone'];
+          return PasswordEntryScreen(phone: phone);
         },
       ),
       GoRoute(
