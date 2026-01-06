@@ -33,7 +33,7 @@ class AppTextStyles {
   /// - Color: AppTheme.textColor
   static TextStyle phoneNumberDisplay(BuildContext context) {
     return TextStyle(
-      fontSize: 32.sp,
+      fontSize: 24.sp,
       fontWeight: FontWeight.bold,
       color: AppTheme.textColor,
       letterSpacing: 0,
@@ -48,7 +48,7 @@ class AppTextStyles {
   static TextStyle phoneNumberInput(BuildContext context) {
     return TextStyle(
       color: AppTheme.textColor,
-      fontSize: 32.sp,
+      fontSize: 24.sp,
       fontWeight: FontWeight.bold,
       letterSpacing: 0,
     );
@@ -84,7 +84,7 @@ class AppTextStyles {
   static TextStyle buttonTitle(BuildContext context, {Color? color}) {
     return TextStyle(
       fontFamily: 'SFPro',
-      fontSize: 16.sp,
+      fontSize: 12.sp,
       fontWeight: FontWeight.w600, // 590 = Semibold
       height: 1.0, // 100%
       letterSpacing: 0,
@@ -156,7 +156,7 @@ class AppTextStyles {
       fontSize: 16.sp,
       fontWeight: FontWeight.w600, // 590 = Semibold
       letterSpacing: 0,
-      color: Colors.black
+      color: color,
     );
   }
 

@@ -103,8 +103,8 @@ class _PhoneNumberEntryScreenState extends State<PhoneNumberEntryScreen> {
                   Center(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         // Country code display
                         Text(
@@ -112,65 +112,68 @@ class _PhoneNumberEntryScreenState extends State<PhoneNumberEntryScreen> {
                           style: AppTextStyles.phoneNumberDisplay(context),
                         ),
                         // Phone number input - inline with country code
-                        IntrinsicWidth(
-                          child: TextFormField(
-                            controller: _phoneController,
-                            focusNode: _phoneFocusNode,
-                            keyboardType: TextInputType.number,
-                            autofocus: true,
-                            textAlign: TextAlign.left,
-                            enableInteractiveSelection: true,
-                            showCursor: true,
-                            inputFormatters: [
-                              FilteringTextInputFormatter.digitsOnly,
-                              LengthLimitingTextInputFormatter(9),
-                            ],
-                            style: AppTextStyles.phoneNumberInput(context),
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              enabledBorder: InputBorder.none,
-                              focusedBorder: InputBorder.none,
-                              errorBorder: InputBorder.none,
-                              focusedErrorBorder: InputBorder.none,
-                              contentPadding: EdgeInsets.symmetric(horizontal: 2.w),
-                              isDense: true,
+                        // Use IntrinsicWidth to show all numbers, but wrap in Flexible to prevent overflow
+                        Flexible(
+                          child: IntrinsicWidth(
+                            child: TextFormField(
+                              controller: _phoneController,
+                              focusNode: _phoneFocusNode,
+                              keyboardType: TextInputType.number,
+                              autofocus: true,
+                              textAlign: TextAlign.left,
+                              enableInteractiveSelection: true,
+                              showCursor: true,
+                              inputFormatters: [
+                                FilteringTextInputFormatter.digitsOnly,
+                                LengthLimitingTextInputFormatter(9), // Max 9 digits
+                              ],
+                              style: AppTextStyles.phoneNumberInput(context),
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                enabledBorder: InputBorder.none,
+                                focusedBorder: InputBorder.none,
+                                errorBorder: InputBorder.none,
+                                focusedErrorBorder: InputBorder.none,
+                                contentPadding: EdgeInsets.symmetric(horizontal: 2.w),
+                                isDense: true,
+                              ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Telefon nömrəsi daxil edin';
+                                }
+                                final cleaned = value.replaceAll(RegExp(r'\D'), '');
+                                if (cleaned.length != 9) {
+                                  return 'Telefon nömrəsi düzgün deyil';
+                                }
+                                return null;
+                              },
+                              onChanged: (value) {
+                                // Format phone number as user types
+                                final cleaned = value.replaceAll(RegExp(r'\D'), '');
+                                if (cleaned.length <= 9) {
+                                  String formatted = cleaned;
+                                  if (cleaned.length > 2) {
+                                    formatted = '${cleaned.substring(0, 2)} ${cleaned.substring(2)}';
+                                  }
+                                  if (cleaned.length > 5) {
+                                    formatted =
+                                        '${cleaned.substring(0, 2)} ${cleaned.substring(2, 5)} ${cleaned.substring(5)}';
+                                  }
+                                  if (cleaned.length > 7) {
+                                    formatted =
+                                        '${cleaned.substring(0, 2)} ${cleaned.substring(2, 5)} ${cleaned.substring(5, 7)} ${cleaned.substring(7)}';
+                                  }
+                                  if (_phoneController.text != formatted) {
+                                    _phoneController.value = TextEditingValue(
+                                      text: formatted,
+                                      selection: TextSelection.collapsed(
+                                        offset: formatted.length,
+                                      ),
+                                    );
+                                  }
+                                }
+                              },
                             ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Telefon nömrəsi daxil edin';
-                              }
-                              final cleaned = value.replaceAll(RegExp(r'\D'), '');
-                              if (cleaned.length != 9) {
-                                return 'Telefon nömrəsi düzgün deyil';
-                              }
-                              return null;
-                            },
-                            onChanged: (value) {
-                              // Format phone number as user types
-                              final cleaned = value.replaceAll(RegExp(r'\D'), '');
-                              if (cleaned.length <= 9) {
-                                String formatted = cleaned;
-                                if (cleaned.length > 2) {
-                                  formatted = '${cleaned.substring(0, 2)} ${cleaned.substring(2)}';
-                                }
-                                if (cleaned.length > 5) {
-                                  formatted =
-                                      '${cleaned.substring(0, 2)} ${cleaned.substring(2, 5)} ${cleaned.substring(5)}';
-                                }
-                                if (cleaned.length > 7) {
-                                  formatted =
-                                      '${cleaned.substring(0, 2)} ${cleaned.substring(2, 5)} ${cleaned.substring(5, 7)} ${cleaned.substring(7)}';
-                                }
-                                if (_phoneController.text != formatted) {
-                                  _phoneController.value = TextEditingValue(
-                                    text: formatted,
-                                    selection: TextSelection.collapsed(
-                                      offset: formatted.length,
-                                    ),
-                                  );
-                                }
-                              }
-                            },
                           ),
                         ),
                       ],

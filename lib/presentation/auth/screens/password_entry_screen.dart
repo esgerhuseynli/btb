@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/theme/app_text_styles.dart';
@@ -46,7 +47,8 @@ class _PasswordEntryScreenState extends State<PasswordEntryScreen> {
 
   void _onPasswordChanged() {
     final password = _passwordController.text;
-    _isButtonEnabled.value = password.length == 8;
+    // Enable button when password is between 8 and 16 characters
+    _isButtonEnabled.value = password.length >= 8 && password.length <= 16;
   }
 
   void _togglePasswordVisibility() {
@@ -57,7 +59,8 @@ class _PasswordEntryScreenState extends State<PasswordEntryScreen> {
 
   void _handleContinue() {
     final password = _passwordController.text;
-    if (password.length == 8 && widget.phone != null) {
+    // Validate password is between 8 and 16 characters
+    if (password.length >= 8 && password.length <= 16 && widget.phone != null) {
       // Normalize phone number: remove all non-digits, ensure it's 9 digits
       final phoneDigits = widget.phone!.replaceAll(RegExp(r'\D'), '');
       String username;
@@ -113,146 +116,171 @@ class _PasswordEntryScreenState extends State<PasswordEntryScreen> {
         backgroundColor: AppTheme.mainBackground,
         resizeToAvoidBottomInset: true,
         body: SafeArea(
-        child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: 24.w),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SizedBox(height: 60.h),
-              // Title - H2/Medium style
-              Text(
-                'Enter password',
-                style: AppTextStyles.screenTitle(context),
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(height: 56.h),
-              // Password input field
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Password label
-                  Padding(
-                    padding: EdgeInsets.only(left: 8.w, bottom: 8.h),
-                    child: Text(
-                      'Password',
-                      style: AppTextStyles.inputLabel(context),
-                    ),
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              return SingleChildScrollView(
+                padding: EdgeInsets.symmetric(horizontal: 24.w),
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    minHeight: constraints.maxHeight,
                   ),
-                  // Password input container
-                  Container(
-                    decoration: BoxDecoration(
-                      color: AppTheme.white,
-                      border: Border.all(
-                        color: const Color(0xFFE5E7EB),
-                        width: 1,
-                      ),
-                      borderRadius: BorderRadius.circular(20.r),
-                    ),
-                    child: TextFormField(
-                      controller: _passwordController,
-                      focusNode: _passwordFocusNode,
-                      keyboardType: TextInputType.number,
-                      obscureText: _obscureText,
-                      autofocus: true,
-                      inputFormatters: [
-                        FilteringTextInputFormatter.digitsOnly,
-                        LengthLimitingTextInputFormatter(8),
-                      ],
-                      style: AppTextStyles.inputText(context, color: AppTheme.textDark),
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        enabledBorder: InputBorder.none,
-                        focusedBorder: InputBorder.none,
-                        errorBorder: InputBorder.none,
-                        focusedErrorBorder: InputBorder.none,
-                        contentPadding: EdgeInsets.only(
-                          left: 12.w, // Gap after lock icon
-                          right: 12.w, // Gap before eye icon
-                          top: 16.h,
-                          bottom: 16.h,
+                  child: IntrinsicHeight(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SizedBox(height: 40.h),
+                        // Title - H2/Medium style
+                        Text(
+                          'Enter password',
+                          style: AppTextStyles.screenTitle(context),
+                          textAlign: TextAlign.center,
                         ),
-                        prefixIcon: Padding(
-                          padding: EdgeInsets.only(left: 16.w, right: 0),
-                          child: Icon(
-                            Icons.lock,
-                            size: 24.sp,
-                            color: const Color(0xFFC4C4C4),
-                          ),
-                        ),
-                        prefixIconConstraints: BoxConstraints(
-                          minWidth: 24.w,
-                          minHeight: 24.h,
-                        ),
-                        suffixIcon: Padding(
-                          padding: EdgeInsets.only(right: 8.w),
-                          child: Container(
-                            width: 40.w,
-                            height: 40.h,
-                            alignment: Alignment.center,
-                            child: IconButton(
-                              icon: Icon(
-                                _obscureText ? Icons.visibility_off : Icons.visibility,
-                                size: 24.sp,
-                                color: const Color(0xFFC4C4C4),
+                        SizedBox(height: 40.h),
+                        // Password input field
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // Password label
+                            Padding(
+                              padding: EdgeInsets.only(left: 8.w, bottom: 8.h),
+                              child: Text(
+                                'Password',
+                                style: AppTextStyles.inputLabel(context),
                               ),
-                              onPressed: _togglePasswordVisibility,
-                              padding: EdgeInsets.all(8.w),
-                              constraints: const BoxConstraints(),
                             ),
+                            // Password input container
+                            Container(
+                              decoration: BoxDecoration(
+                                color: AppTheme.white, // White / Base
+                                border: Border.all(
+                                  color: const Color(0xFFE5E7EB), // Stroke gray
+                                  width: 1,
+                                ),
+                                borderRadius: BorderRadius.circular(20.r), // Radius: 20px
+                              ),
+                              child: Padding(
+                                padding: EdgeInsets.all(16.w), // Padding: 16px
+                                child: Row(
+                                  children: [
+                                    // Lock icon - clickable to toggle password visibility
+                                    GestureDetector(
+                                      onTap: _togglePasswordVisibility,
+                                      child: SizedBox(
+                                        width: 24.w,
+                                        height: 24.h,
+                                        child: SvgPicture.asset(
+                                          'assets/icons/lock.svg',
+                                          width: 24.w,
+                                          height: 24.h,
+                                          colorFilter: const ColorFilter.mode(
+                                            Color(0xFFC4C4C4), // ICON DEFAULT / Disabled background
+                                            BlendMode.srcIn,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(width: 12.w), // Gap: 12px
+                                    // Password input field
+                                    Expanded(
+                                      child: TextFormField(
+                                        controller: _passwordController,
+                                        focusNode: _passwordFocusNode,
+                                        keyboardType: TextInputType.text, // Normal keyboard
+                                        obscureText: _obscureText, // Show dots when typing
+                                        autofocus: true,
+                                        inputFormatters: [
+                                          LengthLimitingTextInputFormatter(16), // Max 16 characters
+                                        ],
+                                        style: AppTextStyles.inputText(context, color: AppTheme.textDark), // Body/Large
+                                        decoration: InputDecoration(
+                                          border: InputBorder.none,
+                                          enabledBorder: InputBorder.none,
+                                          focusedBorder: InputBorder.none,
+                                          errorBorder: InputBorder.none,
+                                          focusedErrorBorder: InputBorder.none,
+                                          contentPadding: EdgeInsets.zero,
+                                          isDense: true,
+                                          hintText: '••••••••',
+                                          hintStyle: AppTextStyles.inputHint(context),
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(width: 12.w), // Gap: 12px
+                                    // Eye icon button
+                                    Container(
+                                      width: 40.w,
+                                      height: 40.h,
+                                      alignment: Alignment.center,
+                                      child: IconButton(
+                                        icon: SizedBox(
+                                          width: 24.w,
+                                          height: 24.h,
+                                          child: SvgPicture.asset(
+                                            'assets/icons/iconstack.io.svg',
+                                            width: 24.w,
+                                            height: 24.h,
+                                            colorFilter: const ColorFilter.mode(
+                                              Color(0xFFC4C4C4), // ICON DEFAULT / Disabled background
+                                              BlendMode.srcIn,
+                                            ),
+                                          ),
+                                        ),
+                                        onPressed: _togglePasswordVisibility,
+                                        padding: EdgeInsets.all(8.w),
+                                        constraints: const BoxConstraints(),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 8.h),
+                            // Helper text
+                            Padding(
+                              padding: EdgeInsets.only(left: 8.w),
+                              child: Text(
+                                'Enter your password (8-16 characters) to access BTB Bank',
+                                style: AppTextStyles.buttonSubtitle(context, color: AppTheme.textDark),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const Spacer(),
+                        // License agreement text
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 16.w),
+                          child: Text(
+                            'By pressing "Continue" I accept the BTB Bank Licence Agreement conditions',
+                            style: AppTextStyles.buttonTitle(context, color: AppTheme.textDark),
+                            textAlign: TextAlign.center,
                           ),
                         ),
-                        suffixIconConstraints: BoxConstraints(
-                          minWidth: 40.w,
-                          minHeight: 40.h,
+                        SizedBox(height: 16.h),
+                        // Continue button
+                        BlocBuilder<AuthBloc, AuthState>(
+                          builder: (context, state) {
+                            final isLoading = state is AuthLoading;
+                            return ValueListenableBuilder<bool>(
+                              valueListenable: _isButtonEnabled,
+                              builder: (context, isEnabled, child) {
+                                return PrimaryActionButton(
+                                  text: 'Continue',
+                                  onPressed: isLoading ? null : _handleContinue,
+                                  isEnabled: isEnabled && !isLoading,
+                                );
+                              },
+                            );
+                          },
                         ),
-                        hintText: '••••••••',
-                        hintStyle: AppTextStyles.inputHint(context),
-                      ),
+                        SizedBox(height: 24.h),
+                      ],
                     ),
                   ),
-                  SizedBox(height: 8.h),
-                  // Helper text
-                  Padding(
-                    padding: EdgeInsets.only(left: 8.w),
-                    child: Text(
-                      'Enter your 8-digit password to access BTB Bank',
-                      style: AppTextStyles.buttonSubtitle(context, color: AppTheme.textDark),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 132.h),
-              // License agreement text
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.w),
-                child: Text(
-                  'By pressing "Continue" I accept the BTB Bank Licence Agreement conditions',
-                  style: AppTextStyles.inputText(context, color: AppTheme.textDark),
-                  textAlign: TextAlign.center,
                 ),
-              ),
-              SizedBox(height: 16.h),
-              // Continue button
-              BlocBuilder<AuthBloc, AuthState>(
-                builder: (context, state) {
-                  final isLoading = state is AuthLoading;
-                  return ValueListenableBuilder<bool>(
-                    valueListenable: _isButtonEnabled,
-                    builder: (context, isEnabled, child) {
-                      return PrimaryActionButton(
-                        text: 'Continue',
-                        onPressed: isLoading ? null : _handleContinue,
-                        isEnabled: isEnabled && !isLoading,
-                      );
-                    },
-                  );
-                },
-              ),
-              SizedBox(height: 32.h),
-            ],
+              );
+            },
           ),
         ),
-      ),
       ),
     );
   }
