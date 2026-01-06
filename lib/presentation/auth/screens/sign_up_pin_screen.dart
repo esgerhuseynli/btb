@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../core/theme/app_theme.dart';
-import '../../core/widgets/app_app_bar.dart';
-import '../bloc/auth_bloc.dart';
-import '../bloc/auth_event.dart';
-import '../bloc/auth_state.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 
 class SignUpPinScreen extends StatefulWidget {
   final String username;
@@ -13,180 +9,229 @@ class SignUpPinScreen extends StatefulWidget {
   final bool isComingFromSignIn;
 
   const SignUpPinScreen({
-    super.key,
+    Key? key,
     required this.username,
     required this.passwordHash,
     required this.signInType,
-    required this.isComingFromSignIn,
-  });
+    this.isComingFromSignIn = false,
+  }) : super(key: key);
 
   @override
   State<SignUpPinScreen> createState() => _SignUpPinScreenState();
 }
 
 class _SignUpPinScreenState extends State<SignUpPinScreen> {
-  String _pin1 = '';
-  String _pin2 = '';
-  String _currentPin = '';
-  bool _isConfirming = false;
-  bool _isLoading = false;
+  String pin = '';
+  String confirmPin = '';
+  bool isConfirmingPin = false;
+  final int pinLength = 4;
 
-  void _onNumberPressed(String number) {
-    if (_isLoading) return;
+  void onNumberPressed(String number) {
+    if (!isConfirmingPin) {
+      // First PIN entry
+      if (pin.length < pinLength) {
+        setState(() {
+          pin += number;
+        });
 
-    setState(() {
-      _currentPin += number;
-      if (_currentPin.length == 4) {
-        if (!_isConfirming) {
-          // First PIN entry complete
-          _pin1 = _currentPin;
-          _currentPin = '';
-          _isConfirming = true;
-        } else {
-          // Second PIN entry complete
-          _pin2 = _currentPin;
-          if (_pin1 == _pin2) {
-            // PINs match - proceed with setup
-            _isLoading = true;
-            context.read<AuthBloc>().add(
-                  SetupPinEvent(
-                    pin: _pin2,
-                    username: widget.username,
-                    passwordHash: widget.passwordHash,
-                    signInType: widget.signInType,
-                    isComingFromSignIn: widget.isComingFromSignIn,
-                  ),
-                );
+        if (pin.length == pinLength) {
+          // Move to confirmation
+          setState(() {
+            isConfirmingPin = true;
+          });
+        }
+      }
+    } else {
+      // Confirming PIN
+      if (confirmPin.length < pinLength) {
+        setState(() {
+          confirmPin += number;
+        });
+
+        if (confirmPin.length == pinLength) {
+          // Check if PINs match
+          if (pin == confirmPin) {
+            // PINs match - proceed with registration
+            _handlePinSuccess();
           } else {
-            // PINs don't match - reset
-            _showError('PIN kodları uyğun deyil');
-            _resetPin();
+            // PINs don't match - show error and reset
+            _showErrorAndReset();
           }
         }
       }
-    });
+    }
   }
 
-  void _onDeletePressed() {
-    if (_isLoading) return;
+  void _handlePinSuccess() {
+    // TODO: Save PIN and complete registration
+    print('PIN set successfully: $pin');
+    print('Username: ${widget.username}');
+    print('Password Hash: ${widget.passwordHash}');
+    print('Sign In Type: ${widget.signInType}');
 
-    setState(() {
-      if (_currentPin.isNotEmpty) {
-        _currentPin = _currentPin.substring(0, _currentPin.length - 1);
-      } else if (_isConfirming && _pin1.isNotEmpty) {
-        _isConfirming = false;
-        _currentPin = _pin1;
-        _pin1 = '';
-      }
-    });
+    // Navigate to home or next screen
+    if (widget.isComingFromSignIn) {
+      context.go('/home');
+    } else {
+      // Complete sign up process
+      context.go('/home');
+    }
   }
 
-  void _onClearPressed() {
-    if (_isLoading) return;
-    _resetPin();
-  }
-
-  void _resetPin() {
-    setState(() {
-      _pin1 = '';
-      _pin2 = '';
-      _currentPin = '';
-      _isConfirming = false;
-    });
-  }
-
-  void _showError(String message) {
+  void _showErrorAndReset() {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        backgroundColor: AppTheme.red,
+      const SnackBar(
+        content: Text('PIN kodlar uyğun gəlmir. Yenidən cəhd edin.'),
+        backgroundColor: Colors.red,
       ),
     );
+
+    setState(() {
+      pin = '';
+      confirmPin = '';
+      isConfirmingPin = false;
+    });
+  }
+
+  void onDelete() {
+    if (!isConfirmingPin) {
+      if (pin.isNotEmpty) {
+        setState(() {
+          pin = pin.substring(0, pin.length - 1);
+        });
+      }
+    } else {
+      if (confirmPin.isNotEmpty) {
+        setState(() {
+          confirmPin = confirmPin.substring(0, confirmPin.length - 1);
+        });
+      } else {
+        // Go back to first PIN entry
+        setState(() {
+          isConfirmingPin = false;
+          pin = '';
+        });
+      }
+    }
+  }
+
+  void onBiometric() {
+    // Handle biometric authentication
+    print('Biometric authentication requested');
+    // TODO: Implement biometric setup
+  }
+
+  void onLogout() {
+    // Go back to sign in
+    context.go('/phone-entry');
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AuthBloc, AuthState>(
-      listener: (context, state) {
-        if (state is AuthAuthenticated) {
-          // Navigate to home
-          Navigator.of(context).pushReplacementNamed('/home');
-        } else if (state is AuthError) {
-          _isLoading = false;
-          _showError(state.message);
-          _resetPin();
-        } else if (state is AuthLoading) {
-          setState(() {
-            _isLoading = true;
-          });
-        }
-      },
-      child: Scaffold(
-        appBar: const AppAppBar(title: 'PIN qurulumu'),
-        body: SafeArea(
+    final currentPin = isConfirmingPin ? confirmPin : pin;
+
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(24.0),
           child: Column(
             children: [
-              const SizedBox(height: 48),
-              // Instruction text
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                child: Text(
-                  _isConfirming
-                      ? 'PIN kodunu yenidən daxil edin'
-                      : 'PIN kodunuzu daxil edin',
-                  style: Theme.of(context).textTheme.titleLarge,
-                  textAlign: TextAlign.center,
+              const SizedBox(height: 40),
+
+              // Title
+              Text(
+                isConfirmingPin ? 'Re-enter PIN code' : 'Set a PIN code',
+                style: const TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black,
                 ),
               ),
-              const SizedBox(height: 48),
-              // PIN indicators
+
+              const SizedBox(height: 24),
+
+              // PIN Indicators
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: List.generate(4, (index) {
-                  final isFilled = index < _currentPin.length;
-                  return Container(
+                children: List.generate(
+                  pinLength,
+                      (index) => Container(
                     margin: const EdgeInsets.symmetric(horizontal: 8),
                     width: 16,
                     height: 16,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: isFilled ? AppTheme.mainColor : AppTheme.borderColor,
-                    ),
-                  );
-                }),
-              ),
-              const Spacer(),
-              // Number pad
-              Padding(
-                padding: const EdgeInsets.all(24.0),
-                child: Column(
-                  children: [
-                    // Row 1-3
-                    for (int row = 0; row < 3; row++)
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          for (int col = 1; col <= 3; col++)
-                            _buildNumberButton((row * 3 + col).toString()),
-                        ],
+                      border: Border.all(
+                        color: Colors.black,
+                        width: 2,
                       ),
-                    // Row 0 and X
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        _buildActionButton('X', _onClearPressed, Colors.grey),
-                        _buildNumberButton('0'),
-                        _buildActionButton('⌫', _onDeletePressed, Colors.grey),
-                      ],
+                      color: index < currentPin.length
+                          ? Colors.black
+                          : Colors.transparent,
                     ),
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 60),
+
+              // Number Pad
+              Expanded(
+                child: GridView.count(
+                  crossAxisCount: 3,
+                  childAspectRatio: 1,
+                  mainAxisSpacing: 20,
+                  crossAxisSpacing: 20,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  children: [
+                    _buildNumberButton('1'),
+                    _buildNumberButton('2'),
+                    _buildNumberButton('3'),
+                    _buildNumberButton('4'),
+                    _buildNumberButton('5'),
+                    _buildNumberButton('6'),
+                    _buildNumberButton('7'),
+                    _buildNumberButton('8'),
+                    _buildNumberButton('9'),
+                    const SizedBox(), // Empty space
+                    _buildNumberButton('0'),
+                    _buildBiometricButton(),
                   ],
                 ),
               ),
-              if (_isLoading)
-                const Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: CircularProgressIndicator(),
-                ),
+
+              const SizedBox(height: 20),
+
+              // Bottom Actions
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  TextButton(
+                    onPressed: onLogout,
+                    child: const Text(
+                      'Log out',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.black87,
+                      ),
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: onDelete,
+                    child: const Text(
+                      'Delete',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.black87,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: 20),
             ],
           ),
         ),
@@ -195,65 +240,43 @@ class _SignUpPinScreenState extends State<SignUpPinScreen> {
   }
 
   Widget _buildNumberButton(String number) {
-    return _PinButton(
-      label: number,
-      onPressed: () => _onNumberPressed(number),
-      enabled: !_isLoading,
-    );
-  }
-
-  Widget _buildActionButton(String label, VoidCallback onPressed, Color color) {
-    return _PinButton(
-      label: label,
-      onPressed: onPressed,
-      enabled: !_isLoading,
-      color: color,
-    );
-  }
-}
-
-class _PinButton extends StatelessWidget {
-  final String label;
-  final VoidCallback onPressed;
-  final bool enabled;
-  final Color? color;
-
-  const _PinButton({
-    required this.label,
-    required this.onPressed,
-    this.enabled = true,
-    this.color,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: enabled ? onPressed : null,
-      borderRadius: BorderRadius.circular(50),
+    return GestureDetector(
+      onTap: () => onNumberPressed(number),
       child: Container(
-        width: 70,
-        height: 70,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           shape: BoxShape.circle,
-          color: enabled
-              ? (color ?? AppTheme.mainColor.withOpacity(0.1))
-              : Colors.grey.withOpacity(0.1),
-          border: Border.all(
-            color: enabled
-                ? (color ?? AppTheme.mainColor)
-                : Colors.grey,
-            width: 2,
-          ),
+          color: Color(0xFFF5F5F5),
         ),
         child: Center(
           child: Text(
-            label,
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-              color: enabled
-                  ? (color ?? AppTheme.mainColor)
-                  : Colors.grey,
+            number,
+            style: const TextStyle(
+              fontSize: 32,
+              fontWeight: FontWeight.w600,
+              color: Colors.black,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBiometricButton() {
+    return GestureDetector(
+      onTap: onBiometric,
+      child: Container(
+        decoration: const BoxDecoration(
+          shape: BoxShape.circle,
+          color: Colors.transparent,
+        ),
+        child: Center(
+          child: SvgPicture.asset(
+            'assets/icons/face-id.svg',
+            width: 64,
+            height: 64,
+            colorFilter: ColorFilter.mode(
+              Colors.red.shade400,
+              BlendMode.srcIn,
             ),
           ),
         ),
@@ -262,10 +285,28 @@ class _PinButton extends StatelessWidget {
   }
 }
 
+// Example usage in main.dart:
+void main() {
+  runApp(const MyApp());
+}
 
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
 
-
-
-
-
-
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'PIN Code',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        useMaterial3: true,
+      ),
+      home: const SignUpPinScreen(
+        username: 'test_user',
+        passwordHash: 'hash123',
+        signInType: 1,
+      ),
+    );
+  }
+}

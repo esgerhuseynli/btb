@@ -11,6 +11,7 @@ import '../../auth/screens/sign_in_pin_screen.dart';
 import '../../auth/screens/phone_number_entry_screen.dart';
 import '../../auth/screens/sign_in_selection_screen.dart';
 import '../../auth/screens/password_entry_screen.dart';
+import '../../auth/screens/sms_verification_screen.dart';
 import '../../home/screens/home_screen.dart';
 import '../../../data/models/card_send_request.dart';
 
@@ -125,6 +126,20 @@ class AppRouter {
             phone: extra?['phone'] as String?,
             email: extra?['email'] as String?,
             cardSendRequest: extra?['cardSendRequest'] as CardSendRequest?,
+          );
+        },
+      ),
+      GoRoute(
+        path: '/sms-verification',
+        builder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>?;
+          final phone = extra?['phone'] as String? ?? state.uri.queryParameters['phone'];
+          final password = extra?['password'] as String?;
+          final username = extra?['username'] as String?;
+          return SmsVerificationScreen(
+            phone: phone,
+            password: password,
+            username: username,
           );
         },
       ),

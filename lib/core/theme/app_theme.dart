@@ -33,6 +33,12 @@ class AppTheme {
   
   // Text Colors
   static const Color textDark = Color(0xFF1A1A1A);
+  static const Color textSecondary = Color(0xFF312E49);
+  static const Color textTertiary = Color(0xFFA4A3AA);
+  static const Color textPlaceholder = Color(0xFF8E8E93);
+  
+  // Border Colors
+  static const Color borderOtpField = Color(0xFFE5E7EB);
 
   // Card/Account Item Colors
   static const Color cardBankAccountItem1Color1 = Color(0xFFED1C24);

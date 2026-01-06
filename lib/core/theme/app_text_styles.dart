@@ -101,7 +101,7 @@ class AppTextStyles {
   static TextStyle buttonSubtitle(BuildContext context, {Color? color}) {
     return TextStyle(
       fontFamily: 'SFPro',
-      fontSize: 14.sp,
+      fontSize: 12.sp,
       fontWeight: FontWeight.w500, // 510 = Medium
       height: 1.71, // 24px / 14px
       letterSpacing: 0,
@@ -173,6 +173,40 @@ class AppTextStyles {
       fontWeight: FontWeight.w600, // 590 = Semibold
       letterSpacing: 0,
       color: const Color(0xFFC4C4C4),
+    );
+  }
+
+  /// OTP field text style - H2/Bold
+  /// Used for OTP input fields
+  /// - Font size: 20.sp
+  /// - Font weight: Medium (500)
+  /// - Line height: 1.2
+  /// - Font family: SFPro
+  /// - Color: #8E8E93 (text placeholder)
+  static TextStyle otpFieldText(BuildContext context) {
+    return TextStyle(
+      fontFamily: 'SFPro',
+      fontSize: 20.sp,
+      fontWeight: FontWeight.w500, // Medium (510 in design)
+      height: 1.2,
+      letterSpacing: 0,
+      color: AppTheme.textPlaceholder,
+    );
+  }
+
+  /// Phone number bold style - Inter
+  /// Used for phone numbers in descriptions
+  /// - Font size: 16.sp
+  /// - Font weight: Semibold (600)
+  /// - Line height: 1.11
+  /// - Font family: Inter
+  static TextStyle phoneNumberBold(BuildContext context) {
+    return TextStyle(
+      fontFamily: 'Inter',
+      fontSize: 16.sp,
+      fontWeight: FontWeight.w600,
+      height: 1.11,
+      letterSpacing: 0,
     );
   }
 }

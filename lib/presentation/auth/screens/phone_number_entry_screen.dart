@@ -179,7 +179,7 @@ class _PhoneNumberEntryScreenState extends State<PhoneNumberEntryScreen> {
                       ],
                     ),
                   ),
-                  SizedBox(height: 100.h),
+                  SizedBox(height: 200.h),
                   // Legal disclaimer
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 16.w),
@@ -189,7 +189,7 @@ class _PhoneNumberEntryScreenState extends State<PhoneNumberEntryScreen> {
                       textAlign: TextAlign.center,
                     ),
                   ),
-                  SizedBox(height: 24.h),
+                  SizedBox(height: 16.h),
                   // Continue button
                   ValueListenableBuilder<bool>(
                     valueListenable: _isButtonEnabled,
@@ -201,7 +201,7 @@ class _PhoneNumberEntryScreenState extends State<PhoneNumberEntryScreen> {
                       );
                     },
                   ),
-                  SizedBox(height: 32.h),
+                  SizedBox(height: 16.h),
                 ],
               ),
             ),

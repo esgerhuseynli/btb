@@ -107,11 +107,16 @@ class AuthBloc extends BaseBloc<AuthEvent, AuthState> {
         mobileUser: mobileUser,
       );
 
+      // Determine sign-in type (1 for email, 2 for phone number)
+      final signInType = isEmail
+          ? AppConstants.signInUpTypeEmail
+          : AppConstants.signInUpTypeNumber;
+
       // Step 1: Initial Sign-In (keystoreType=0)
       final response = await _authRepository.signIn(
         requestInfo: requestInfo,
         keystoreType: 0, // No keystore yet
-        signInType: 1, // Always 1 for sign-in
+        signInType: signInType, // 1 for email, 2 for phone number
       );
 
       // Check for responseType == 3 first (user needs to sign up)
@@ -145,11 +150,7 @@ class AuthBloc extends BaseBloc<AuthEvent, AuthState> {
           value: passwordHash,
         );
         
-        // Determine sign-in type (number or email)
-        final signInType = isEmail
-            ? AppConstants.signInUpTypeEmail
-            : AppConstants.signInUpTypeNumber;
-        
+        // Store sign-in type (already determined above)
         await _secureStorage.write(
           key: AppConstants.signInType,
           value: signInType.toString(),

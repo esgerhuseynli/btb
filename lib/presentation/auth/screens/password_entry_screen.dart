@@ -72,13 +72,15 @@ class _PasswordEntryScreenState extends State<PasswordEntryScreen> {
         username = phoneDigits;
       }
 
-      // Trigger sign-in event
-      context.read<AuthBloc>().add(
-            SignInEvent(
-              username: username,
-              password: password,
-            ),
-          );
+      // Navigate to SMS verification screen after correct password
+      context.push(
+        '/sms-verification',
+        extra: {
+          'phone': widget.phone,
+          'password': password,
+          'username': username,
+        },
+      );
     }
   }
 
@@ -239,7 +241,7 @@ class _PasswordEntryScreenState extends State<PasswordEntryScreen> {
                             Padding(
                               padding: EdgeInsets.only(left: 8.w),
                               child: Text(
-                                'Enter your password (8-16 characters) to access BTB Bank',
+                                'Enter your password 8-to access BTB Bank',
                                 style: AppTextStyles.buttonSubtitle(context, color: AppTheme.textDark),
                               ),
                             ),
