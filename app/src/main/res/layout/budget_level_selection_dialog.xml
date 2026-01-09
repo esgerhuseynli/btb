@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="@dimen/sixteen_dp">
+
+        <EditText
+            android:id="@+id/level_search_prop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/sixteen_dp"
+            android:drawableStart="@drawable/ic_search_red"
+            android:drawablePadding="@dimen/ten_dp"
+            android:hint="@string/search"
+            android:imeOptions="actionSearch"
+            android:inputType="textFilter" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/levels"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layoutManager=".utils.LinearLayoutManagerWrapper"
+            tools:itemCount="13"
+            tools:listitem="@layout/destination_level_item" />
+    </LinearLayout>
+</layout>

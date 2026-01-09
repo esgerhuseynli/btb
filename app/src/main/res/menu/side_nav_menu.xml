@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/profile" android:title="">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/cif"
+                    android:icon="@drawable/ic_profile"
+                    android:title="" />
+            </group>
+        </menu>
+    </item>
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/mainPage"
+            android:icon="@drawable/ic_main_page"
+            android:title="@string/nav_menu_item_main_page" />
+
+        <item android:id="@+id/my_funds" android:title="@string/nav_menu_item_my_funds">
+            <menu>
+                <item
+                    android:id="@+id/cards"
+                    android:icon="@drawable/ic_my_cards"
+                    android:title="@string/nav_menu_item_my_cards" />
+
+                <item
+                    android:id="@+id/accounts"
+                    android:icon="@drawable/ic_my_accounts"
+                    android:title="@string/nav_menu_item_my_accounts" />
+
+                <item
+                    android:id="@+id/loans"
+                    android:icon="@drawable/ic_my_loans"
+                    android:title="@string/nav_menu_item_my_loans" />
+
+                <item
+                    android:id="@+id/deposits"
+                    android:icon="@drawable/ic_my_deposits"
+                    android:title="@string/nav_menu_item_my_deposits" />
+            </menu>
+        </item>
+
+        <item android:id="@+id/payments_and_transactions" android:title="@string/nav_menu_item_payments_and_transactions">
+            <menu>
+                <item
+                    android:id="@+id/payments"
+                    android:icon="@drawable/ic_payments_red"
+                    android:title="@string/nav_menu_item_payments" />
+
+                <item
+                    android:id="@+id/transfers"
+                    android:icon="@drawable/ic_transfers_red"
+                    android:title="@string/ACCOUNT_TRANSFERS" />
+
+                <item
+                    android:id="@+id/operations_history"
+                    android:icon="@drawable/ic_operations_history"
+                    android:title="@string/history" />
+            </menu>
+        </item>
+
+        <item android:id="@+id/about_bank" android:title="@string/nav_menu_item_about_bank">
+            <menu>
+                <item
+                    android:id="@+id/products"
+                    android:icon="@drawable/ic_bank_products"
+                    android:title="@string/nav_menu_item_bank_products" />
+
+                <item
+                    android:id="@+id/exchangeRates"
+                    android:icon="@drawable/ic_bank_exchange_rates"
+                    android:title="@string/nav_menu_item_exchange_rates" />
+
+                <item
+                    android:id="@+id/news"
+                    android:icon="@drawable/ic_bank_news"
+                    android:title="@string/nav_menu_item_bank_news" />
+
+<!--                <item-->
+<!--                    android:id="@+id/proposals"-->
+<!--                    android:icon="@drawable/ic_bank_proposals"-->
+<!--                    android:title="@string/nav_menu_item_bank_proposals" />-->
+
+                <item
+                    android:id="@+id/servicePoints"
+                    android:icon="@drawable/ic_service_points"
+                    android:title="@string/nav_menu_item_bank_service_points" />
+
+                <item
+                    android:id="@+id/contacts"
+                    android:icon="@drawable/ic_bank_call_center"
+                    android:title="@string/nav_menu_item_bank_contacts" />
+            </menu>
+        </item>
+
+        <item android:id="@+id/others" android:title="@string/nav_menu_item_others">
+            <menu>
+                <item
+                    android:id="@+id/settings"
+                    android:icon="@drawable/ic_settings"
+                    android:title="@string/nav_menu_item_settings" />
+
+                <item
+                    android:id="@+id/logout"
+                    android:icon="@drawable/ic_logout"
+                    android:title="@string/nav_menu_item_logout" />
+            </menu>
+        </item>
+    </group>
+</menu>

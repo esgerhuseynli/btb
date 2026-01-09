@@ -1,0 +1,526 @@
+<resources>
+    <string name="intro_first_page_title">&#160;mobil tətbiqinə xoş gəlmisiniz!</string>
+    <string name="plastic_card_number">Plastik kart nömrəsi ilə giriş</string>
+    <string name="welcome">Xoş gəlmişsiniz!</string>
+    <string name="verification">Təsdiq kodu</string>
+    <string name="verification_text">SMS - məktub vasitəsilə göndərildi.</string>
+    <string name="password">Şifrə</string>
+    <string name="back">Geri qayıt</string>
+    <string name="go_back">Geriyə</string>
+    <string name="verify_mobile_number">Mobil nömrənizi təsdiqləyin</string>
+    <string name="registration">Qeydiyyatdan keç</string>
+    <string name="register">Qeydiyyat</string>
+    <string name="by_pressing_continue">Davam et düyməsinə basmaqla siz</string>
+    <string name="privacy_and_policy">&#160;tətbiqdən istifadə şərtləri&#160;</string>
+    <string name="accepting_with">ilə razılaşırsınız</string>
+    <string name="register_by_cif">Müştəri kodu ilə (CIF) qeydiyyat</string>
+    <string name="register_by_card">Kart üzrə qeydiyyat</string>
+    <string name="registration_by_card_enter_card_number">Plastik kart nömrəsini daxil edin</string>
+    <string name="enter_cif">Müştəri kodunuzu (CIF) daxil edin</string>
+    <string name="enter_birthdate">Doğum tarixinizi daxil edin</string>
+    <string name="unknown_error_occurred">Bilinməyən xəta baş verdi.</string>
+    <string name="continue_to_next">Davam et</string>
+    <string name="register_by_number">Mobil nömrə ilə qeydiyyat</string>
+    <string name="register_by_email">Email ünvanı ilə qeydiyyat</string>
+    <string name="login_by_number">Mobil nömrə ilə giriş</string>
+    <string name="login_by_email">Email ünvanı ilə giriş</string>
+    <string name="do_have_account">Hesabınız var?&#160;</string>
+    <string name="do_not_have_account">Hesabınız yoxdur?&#160;</string>
+    <string name="enter_email">Email ünvanınızı daxil edin</string>
+    <string name="enter_number">Mobil nömrənizi daxil edin</string>
+    <string name="invalid_email">Email ünvanı formatı düzgün deyil</string>
+    <string name="empty_password">Şifrə boş ola bilməz</string>
+    <string name="passwords_not_match">Şifrə üst-üstə düşmür</string>
+    <string name="email">Email</string>
+    <string name="password_again">Şifrəni təkrar daxil edin</string>
+    <string name="sign_in">Daxil ol</string>
+    <string name="put_pin_code">PIN şifrə təyin edin</string>
+    <string name="enter_pin_code">PIN şifrəni daxil edin</string>
+    <string name="put_pin_code_again">PIN şifrəni təkrar edin</string>
+    <string name="put_pin_correct">PIN düzgündür</string>
+    <string name="put_pin_wrong">PIN düzgün deyil</string>
+    <string name="pin_ask_policy">Hər dəfə tətbiqə daxil olduqda sizdən \nbu şifrə istəniləcək</string>
+    <string name="fingerprint">Barmaq izi</string>
+    <string name="fingerprint_suggestion">Giriş üçün barmaq izini\nəlavə edin</string>
+    <string name="yes">Bəli</string>
+    <string name="no">Xeyr</string>
+    <string name="later">Daha sonra</string>
+    <string name="send_it">Göndərmək</string>
+    <string name="login">Giriş</string>
+    <string name="enter">Daxil ol</string>
+    <string name="forget_password"><u>Şifrənizi unutmusuz?</u></string>
+    <string name="verify">Təsdiqləmək</string>
+    <string name="second">saniyə</string>
+    <string name="send_again"><u>Yenidən göndər</u></string>
+    <string name="next">Növbəti</string>
+    <string name="password_recovery">Şifrənin bərpası</string>
+    <string name="password_recovery_password_changed">Şifrə yeniləndi. Daxil olun.</string>
+    <string name="password_recovery_fin_code_help">Şəxsiyyət vəsiqəsinin FIN kodu</string>
+    <string name="password_recovery_by_fin">FIN kod ilə</string>
+    <string name="password_recovery_by_pan">Plastik kart ilə</string>
+    <string name="password_recovery_enter_username">Email yaxud mobil nömrə</string>
+    <string name="password_recovery_enter_username_is_empty">Email yaxud mobil nömrənizi daxil edin.</string>
+    <string name="password_recovery_enter_fin">FIN kodunuzu daxil edin</string>
+    <string name="password_recovery_enter_fin_is_empty">FIN kod 7 simvol olmalıdır</string>
+    <string name="password_recovery_enter_pan">Plastik kartın son 4 rəqəmi</string>
+    <string name="password_recovery_enter_pan_is_empty">Kart nömrəsi 4 simvol olmalıdır</string>
+    <string name="with_verify_number">Təsdiq nömrəsi ilə</string>
+    <string name="with_last_4_digits">Plastik kartın son 4 rəqəmi ilə</string>
+    <string name="enter_verify_number">Təsdiq nömrəsini daxil edin</string>
+    <string name="enter_last_4_digits">Son 4 rəqəmi daxil edin</string>
+    <string name="enter_verify_code">Təsdiq kodunu daxil edin</string>
+    <string name="enter_new_password">Yeni şifrəni daxil edin</string>
+    <string name="invalid_mobile_number">Mobil nömrənin formatı düzgün deyil</string>
+    <string name="enter_pin">PIN daxil edin.</string>
+    <string name="make_changes">Redaktə et</string>
+    <string name="enter_new_email">Yeni email ünvanı daxil edin</string>
+    <string name="enter_current_password">Cari şifrəni daxil edin</string>
+    <string name="enter_new_password_repeat">Yeni şifrəni daxil edin</string>
+    <string name="enter_current_phone_number">Cari mobil nömrəni tam daxil edin</string>
+    <string name="enter_new_phone_number">Yeni mobil nömrəni daxil edin</string>
+    <string name="invalid_new_phone_number_format">Yeni mobil nömrə formatı düzgün deyil</string>
+    <string name="profile_update_verification_success">%s yenilənməsi uğurla tamamlandı!</string>
+    <string name="verify_code_sent_to_number">Təsdiq kodu %s nömrəsinə SMS - məktub vasitəsilə göndərildi.</string>
+    <string name="verify_code_sent_to_email">Təsdiq kodu %s ünvanına göndərildi.</string>
+    <string name="mobile_number">Mobil nömrə</string>
+    <string name="email_update_finish">E-mail ünvanınızın</string>
+    <string name="mobile_number_update_finish">Mobil nömrənizin</string>
+    <string name="password_update_finish">Şifrənizin</string>
+    <string name="going_to_sign_in_page">Giriş səhifəsinə yönləndirilicəksiniz.</string>
+    <string name="profile_update_successful" formatted="false">%s yenilənməsi\nuğurla tamamlandı! %s</string>
+    <string name="thank_you">Təşəkkürlər</string>
+    <string name="settings">Tənzimləmələr</string>
+    <string name="personal_info">Şəxsi məlumatlarım</string>
+    <string name="language">Dil</string>
+    <string name="security">Təhlükəsizlik</string>
+    <string name="allowed_devices">İcazə verilmiş cihazlar</string>
+    <string name="current_device">Mövcud cihaz</string>
+    <string name="other_devices">Əlavə cihazlar</string>
+    <string name="disable_device">Deaktiv et</string>
+    <string name="enable_device">Aktivləşdir</string>
+    <string name="device_unregistered">Cihaz qeydiyyatdan silindi</string>
+    <string name="device_registered">Cihaz qeydiyyata alındı</string>
+    <string name="fill_all_fields">Bütün xanaları doldurun</string>
+    <string name="nav_menu_item_payments">Ödənişlər</string>
+    <string name="nav_menu_item_my_info">Məlumatlarım</string>
+    <string name="nav_menu_item_main_page">Əsas səhifə</string>
+    <string name="nav_menu_item_others">Digər</string>
+    <string name="nav_menu_item_settings">Tənzimləmələr</string>
+    <string name="nav_menu_item_logout">Çıxış</string>
+    <string name="nav_menu_item_payments_and_transactions">Ödənişlər və köçürmələr</string>
+    <string name="nav_menu_item_about_bank">Bank haqqında</string>
+    <string name="nav_menu_item_bank_products">Bank məhsulları</string>
+    <string name="nav_menu_item_exchange_rates">Valyuta məzənnələri</string>
+    <string name="nav_menu_item_bank_news">Bank xəbərləri</string>
+    <string name="nav_menu_item_bank_proposals">Təkliflər</string>
+    <string name="nav_menu_item_bank_service_points">Xidmət nöqtələrimiz</string>
+    <string name="nav_menu_item_bank_contacts">Bankla əlaqə</string>
+    <string name="nav_menu_item_my_funds">Mənim vəsaitlərim</string>
+    <string name="nav_menu_item_my_cards">Kartlar</string>
+    <string name="no_my_cards">Kartınız yoxdur</string>
+    <string name="nav_menu_item_my_accounts">Hesablar</string>
+    <string name="no_my_accounts">Hesabınız yoxdur</string>
+    <string name="nav_menu_item_my_loans">Kreditlər</string>
+    <string name="no_my_loans">Kreditiniz yoxdur</string>
+    <string name="nav_menu_item_my_deposits">Əmanətlər</string>
+    <string name="no_my_deposits">Əmanətiniz yoxdur</string>
+    <string name="exchange_rates">Valyuta məzənnəsi</string>
+    <string name="exchange_rate_type_cash">Nağd</string>
+    <string name="exchange_rate_type_non_cash">Nağdsız</string>
+    <string name="exchange_currency">Valyuta</string>
+    <string name="exchange_sell_rate">Satış</string>
+    <string name="exchange_buy_rate">Alış</string>
+    <string name="loan_is_overdue">Gecikmə var</string>
+    <string name="loan_percent_to_end_of_date">Müddətin sonuna %</string>
+    <string name="loan_percent_type_yearly">İllik faiz dərəcəsi</string>
+    <string name="loan_planned_due_date">Planlaşdırılan bağlanma tarixi</string>
+    <string name="deposit_planned_due_date">Planlaşdırılan bitmə tarixi</string>
+    <string name="loan_start_date">Verilmə tarixi</string>
+    <string name="start_date">Başlama tarixi</string>
+    <string name="loan_duration_monthly">Müddət</string>
+    <string name="loan_overdue_balance">Gecikən faiz borcu məbləği</string>
+    <string name="loan_amount">Kreditin məbləği</string>
+    <string name="loan_balance">Kreditin qalığı</string>
+    <string name="loan_currency">Kreditin valyutası</string>
+    <string name="loan_sub_account_number">Sub hesab nömrəsi</string>
+    <string name="loan_account_number">Hesab nömrəsi</string>
+    <string name="bank_branch">Bank filialı</string>
+    <string name="loan_type">Kreditin növü</string>
+    <string name="account_name">Hesab adı</string>
+    <string name="account_color">Hesab rəngi</string>
+    <string name="account_owner_initials">Hesab sahibinin adı, soyadı</string>
+    <string name="account_number">Hesab nömrəsi</string>
+    <string name="account_iban">IBAN nömrəsi</string>
+    <string name="account_currency">Hesab valyutası</string>
+    <string name="account_open_date">Hesabın açılma tarixi</string>
+    <string name="account_close_date">Hesabın bitmə tarixi</string>
+    <string name="my_account_detailed_info">Hesab barədə ətraflı</string>
+    <string name="my_loan_detailed_info">Kredit barədə ətraflı</string>
+    <string name="account_balance">Balans</string>
+    <string name="my_card_detailed_info">Kart barədə ətraflı</string>
+    <string name="card_name">Kartın adı</string>
+    <string name="card_color">Kartın rəngi</string>
+    <string name="card_owner_initials">Kart sahibinin adı, soyadı</string>
+    <string name="card_number">Kartın nömrəsi</string>
+    <string name="card_type">Kartın növü</string>
+    <string name="card_currency">Kartın valyutası</string>
+    <string name="card_expire_date">Kartın bitmə tarixi</string>
+    <string name="card_status">Kartın statusu</string>
+    <string name="card_status_main">Əsas</string>
+    <string name="card_status_sub">Əlavə</string>
+    <string name="card_atm_withdraw">Nağdlaşdırma limiti</string>
+    <string name="my_deposit_detailed_info">Əmanət barədə ətraflı</string>
+    <string name="deposit_type">Əmanətin növü</string>
+    <string name="deposit_contract_number">Müqavilə nömrəsi</string>
+    <string name="deposit_currency">Əmanətin valyutası</string>
+    <string name="deposit_amount">Əmanətin məbləği</string>
+    <string name="deposit_total">Toplanmış balans</string>
+    <string name="yearly">İllik</string>
+    <string name="deposit_daily_percent_payment">Faizlərin ödənilməsi</string>
+    <string name="router">Xəritə</string>
+    <string name="no_any_notification">Heç bir bildirişiniz yoxdur.</string>
+    <string name="from_date">Tarixdən</string>
+    <string name="to_date">Tarixə</string>
+    <string name="notifications">Bildirişlər</string>
+    <string name="no_any_news">Heç bir xəbər tapılmadı.</string>
+    <string name="atm">Bankomat</string>
+    <string name="branch">Filial</string>
+    <string name="break_hours" formatted="false">%s fasiləsi: %d:00 - %d:00</string>
+    <string name="opening_closing_hours" formatted="false">İş qrafiki: %d:00 - %d:00</string>
+    <string name="monday">Bazar ertəsi</string>
+    <string name="tuesday">Çərşənbə axşamı</string>
+    <string name="wednesday">Çarşənbə</string>
+    <string name="thursday">Cümə axşamı</string>
+    <string name="friday">Cümə</string>
+    <string name="saturday">Şənbə</string>
+    <string name="sunday">Bazar</string>
+    <string name="all_days">Hər gün</string>
+    <string name="closed_branch">:&#160;Bağlıdır</string>
+    <string name="not_working">İşləmir</string>
+    <string name="cif">CIF %s</string>
+    <string name="cif_of_user">Müştəri kodu</string>
+    <string name="go_to_sign_up">Xahiş olunur qeydiyyatdan keçin.</string>
+    <string name="are_you_sure_this_device_operation_disable">%s cihazının mobil tətbiqetməyə girişi dayandırılsın?</string>
+    <string name="are_you_sure_this_device_operation_enable">%s cihazının mobil tətbiqetməyə girişinə icazə verilsin?</string>
+    <string name="add_fingerprint">Əlavə et</string>
+    <string name="remove_fingerprint">Sil</string>
+    <string name="wrong_fingerprint_data">Barmaq izi məlumatı düzgün deyil</string>
+    <string name="are_you_sure_to_disable_fingerprint_login">Barmaq izi ilə giriş ləğv edilsin?</string>
+    <string name="service_point">Xidmət məntəqəsi</string>
+    <string name="address">Ünvan</string>
+    <string name="working_hours_static">İş saatları</string>
+    <string name="contact">Əlaqə</string>
+    <string name="fax">Faks</string>
+    <string name="status">Status</string>
+    <string name="card">Kart</string>
+    <string name="detailed_info">Ətraflı məlumat</string>
+    <string name="card_statement">Kartdan çıxarış</string>
+    <string name="in_country">Ölkə daxili</string>
+    <string name="between_mine">Kart və hesablarım arasında</string>
+    <string name="to_other_card">Ölkədaxili istənilən bank kartına köçürmə</string>
+    <string name="to_other_account">Digər hesaba</string>
+    <string name="international">Ölkə xarici</string>
+    <string name="money_transfer">Təcili pul köçürmələri</string>
+    <string name="block_card">Kartı bloklamaq</string>
+    <string name="delete">Sil</string>
+    <string name="account">Hesab</string>
+    <string name="item_type_and_currency">%s (%s)</string>
+    <string name="card_account">Kart hesabı</string>
+    <string name="item_card_pattern">%s **** **** %s</string>
+    <string name="history">Tarixçə</string>
+    <string name="no_any_item">Heç bir məlumat yoxdur</string>
+    <string name="operation_type">Əməliyyatın növü</string>
+    <string name="choose_operation_type">Əməliyyatın növünü seçin</string>
+    <string name="between_my_cards">Öz kartlarım arasında</string>
+    <string name="operation_type_card_number">%s %s **** **** %s</string>
+    <string name="operation">Əməliyyat</string>
+    <string name="operations">Əməliyyatlar</string>
+    <string name="note">Qeyd</string>
+    <string name="from_card">Kartdan</string>
+    <string name="to_card">Karta</string>
+    <string name="finish_date">Bitmə tarixi</string>
+    <string name="operation_amount">Köçürmə məbləği</string>
+    <string name="pay">Ödəmək</string>
+    <string name="cards">Kartlar</string>
+    <string name="accounts">Hesablar</string>
+    <string name="new_card">Yeni kart</string>
+    <string name="transfer_details">Köçürmə məlumatları</string>
+    <string name="transfer_to">Mədaxil etmək</string>
+    <string name="enter_amount_properly">Məbləği düzgün daxil edin</string>
+    <string name="payment_card">Ödəniş kartı</string>
+    <string name="destination_card_number">Alanın kartı</string>
+    <string name="successful_transfer">Köçürmə uğurla tamamlandı!</string>
+    <string name="failed_transfer">Köçürmə uğurla tamamlanmadı</string>
+    <string name="operation_date">Əməliyyat tarixi</string>
+    <string name="statement_type">Çıxarışın növü</string>
+    <string name="change_item_card">Plastik kartınızın</string>
+    <string name="change_item_name">%s adını dəyişin</string>
+    <string name="save">Yadda saxla</string>
+    <string name="pan_is_wrong">Kartın nömrəsini düzgün daxil edin</string>
+    <string name="medaxil">Mədaxil</string>
+    <string name="mexaric">Məxaric</string>
+    <string name="choose_card">Kartı seçin</string>
+    <string name="transfer">Köçürmə</string>
+    <string name="search">Axtarış</string>
+    <string name="from_country">Göndərilən ölkə</string>
+    <string name="no_country">Ölkəni seçin</string>
+    <string name="to_point">Göndərilən nöqtə</string>
+    <string name="choose_to_point">Göndərilən nöqtəni seçin</string>
+    <string name="choose_from_country">Göndərilən ölkəni seçin</string>
+    <string name="receiver">Köçürməni alan</string>
+    <string name="name">Ad</string>
+    <string name="surname">Soyad</string>
+    <string name="father_name">Ata adı</string>
+    <string name="receiver_name">Alanın adı</string>
+    <string name="receiver_surname">Alanın soyadı</string>
+    <string name="receiver_fathername">Alanın ata adı</string>
+    <string name="receiver_phone_number">Alanın əlaqə nömrəsi</string>
+    <string name="receiver_phone_number_format">Mobil nömrə formatı düzgün deyil</string>
+    <string name="transfer_amount">Məbləğ</string>
+    <string name="min_transfer_amount_error">Məbləğ ən az %.2f %s ola bilər</string>
+    <string name="max_transfer_amount_error">Məbləğ ən çox %.2f %s ola bilər</string>
+    <string name="commission">Komissiya</string>
+    <string name="sum">Cəmi</string>
+    <string name="choose">Seç</string>
+    <string name="payment_source_card">Ödəniş kartı</string>
+    <string name="payment_source_account">Ödəniş hesabı</string>
+    <string name="enter_name">Adı daxil edin</string>
+    <string name="enter_surname">Soyadı daxil edin</string>
+    <string name="enter_fathername">Ata adını daxil edin</string>
+    <string name="choose_currency">Valyutanı seçin</string>
+    <string name="money_transfer_number">Köçürmə nömrəsi</string>
+    <string name="transfer_date">Köçürmə tarixi</string>
+    <string name="money_transfer_status_success">Göndərilib</string>
+    <string name="money_transfer_status_pending">Prosesdədir</string>
+    <string name="money_transfer_status_failure">İmtina edilib</string>
+    <string name="money_transfer_status_received">Qəbul edilib</string>
+    <string name="enter_transfer_number">Köçürmə nömrəsini daxil edin</string>
+    <string name="choose_card_or_account">Kart yaxud hesabı seçin</string>
+    <string name="choose_account">Hesabı seçin</string>
+    <string name="receive_date">Qəbul tarixi</string>
+    <string name="payment_amount">Ödəniş məbləği</string>
+    <string name="payment_validation_error">Error validating request</string>
+    <string name="payment_type">Ödəniş növü</string>
+    <string name="choose_payment_type">Ödəniş növünü seçin</string>
+    <string name="enter_abonent_nomresi">Abonent nömrəsi</string>
+    <string name="ehali">Əhali</string>
+    <string name="qeyri_ehali">Qeyri əhali</string>
+    <string name="name_surname">Ad, soyad</string>
+    <string name="debt_amount">Borc miqdarı</string>
+    <string name="abonent_nomresi_not_correct">Abonent nömrəsi düzgün deyil</string>
+    <string name="try_again">Yenidən yoxla</string>
+    <string name="wrong_qr_code_input">Yanlış skan</string>
+    <string name="payment_provider_not_exists">Provayder mövcud deyil</string>
+    <string name="type">Növ</string>
+    <string name="category">Kateqoriya</string>
+    <string name="provider">Provayder</string>
+    <string name="abonent_kodu">Abonent kodu</string>
+    <string name="ACCOUNT_TRANSFERS">Köçürmələr</string>
+    <string name="CARD_TO_ACCOUNT">Kartdan hesaba</string>
+    <string name="CARD_TO_CARD">Hesabdan karta</string>
+    <string name="PAYMENTS">Ödənişlər</string>
+    <string name="phone_number">Telefon nömrəsi</string>
+    <string name="payment_result_success">Ödəniş uğurla tamamlandı!</string>
+    <string name="payment_result_not_success">Ödəniş tamamlanmadı</string>
+    <string name="payment_result_waiting">Ödəniş gözləmədədir</string>
+    <string name="payment_success">Uğurlu</string>
+    <string name="sign_up_by_asan_imza">Asan İmza ilə qeydiyyat</string>
+    <string name="code">Kod</string>
+    <string name="code_should_be_six">Kod 6 simvol olmalıdır</string>
+    <string name="financial_reference">Maliyyə arayışı</string>
+    <string name="embassy_reference">Səfirlik arayışı</string>
+    <string name="references">Arayışlar</string>
+    <string name="success_order">Ödənilib</string>
+    <string name="registered_order">Sifariş edilib</string>
+    <string name="failed_order">Ödəmə xətası</string>
+    <string name="product_orders">Sifarişlərim</string>
+    <string name="product_type">Məhsul növü</string>
+    <string name="order_type">Sifarişin növü</string>
+    <string name="product_tariff">Tariflər: %s</string>
+    <string name="product_cost">Qiyməti: %.2f %s</string>
+    <string name="product_online_payment">Onlayn ödəmə: %s</string>
+    <string name="exists">Mövcuddur</string>
+    <string name="not_exists">Mövcud deyil</string>
+    <string name="a_year">1 il</string>
+    <string name="two_years">2 il</string>
+    <string name="three_years">3 il</string>
+    <string name="choose_duration">Müddəti seçin</string>
+    <string name="product_order_complete">Sifarişiniz üçün təşəkkür edirik!</string>
+    <string name="country">Ölkə</string>
+    <string name="extra_info">Əlavə məlumat</string>
+    <string name="embassy_point_format">%s, %s, %s</string>
+    <string name="duration_in_months">Müddət (ay)</string>
+    <string name="enter_duration_in_months">Müddəti daxil edin</string>
+    <string name="choose_country">Ölkəni seçin</string>
+    <string name="choose_extra_info">Əlavə məlumatı daxil edin</string>
+    <string name="enter_deposit_amount">Əmanətin məbləğini daxil edin</string>
+    <string name="x_month">%d ay</string>
+    <string name="percent">Faiz</string>
+    <string name="deposit_income">Əmanətin gəliri</string>
+    <string name="integer_percent">%d%%</string>
+    <string name="float_percent">%.1f%%</string>
+    <string name="enter_loan_amount">Kreditin məbləğini daxil edin</string>
+    <string name="loan_monthly_pay">Aylıq ödəniş</string>
+    <string name="loan_total_pay">Ümumi ödəniş</string>
+    <string name="loan_purpose">Kreditin məqsədi</string>
+    <string name="order_date">Sifariş tarixi</string>
+    <string name="deposit">Əmanət</string>
+    <string name="loan">Kredit</string>
+    <string name="plastic_card">Plastik kart</string>
+    <string name="close">Bağla</string>
+    <string name="destination_account">Alanın hesabı</string>
+    <string name="international_transfers">Xarici valyutada köçürmələr</string>
+    <string name="local_transfers">Ölkə daxili köçürmələr</string>
+    <string name="city">Şəhər</string>
+    <string name="bank_name">Bank adı</string>
+    <string name="swift_code">SWIFT kodu</string>
+    <string name="iban_code">Vəsaiti alanın hesabı (IBAN)</string>
+    <string name="bank_agent_fields">Bank agenti üçün təsdiq qutusu</string>
+    <string name="bank_swift_code">Bank SWIFT kod</string>
+    <string name="operation_description">Əməliyyatın təsviri</string>
+    <string name="additional_info">Əlavə rəy</string>
+    <string name="enter_bank_name">Bank adını daxil edin</string>
+    <string name="enter_swift">SWIFT kodu daxil edin</string>
+    <string name="enter_iban">Vəsaiti alanın hesabını (IBAN) daxil edin</string>
+    <string name="enter_account_name">Hesab adını daxil edin</string>
+    <string name="enter_account_number">Hesab nömrəsini daxil edin</string>
+    <string name="client_name">Vəsaiti alanın adı</string>
+    <string name="enter_client_name">Vəsaiti alanın adını daxil edin</string>
+    <string name="choose_bank_branch">Bank filialını seçin</string>
+    <string name="budget_payment">Büdcə ödənişi</string>
+    <string name="budget_destination">Təsnifat kodu</string>
+    <string name="level">Səviyyə kodu</string>
+    <string name="choose_budget_destination">Təsnifat kodunu seçin</string>
+    <string name="choose_budget_level">Səviyyə kodunu seçin</string>
+    <string name="branch_code">Filial kodu: %s</string>
+    <string name="branch_tax_number">Vergi nömrəsi: %s</string>
+    <string name="choose_search_criteria">Axtarış üçün aşağıdakı xanalardan birini seçin</string>
+    <string name="by_branch_name">Filial adı üzrə</string>
+    <string name="by_branch_number">Filial nömrəsi üzrə</string>
+    <string name="by_tax_number">Vergi nömrəsi üzrə</string>
+    <string name="from_card_to_card">Kartdan karta</string>
+    <string name="bank_operator_message">Bank operatorunun rəyi</string>
+    <string name="enter_city_name">Şəhəri daxil edin</string>
+    <string name="enter_country_name">Ölkəni daxil edin</string>
+    <string name="transferer">Köçürən</string>
+    <string name="tax_number">Vergi nömrəsi</string>
+    <string name="entered">Entered</string>
+    <string name="authorized">Authorized</string>
+    <string name="declined">Declined</string>
+    <string name="executed">Executed</string>
+    <string name="asan_imza">Asan imza</string>
+    <string name="none">None</string>
+    <string name="manual">Manual</string>
+    <string name="from_qr_code">From QR Code</string>
+    <string name="product_status">Status</string>
+    <string name="order_type_order">Sifariş</string>
+    <string name="order_type_payment">Ödəniş</string>
+    <string name="order">Sifariş etmək</string>
+    <string name="enter_asan_pin">FIN kodu daxil edin</string>
+    <string name="enter_asan_tax_number">Vergi nömrəsini daxil edin</string>
+    <string name="citizen_physical">Fiziki şəxs</string>
+    <string name="citizen_non_physical">Hüquqi şəxs</string>
+    <string name="enter_percent">Faiz dərəcəsini daxil edin</string>
+    <string name="NOT_VALID">NOT VALID</string>
+    <string name="EXPIRED_TRANSACTION">EXPIRED TRANSACTION</string>
+    <string name="USER_CANCEL">User cancelled</string>
+    <string name="MID_NOT_READY">MID NOT READY</string>
+    <string name="SENDING_ERROR">Sending error</string>
+    <string name="SIM_ERROR">SIM error</string>
+    <string name="INTERNAL_ERROR">Internal error</string>
+    <string name="website">Vebsayt</string>
+    <string name="btb_head_office">Bank BTB Baş ofisi</string>
+    <string name="call_center">946</string>
+    <string name="intro_first_page_desc">&#160;ilə hesablarınız 24/7 nəzarətinizdə olacaq!</string>
+    <string name="intro_second_page_desc">&#160;ilə istənilən vaxt hesabınızdan zəruri ödənişlərinizi və əməliyyatlarınızı edə bilərsiniz!</string>
+    <string name="third_page_title">Hesabların idarə olunması</string>
+    <string name="intro_third_page_desc">Bank hesablarınızı BTB Mobile ilə rahat, təhlükəsiz və sürətli şəkildə idarə edin.</string>
+    <string name="nav_menu_item_transfers">Öz kart və hesablarım arasında köçürmə</string>
+    <string name="are_you_sure_to_sign_out">Hazırki cihazda qeydiyyatınızın silinməsinə əminsiniz?</string>
+    <string name="_4_r_q_mli_ifr_ni_yaz_n">4 rəqəmli şifrəni yazın</string>
+    <string name="payment_date">Ödəniş tarixi</string>
+    <string name="from_account">Hesabdan</string>
+    <string name="ignore_reason">İmtina səbəbi</string>
+    <string name="ignore_date">İmtina tarixi</string>
+    <string name="qr_payment">QR Pay</string>
+    <string name="day">gün</string>
+    <string name="borc_melumatlari">Borc məlumatları</string>
+    <string name="must_be_payable_payment">&#160;- Məcburi ödəniş</string>
+    <string name="pay_later">Daha sonra ödə</string>
+    <string name="card_scan_cancelled">Card scan was canceled.</string>
+    <string name="qr_code_scan_cancelled">QR code scan was canceled.</string>
+    <string name="about_app">Tətbiq haqqında</string>
+    <string name="about_app_usage">Tətbiqin istifadə şərtləri</string>
+    <string name="app_version">Tətbiqin versiyası:</string>
+    <string name="no_internet_connection">İnternet əlaqəsi yoxdur</string>
+    <string name="loan_products">Kredit məhsulları</string>
+    <string name="deposit_products">Əmanət məhsulları</string>
+    <string name="plastic_card_products">Plastik kart məhsulları</string>
+    <string name="embassy_products">Səfirlik arayışları</string>
+    <string name="financial_products">Maliyyə arayışları</string>
+    <string-array name="language_options">
+        <item>Azərbaycanca</item>
+        <item>İngiliscə</item>
+        <item>Rusca</item>
+    </string-array>
+
+
+    <!--  ################ KEEP THE DISTANCE!! ################  -->
+    <!--  DO NOT PUT ANY TRANSLATABLE STRING BELOW THIS LINE !!  -->
+    <string translatable="false" name="app_name">BTB Mobile</string>
+    <string translatable="false" name="date_of_birth_format">%02d-%02d-%d</string>
+    <string translatable="false" name="hidden_mobile_number">+994 ** *** ** %s</string>
+    <string translatable="false" name="my_cards_card_number">%s %s **** **** %s</string>
+    <string translatable="false" name="my_items_item_balance">%.2f %s</string>
+    <string translatable="false" name="my_items_item_balance_days">%d %s</string>
+    <string translatable="false" name="my_deposit_amount_and_interest">%.2f %s / %.2f%%</string>
+    <string translatable="false" name="my_loan_balance_and_amount">%.2f %s / %.2f %s</string>
+    <string translatable="false" name="currency_rate">%.4f</string>
+    <string translatable="false" name="money_format">%.2f</string>
+    <string translatable="false" name="loan_percent">%.2f%%</string>
+    <string translatable="false" name="working_hours">%s - %s: %d:00 - %d:00</string>
+    <string name="na" translatable="false">NA</string>
+    <string translatable="false" name="service_point_search_result_name">%s - %s</string>
+    <string translatable="false" name="service_point_search_result_address">%s, %s, %s</string>
+    <string-array name="operation_types">
+        <item>@string/choose_operation_type</item>
+        <item>@string/between_mine</item>
+        <item>@string/to_other_card</item>
+    </string-array>
+    <string-array name="product_types">
+        <item>@string/choose</item>
+        <item>@string/loan_products</item>
+        <item>@string/deposit_products</item>
+        <item>@string/plastic_card_products</item>
+        <item>@string/embassy_products</item>
+        <item>@string/financial_products</item>
+    </string-array>
+    <string-array name="product_statuses">
+        <item>@string/choose</item>
+        <item>@string/registered_order</item>
+        <item>@string/failed_order</item>
+        <item>@string/success_order</item>
+    </string-array>
+    <string-array name="plastic_card_durations">
+        <item>@string/choose_duration</item>
+        <item>@string/a_year</item>
+        <item>@string/two_years</item>
+        <item>@string/three_years</item>
+    </string-array>
+    <string-array name="payment_history_statuses">
+        <item>@string/none</item>
+        <item>@string/money_transfer_status_received</item>
+        <item>@string/success_order</item>
+        <item>@string/money_transfer_status_failure</item>
+        <item>@string/money_transfer_status_pending</item>
+    </string-array>
+    <string-array name="payment_types">
+        <item>@string/none</item>
+        <item>@string/manual</item>
+        <item>@string/from_qr_code</item>
+    </string-array>
+    <string-array name="citizen_types">
+        <item>@string/citizen_physical</item>
+        <item>@string/citizen_non_physical</item>
+    </string-array>
+</resources>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.my_items.my_loans.MyLoansFragment">
+
+    <data>
+        <import type="android.view.View" />
+        <variable name="loanType" type="String" />
+        <variable name="loanBalance" type="java.math.BigDecimal" />
+        <variable name="loanInterest" type="java.math.BigDecimal" />
+        <variable name="loanCurrency" type="String" />
+        <variable name="loanAccountNumber" type="String" />
+        <variable name="isOverdueLoan" type="Boolean" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/six_dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="@drawable/my_items_list_item_shape">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginStart="@dimen/sixteen_dp"
+            android:layout_marginTop="@dimen/twenty_four_dp"
+            android:layout_marginBottom="@dimen/twenty_four_dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/overdueLoanIndicator"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text='@{loanType}'
+                android:textSize="15sp"
+                tools:text="Nəğd pul" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/four_dp"
+                android:text='@{@string/my_deposit_amount_and_interest(loanBalance, loanCurrency, loanInterest)}'
+                android:textSize="15sp"
+                tools:text="460 AZN / 990 AZN " />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text='@{loanAccountNumber}'
+                android:textSize="15sp"
+                tools:text="21110944066168000115" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/overdueLoanIndicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/sixteen_dp"
+            android:visibility='@{isOverdueLoan ? View.VISIBLE : View.GONE}'
+            android:contentDescription='@{"This loan is" + (isOverdueLoan ? " " : " not ") + "overdue"}'
+            android:src="@drawable/ic_overdue_loan"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:visibility="visible" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

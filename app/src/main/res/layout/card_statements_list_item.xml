@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable name="description" type="String" />
+        <variable name="timestamp" type="String" />
+        <variable name="amount" type="java.math.BigDecimal" />
+        <variable name="amountCurrency" type="String" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/eight_dp"
+        android:padding="@dimen/sixteen_dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="@drawable/my_items_list_item_shape">
+
+        <TextView
+            android:id="@+id/card_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/twelve_dp"
+            android:text='@{description}'
+            android:textSize="15sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/amount_and_currency"
+            app:layout_constraintBottom_toTopOf="@id/formatted_card_number"
+            tools:text="Borc çıxarışııııııııııııııııııııııııııçıxarışıııııııııııııııııııııııııı" />
+
+        <TextView
+            android:id="@+id/formatted_card_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text='@{timestamp}'
+            android:textSize="12sp"
+            android:layout_marginEnd="@dimen/ten_dp"
+            app:layout_constraintStart_toStartOf="@id/card_name"
+            app:layout_constraintTop_toBottomOf="@id/card_name"
+            tools:text="11.01.2020, 15:30" />
+
+        <TextView
+            android:id="@+id/amount_and_currency"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text='@{@string/my_items_item_balance(amount, amountCurrency)}'
+            android:textSize="15sp"
+            android:textColor="@color/colorPrimaryDark"
+            android:layout_marginStart="@dimen/sixteen_dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:text="4242234756 AZN" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable name="title" type="String" />
+        <variable name="details" type="String" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/twenty_four_dp"
+        android:background="@drawable/id_card_fin_code_help_background">
+
+        <ImageView
+            android:id="@+id/closeDialog"
+            style="@style/Widget.AppCompat.ActionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/ic_close"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:id="@+id/notification_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:text="@{title}"
+            android:textSize="20sp"
+            android:drawableTop="@drawable/ic_success_big"
+            android:drawablePadding="@dimen/twelve_dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="Keystore changed on device!"/>
+
+        <TextView
+            android:id="@+id/operation_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/thirty_two_dp"
+            android:layout_marginTop="@dimen/twenty_four_dp"
+            android:layout_marginEnd="@dimen/thirty_two_dp"
+            android:textAlignment="center"
+            android:text="@{details}"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/notification_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="Keystore on your device Apple
+IphoneX, Device ID PPR1.180610.011
+has been changed!"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:mask="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.sign_in_by_number.SignInByNumberFragment">
+
+    <ScrollView
+        android:id="@+id/root"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:fillViewport="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/topPanel"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                mask:layout_constraintEnd_toEndOf="parent"
+                mask:layout_constraintStart_toStartOf="parent"
+                mask:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/goBack"
+                    style="@style/Widget.AppCompat.ActionButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/go_back"
+                    android:src="@drawable/ic_back"
+                    mask:layout_constraintBottom_toBottomOf="parent"
+                    mask:layout_constraintStart_toStartOf="parent"
+                    mask:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:textSize="20sp"
+                    mask:layout_constraintBottom_toBottomOf="parent"
+                    mask:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                android:visibility="invisible"
+                mask:layout_constraintEnd_toEndOf="parent"
+                mask:layout_constraintStart_toStartOf="parent"
+                mask:layout_constraintTop_toBottomOf="@id/topPanel" />
+
+            <ImageView
+                android:id="@+id/logo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="36dp"
+                android:src="@drawable/logo"
+                mask:layout_constraintEnd_toEndOf="parent"
+                mask:layout_constraintStart_toStartOf="parent"
+                mask:layout_constraintTop_toBottomOf="@id/progressBar" />
+
+            <TextView
+                android:id="@+id/textNumberVerification"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/login_by_number"
+                android:textColor="@color/textColorLight"
+                android:layout_marginTop="34dp"
+                android:fontFamily="@font/sf_pro_semibold"
+                android:textSize="21sp"
+                mask:layout_constraintEnd_toEndOf="@id/logo"
+                mask:layout_constraintStart_toStartOf="@id/logo"
+                mask:layout_constraintTop_toBottomOf="@id/logo" />
+
+            <az.btb.mobilebanking.utils.masked_edittext.MaskedEditText
+                android:id="@+id/mobileNumber"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginStart="@dimen/sixteen_dp"
+                android:layout_marginTop="50dp"
+                android:layout_marginEnd="@dimen/sixteen_dp"
+                android:layout_marginBottom="@dimen/sixteen_dp"
+                android:background="@drawable/shape_edit_text_selector"
+                android:gravity="center|start"
+                mask:allowed_chars="1234567890"
+                mask:mask="+994 ## ### ## ##"
+                android:inputType="phone"
+                android:paddingStart="@dimen/twenty_four_dp"
+                android:paddingEnd="@dimen/twenty_four_dp"
+                android:textColor="@color/textColor"
+                android:textSize="17sp"
+                mask:layout_constraintTop_toBottomOf="@id/textNumberVerification"
+                mask:layout_constraintVertical_bias="0" />
+
+            <LinearLayout
+                android:id="@+id/passwordLayout"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginStart="@dimen/sixteen_dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginEnd="@dimen/sixteen_dp"
+                android:background="@drawable/shape_edit_text_selector"
+                android:orientation="horizontal"
+                mask:layout_constraintTop_toBottomOf="@id/mobileNumber"
+                mask:layout_constraintVertical_bias="0">
+
+                <EditText
+                    android:id="@+id/password"
+                    android:layout_width="0dp"
+                    android:layout_height="55dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_edit_text_selector"
+                    android:gravity="center|start"
+                    android:hint="@string/password"
+                    android:inputType="textPassword"
+                    android:paddingStart="@dimen/twenty_four_dp"
+                    android:paddingEnd="@dimen/twenty_four_dp"
+                    android:textColor="@color/textColor"
+                    android:textSize="17sp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/forgetPasswordButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="26dp"
+                android:text="@string/forget_password"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="14sp"
+                mask:layout_constraintBottom_toTopOf="@id/signIn"
+                mask:layout_constraintEnd_toEndOf="@id/passwordLayout"
+                mask:layout_constraintStart_toStartOf="@id/passwordLayout"
+                mask:layout_constraintTop_toBottomOf="@id/passwordLayout"
+                mask:layout_constraintVertical_bias="0" />
+
+            <LinearLayout
+                android:id="@+id/signIn"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginStart="@dimen/sixteen_dp"
+                android:layout_marginEnd="@dimen/sixteen_dp"
+                android:layout_marginBottom="@dimen/sixteen_dp"
+                android:background="@drawable/shape_button_selector"
+                android:elevation="3dp"
+                android:gravity="center"
+                mask:layout_constraintBottom_toBottomOf="parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/verify"
+                    android:textColor="@color/white"
+                    android:textSize="17sp" />
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</layout>

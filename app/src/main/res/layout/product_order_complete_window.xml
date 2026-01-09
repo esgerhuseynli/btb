@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/twenty_four_dp"
+        android:background="@drawable/id_card_fin_code_help_background">
+
+        <TextView
+            android:id="@+id/successText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:text="@string/product_order_complete"
+            android:textSize="20sp"
+            android:drawableTop="@drawable/ic_success_big"
+            android:drawablePadding="@dimen/twelve_dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/finish"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:layout_marginStart="@dimen/sixteen_dp"
+            android:layout_marginTop="@dimen/twenty_four_dp"
+            android:layout_marginEnd="@dimen/sixteen_dp"
+            android:layout_marginBottom="@dimen/sixteen_dp"
+            android:background="@drawable/shape_button_selector"
+            android:elevation="3dp"
+            android:gravity="center"
+            app:layout_constraintStart_toStartOf="@id/successText"
+            app:layout_constraintTop_toBottomOf="@id/successText"
+            app:layout_constraintEnd_toEndOf="@id/successText">
+
+            <TextView
+                android:id="@+id/finish_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/thank_you"
+                android:textColor="@color/white"
+                android:textSize="17sp" />
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

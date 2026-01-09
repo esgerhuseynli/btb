@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="56dp"
+            android:src="@drawable/logo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textNumberVerification"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/plastic_card_number"
+            android:textColor="@color/textColorLight"
+            android:layout_marginTop="34dp"
+            android:fontFamily="@font/sf_pro_semibold"
+            android:textSize="21sp"
+            app:layout_constraintEnd_toEndOf="@id/logo"
+            app:layout_constraintStart_toStartOf="@id/logo"
+            app:layout_constraintTop_toBottomOf="@id/logo" />
+
+        <az.btb.mobilebanking.utils.card_edittext.CreditCardEditText
+            android:id="@+id/pan"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_marginStart="@dimen/sixteen_dp"
+            android:layout_marginTop="70dp"
+            android:layout_marginEnd="@dimen/sixteen_dp"
+            android:layout_marginBottom="@dimen/sixteen_dp"
+            android:background="@drawable/shape_edit_text_selector"
+            android:gravity="center|start"
+            android:hint="@string/plastic_card_number"
+            android:inputType="datetime"
+            android:maxLength="19"
+            android:paddingStart="@dimen/twenty_four_dp"
+            android:paddingEnd="@dimen/twenty_four_dp"
+            android:textColor="@color/textColor"
+            android:textSize="17sp"
+            app:layout_constraintVertical_bias="0"
+            app:layout_constraintBottom_toTopOf="@id/nextButton"
+            app:layout_constraintTop_toBottomOf="@id/textNumberVerification" />
+
+        <TextView
+            android:id="@+id/panError"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:gravity="center"
+            android:paddingStart="36dp"
+            android:paddingEnd="36dp"
+            android:text=""
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="14sp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="@id/pan"
+            app:layout_constraintStart_toStartOf="@id/pan"
+            app:layout_constraintTop_toBottomOf="@id/pan" />
+
+        <LinearLayout
+            android:id="@+id/nextButton"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:background="@drawable/shape_button_selector"
+            android:gravity="center"
+            android:layout_marginStart="@dimen/sixteen_dp"
+            android:layout_marginEnd="@dimen/sixteen_dp"
+            android:layout_marginBottom="26dp"
+            android:elevation="3dp"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/enter"
+                android:textSize="17sp"
+                android:textColor="@color/white"/>
+
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

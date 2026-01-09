@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <base-config cleartextTrafficPermitted="false"/>
+
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="false">mobilebanking.btb.az</domain>
+        <trust-anchors>
+            <certificates src="system" />
+            <certificates src="@raw/ssl2021_no_key" />
+        </trust-anchors>
+    </domain-config>
+</network-security-config>

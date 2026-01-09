@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.my_items.my_cards.MyCardsFragment">
+
+    <data>
+        <variable name="cardAltName" type="String" />
+        <variable name="cardType4CardNumber" type="String" />
+        <variable name="cardNumberFirst4Digit" type="String" />
+        <variable name="cardNumberLast4Digit" type="String" />
+        <variable name="cardBalance" type="java.math.BigDecimal" />
+        <variable name="cardCurrency" type="String" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/six_dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="@drawable/my_items_list_item_shape">
+
+        <ImageView
+            android:id="@+id/card"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/sixteen_dp"
+            android:layout_marginTop="@dimen/twenty_four_dp"
+            android:layout_marginBottom="@dimen/twenty_four_dp"
+            android:src="@drawable/ic_my_cards"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/cardInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginStart="@dimen/eight_dp"
+            app:layout_constraintStart_toEndOf="@id/card"
+            app:layout_constraintTop_toTopOf="@id/card"
+            app:layout_constraintBottom_toBottomOf="@id/card">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text='@{cardAltName}'
+                android:textSize="14sp"
+                tools:text="MasterCard Gold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text='@{@string/my_cards_card_number(cardType4CardNumber, cardNumberFirst4Digit, cardNumberLast4Digit)}'
+                android:textSize="10sp"
+                tools:text="MasterCard 1234 **** **** 4321" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/sixteen_dp"
+            android:text='@{@string/my_items_item_balance(cardBalance, cardCurrency)}'
+            android:textSize="16sp"
+            android:textAlignment="viewEnd"
+            app:layout_constraintStart_toEndOf="@id/cardInfo"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:text="4126.28 AZN" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

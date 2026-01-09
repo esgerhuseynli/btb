@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#FFFFFF</color>
+    <color name="colorPrimaryDark">#ed3338</color>
+    <color name="colorAccent">#ed3338</color>
+    <color name="textColor">#383336</color>
+    <color name="textColorLight">#262626</color>
+    <color name="hintColor">#ABABAB</color>
+    <color name="mainBackground">#FCFCFC</color>
+    <color name="white">#FFFFFF</color>
+    <color name="border">#AFAFAF</color>
+    <color name="mainColor">#ed3338</color>
+    <color name="mainRippleColor">#42ed3338</color>
+    <color name="mainColorDark">#80ED3338</color>
+    <color name="red">#FF0005</color>
+    <color name="green">#17CF00</color>
+    <color name="blue">#001A91</color>
+    <color name="purple">#9E00BB</color>
+    <color name="borderColor">#F5F5F5</color>
+    <color name="bottomBarMenuItemTint">#848484</color>
+
+    <color name="cardBankAccountItem1Color1">#ED1C24</color>
+    <color name="cardBankAccountItem2Color1">#429268</color>
+    <color name="cardBankAccountItem3Color1">#5D1178</color>
+    <color name="cardBankAccountItem4Color1">#006FFF</color>
+
+    <color name="cardBankAccountItem1Color2">#F5B7B9</color>
+    <color name="cardBankAccountItem2Color2">#C2D8CC</color>
+    <color name="cardBankAccountItem3Color2">#CBB5D2</color>
+    <color name="cardBankAccountItem4Color2">#B0CFF6</color>
+
+    <color name="registered_order">#039BE5</color>
+    <color name="success_order">#4CAF50</color>
+
+    <color name="sliderActiveTrackColor">@color/colorAccent</color>
+    <color name="sliderInactiveTrackColor">#3ded3338</color>
+</resources>

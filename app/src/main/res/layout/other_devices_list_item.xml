@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:showIn="@layout/fragment_allowed_devices">
+
+        <TextView
+            android:id="@+id/device"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="17sp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:layout_marginEnd="@dimen/twelve_dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:drawableStart="@drawable/ic_phone_red_small"
+            android:drawablePadding="8dp"
+            android:layout_alignParentStart="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/disableDevice"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:text="Xiaomi Redmi 5 Plus" />
+
+        <ImageView
+            android:id="@+id/disableDevice"
+            style="@style/Widget.AppCompat.ActionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_alignTop="@id/device"
+            android:layout_alignParentEnd="true"
+            android:layout_alignBottom="@id/device"
+            android:src="@drawable/ic_disable_device" />
+
+        <ImageView
+            android:id="@+id/enableDevice"
+            style="@style/Widget.AppCompat.ActionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_alignTop="@id/device"
+            android:layout_alignParentEnd="true"
+            android:layout_alignBottom="@id/device"
+            android:src="@drawable/ic_enable_device" />
+    </RelativeLayout>
+</layout>

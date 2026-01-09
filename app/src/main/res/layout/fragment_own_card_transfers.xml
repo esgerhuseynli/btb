@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.own_card_transfers.OwnCardTransfersFragment">
+
+    <LinearLayout
+        android:id="@+id/root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:animateLayoutChanges="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/topPanel"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <ImageView
+                android:id="@+id/goBack"
+                style="@style/Widget.AppCompat.ActionButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/go_back"
+                android:src="@drawable/ic_back"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/between_mine"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/topPanel" />
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintTop_toBottomOf="@id/progressBar"
+            app:layout_constraintBottom_toTopOf="@id/make_transfer">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/sixteen_dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/pay"
+                    android:textSize="15sp" />
+
+                <LinearLayout
+                    android:id="@+id/from_items"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/six_dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/from_card"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/cards"
+                        android:layout_weight="0.5"
+                        android:gravity="center"
+                        android:drawablePadding="@dimen/six_dp"
+                        app:drawableTopCompat="@drawable/ic_my_cards" />
+
+                    <TextView
+                        android:id="@+id/from_account"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/accounts"
+                        android:layout_weight="0.5"
+                        android:gravity="center"
+                        android:drawablePadding="@dimen/six_dp"
+                        app:drawableTopCompat="@drawable/ic_bank_transfer" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/from_cards_parent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/sixteen_dp"
+                    android:background="@drawable/gradient_spinner">
+
+                    <androidx.appcompat.widget.AppCompatSpinner
+                        android:id="@+id/from_cards"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:overlapAnchor="false" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/from_accounts_parent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/sixteen_dp"
+                    android:background="@drawable/gradient_spinner"
+                    android:visibility="gone">
+
+                    <androidx.appcompat.widget.AppCompatSpinner
+                        android:id="@+id/from_accounts"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:overlapAnchor="false" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/twenty_four_dp"
+                    android:text="@string/transfer_to"
+                    android:textSize="15sp" />
+
+                <LinearLayout
+                    android:id="@+id/to_items"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/six_dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/to_card"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/cards"
+                        android:layout_weight="0.5"
+                        android:gravity="center"
+                        android:drawablePadding="@dimen/six_dp"
+                        app:drawableTopCompat="@drawable/ic_my_cards" />
+
+                    <TextView
+                        android:id="@+id/to_account"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/accounts"
+                        android:layout_weight="0.5"
+                        android:gravity="center"
+                        android:drawablePadding="@dimen/six_dp"
+                        app:drawableTopCompat="@drawable/ic_bank_transfer" />
+
+                    <TextView
+                        android:id="@+id/to_add_new_card"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/new_card"
+                        android:gravity="center"
+                        android:visibility="gone"
+                        android:layout_weight="0.5"
+                        android:drawablePadding="@dimen/six_dp"
+                        app:drawableTopCompat="@drawable/ic_new_card" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:id="@+id/to_cards_parent"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/sixteen_dp"
+                        android:background="@drawable/gradient_spinner">
+
+                        <androidx.appcompat.widget.AppCompatSpinner
+                            android:id="@+id/to_cards"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:overlapAnchor="false" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/to_accounts_parent"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/sixteen_dp"
+                        android:background="@drawable/gradient_spinner"
+                        android:visibility="gone">
+
+                        <androidx.appcompat.widget.AppCompatSpinner
+                            android:id="@+id/to_accounts"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:overlapAnchor="false" />
+                    </LinearLayout>
+
+                    <az.btb.mobilebanking.utils.card_edittext.CreditCardEditText
+                        android:id="@+id/to_new_card_number"
+                        android:layout_width="match_parent"
+                        android:layout_height="55dp"
+                        android:layout_marginTop="@dimen/sixteen_dp"
+                        android:background="@drawable/shape_edit_text_selector"
+                        android:hint="@string/card_number"
+                        android:inputType="datetime"
+                        android:maxLength="19"
+                        android:paddingStart="@dimen/twenty_four_dp"
+                        android:paddingEnd="@dimen/twenty_four_dp"
+                        android:textColor="@color/textColor"
+                        android:textSize="17sp"
+                        android:visibility="gone" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/twenty_four_dp"
+                    android:text="@string/transfer_details"
+                    android:textSize="15sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/transfer_amount"
+                        android:layout_width="0dp"
+                        android:layout_height="55dp"
+                        android:layout_marginTop="@dimen/six_dp"
+                        android:layout_marginEnd="@dimen/twenty_dp"
+                        android:background="@drawable/shape_edit_text_selector"
+                        android:layout_weight="0.9"
+                        android:gravity="center|start"
+                        android:hint="@string/operation_amount"
+                        android:inputType="numberDecimal"
+                        android:paddingStart="@dimen/twenty_four_dp"
+                        android:paddingEnd="@dimen/twenty_four_dp"
+                        android:textSize="17sp" />
+
+                    <EditText
+                        android:id="@+id/transfer_currency"
+                        android:layout_width="0dp"
+                        android:layout_height="55dp"
+                        android:layout_marginTop="@dimen/six_dp"
+                        android:background="@drawable/shape_edit_text_selector"
+                        android:enabled="false"
+                        android:longClickable="false"
+                        android:focusable="false"
+                        android:clickable="false"
+                        android:layout_weight="0.2"
+                        android:gravity="center|start"
+                        android:inputType="numberDecimal"
+                        android:paddingStart="@dimen/twelve_dp"
+                        android:paddingEnd="0dp"
+                        android:textSize="17sp"
+                        tools:text="AZN" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/twenty_four_dp"
+                    android:text="@string/note"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/transfer_note"
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:layout_marginTop="@dimen/six_dp"
+                    android:background="@drawable/shape_edit_text_selector"
+                    android:layout_weight="0.9"
+                    android:gravity="center|start"
+                    android:inputType="text"
+                    android:paddingStart="@dimen/twenty_four_dp"
+                    android:paddingEnd="@dimen/twenty_four_dp"
+                    android:textSize="17sp" />
+
+                <LinearLayout
+                    android:id="@+id/make_transfer"
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:layout_marginTop="@dimen/twenty_four_dp"
+                    android:layout_marginBottom="@dimen/sixteen_dp"
+                    android:enabled="false"
+                    android:background="@drawable/shape_button_selector"
+                    android:elevation="3dp"
+                    android:gravity="center">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/next"
+                        android:textColor="@color/white"
+                        android:textSize="17sp" />
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+    </LinearLayout>
+</layout>

@@ -1,0 +1,179 @@
+apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'
+apply plugin: 'com.google.firebase.firebase-perf'
+
+def static latestGitCommitHash() {
+    'git rev-parse --verify --short HEAD'.execute().text.trim()
+}
+
+int getBuildCode() {
+    def versionPropsFile = file('../version.properties')
+    if (versionPropsFile.canRead()) {
+        Properties versionProps = new Properties()
+
+        versionProps.load(new FileInputStream(versionPropsFile))
+
+        def code = versionProps['BUILD_CODE'].toInteger() + 1
+
+        versionProps['BUILD_CODE'] = code.toString()
+        versionProps.store(versionPropsFile.newWriter(), null)
+        return code
+    }
+
+    throw new GradleScriptException("Couldn't find/read the 'version.properties' file")
+}
+
+android {
+    signingConfigs {
+        app_signing_configs {
+            Properties keyProps = new Properties()
+            keyProps.load(new FileInputStream(file('signing.properties')))
+
+            storeFile file(keyProps["STORE_FILE"])
+            storePassword keyProps["STORE_PASSWORD"]
+            keyAlias keyProps["KEY_ALIAS"]
+            keyPassword keyProps["KEY_PASSWORD"]
+        }
+    }
+    compileSdkVersion 34
+    buildToolsVersion "29.0.3"
+    defaultConfig {
+        applicationId "az.btb.mobilebanking"
+        minSdkVersion 21
+        targetSdkVersion 34
+        versionCode 411
+        versionName "1.0.8-" + getBuildCode()
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        // Read the API key from ./secure.properties into R.string.maps_api_key
+        def secureProps = new Properties()
+        if (file("./secure.properties").exists()) {
+            file("./secure.properties")?.withInputStream { secureProps.load(it) }
+        }
+        resValue "string", "maps_api_key", (secureProps.getProperty("MAPS_API_KEY") ?: "")
+    }
+    buildTypes {
+        debug {
+          //  minifyEnabled true
+          //  shrinkResources true
+          //  proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'dev_debug_env_proguard-rules.pro'
+            signingConfig signingConfigs.app_signing_configs
+
+//            firebaseCrashlytics {
+//                mappingFileUploadEnabled true
+//            }
+        }
+        release {
+            debuggable false
+            minifyEnabled false
+            shrinkResources false
+            //proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.app_signing_configs
+
+//            firebaseCrashlytics {
+//                mappingFileUploadEnabled true
+//            }
+        }
+    }
+    flavorDimensions "mode"
+    productFlavors {
+        prod { dimension "mode" }
+        dev { dimension "mode" }
+    }
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
+    buildFeatures {
+        dataBinding = true
+        viewBinding = true
+    }
+    dependenciesInfo {
+        includeInApk false
+        includeInBundle false
+    }
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            def releaseName = "BTB_Mobile_" + new Date().format('yyyy.MM.dd') + "_" + latestGitCommitHash() + ".apk"
+            output.outputFileName = new File(releaseName)
+        }
+    }
+}
+
+dependencies {
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'com.google.android.material:material:1.2.1'
+    implementation "androidx.viewpager2:viewpager2:1.0.0"
+
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
+    implementation 'com.google.firebase:firebase-analytics:18.0.2'
+    implementation 'com.google.firebase:firebase-crashlytics:17.4.1'
+    implementation 'com.google.firebase:firebase-perf:19.1.1'
+
+    implementation 'com.google.firebase:firebase-messaging:21.0.1'
+    implementation 'com.google.firebase:firebase-analytics:18.0.2'
+
+    implementation 'me.relex:circleindicator:2.1.6'
+
+    // Rx
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.9'
+
+    // Rx relay
+    implementation 'com.jakewharton.rxrelay2:rxrelay:2.1.1'
+
+    //Retrofit
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.9.0'
+    implementation 'com.squareup.okhttp3:okhttp:4.9.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.11.0'
+    implementation 'com.google.code.gson:gson:2.8.6'
+
+    //Cicerone
+    implementation 'com.github.terrakok:cicerone:5.0.0'
+
+    //Toothpick
+    implementation 'com.github.stephanenicolas.toothpick:toothpick-runtime:3.1.0'
+    annotationProcessor 'com.github.stephanenicolas.toothpick:toothpick-compiler:3.1.0'
+
+    //MVP Moxy
+    implementation 'com.github.moxy-community:moxy:1.0.13'
+    annotationProcessor 'com.github.moxy-community:moxy-compiler:1.0.13'
+    implementation 'com.github.moxy-community:moxy-androidx:1.0.13'
+
+    //Preferences
+    implementation "androidx.preference:preference:1.1.1"
+
+    // Masked edittext
+//    implementation 'com.vicmikhailau:MaskedEditText:3.0.4'
+
+    // qr code reading
+    implementation('com.journeyapps:zxing-android-embedded:4.1.0') { transitive = false }
+
+    implementation ('com.google.zxing:core:3.3.3') {
+        because("DO NOT UPGRADE TO HIGHER THAN 3.3.3 !! cunki daha yuxari verisalarin ancaq Android API 24+ olanda isleyir. SurfaceView ve s sohbetine gore")
+    }
+
+    // Carousel view
+//    implementation 'com.azoft.carousellayoutmanager:carousel:1.2.4'
+
+    // Card scanner
+    implementation 'io.card:android-sdk:5.5.1'
+
+    // Chromium browser
+    implementation "androidx.browser:browser:1.3.0"
+
+    // Lingver lib
+    implementation "com.github.YarikSOffice:lingver:1.3.0"
+
+    // Glide
+    implementation 'com.github.bumptech.glide:glide:4.12.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
+
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+}

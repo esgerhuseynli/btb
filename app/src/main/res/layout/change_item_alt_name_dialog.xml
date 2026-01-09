@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable name="title" type="String" />
+        <variable name="subTitle" type="String" />
+        <variable name="itemCurrentAltName" type="String" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/id_card_fin_code_help_background">
+
+        <TextView
+            android:id="@+id/header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text='@{title}'
+            android:textSize="20sp"
+            android:layout_marginTop="@dimen/twenty_four_dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/closeDialog"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/closeDialog"
+            tools:text="kartin adi" />
+
+        <TextView
+            android:id="@+id/sub_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text='@{@string/change_item_name(subTitle)}'
+            android:textSize="15sp"
+            android:layout_marginTop="@dimen/twelve_dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/header"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="hesab adini deyisidir" />
+
+        <ImageView
+            android:id="@+id/closeDialog"
+            style="@style/Widget.AppCompat.ActionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/ic_close"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <EditText
+            android:id="@+id/item_new_alt_name"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_margin="@dimen/sixteen_dp"
+            android:background="@drawable/shape_edit_text_selector"
+            android:gravity="center|start"
+            android:inputType="text"
+            android:paddingStart="@dimen/twenty_four_dp"
+            android:paddingEnd="@dimen/twenty_four_dp"
+            android:text='@{itemCurrentAltName}'
+            android:textColor="@color/textColor"
+            android:textSize="17sp"
+            app:layout_constraintTop_toBottomOf="@id/sub_header" />
+
+        <LinearLayout
+            android:id="@+id/confirm"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_marginStart="@dimen/sixteen_dp"
+            android:layout_marginTop="@dimen/fifty_six_dp"
+            android:layout_marginEnd="@dimen/sixteen_dp"
+            android:layout_marginBottom="@dimen/sixteen_dp"
+            android:background="@drawable/shape_button_enabled"
+            android:elevation="3dp"
+            android:gravity="center"
+            app:layout_constraintTop_toBottomOf="@id/item_new_alt_name"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/save"
+                android:textColor="@color/white"
+                android:textSize="17sp" />
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

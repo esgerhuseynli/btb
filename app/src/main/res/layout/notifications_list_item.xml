@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable name="eventName" type="String" />
+        <variable name="eventTimestamp" type="String" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/eight_dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="@drawable/my_items_list_item_shape">
+
+        <ImageView
+            android:id="@+id/notification_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/sixteen_dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:src="@drawable/ic_notification_item" />
+
+        <TextView
+            android:id="@+id/operation_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text='@{eventName}'
+            android:textSize="15sp"
+            android:layout_marginStart="@dimen/sixteen_dp"
+            app:layout_constraintTop_toTopOf="@id/notification_icon"
+            app:layout_constraintStart_toEndOf="@id/notification_icon"
+            app:layout_constraintBottom_toTopOf="@id/operation_time"
+            tools:text="Yeni cihaz qosulub" />
+
+        <TextView
+            android:id="@+id/operation_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text='@{eventTimestamp}'
+            android:textSize="12sp"
+            android:layout_marginStart="@dimen/sixteen_dp"
+            app:layout_constraintStart_toEndOf="@id/notification_icon"
+            app:layout_constraintTop_toBottomOf="@id/operation_title"
+            app:layout_constraintBottom_toBottomOf="@id/notification_icon"
+            tools:text="22 yanvar 1874 15:06" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

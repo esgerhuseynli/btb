@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.operations_history.OperationsHistoryFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/topPanel"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/goBack"
+                style="@style/Widget.AppCompat.ActionButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/go_back"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:src="@drawable/ic_back" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/history"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/topPanel">
+
+            <TextView
+                android:id="@+id/from_card_to_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:padding="@dimen/sixteen_dp"
+                android:text="@string/from_card_to_card"
+                android:gravity="center_vertical"
+                android:drawablePadding="@dimen/ten_dp"
+                android:drawableStart="@drawable/ic_history_card_to_card"
+                android:drawableEnd="@drawable/ic_arrow_next"/>
+
+            <TextView
+                android:id="@+id/payments"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:padding="@dimen/sixteen_dp"
+                android:text="@string/PAYMENTS"
+                android:gravity="center_vertical"
+                android:drawablePadding="@dimen/ten_dp"
+                android:drawableStart="@drawable/ic_history_payments"
+                android:drawableEnd="@drawable/ic_arrow_next"/>
+
+            <TextView
+                android:id="@+id/local_transfers"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:padding="@dimen/sixteen_dp"
+                android:text="@string/local_transfers"
+                android:gravity="center_vertical"
+                android:drawablePadding="@dimen/ten_dp"
+                android:drawableStart="@drawable/ic_history_local_transfers"
+                android:drawableEnd="@drawable/ic_arrow_next"/>
+
+            <TextView
+                android:id="@+id/international_transfers"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:padding="@dimen/sixteen_dp"
+                android:text="@string/international_transfers"
+                android:gravity="center_vertical"
+                android:drawablePadding="@dimen/ten_dp"
+                android:drawableStart="@drawable/ic_history_international_transfers"
+                android:drawableEnd="@drawable/ic_arrow_next"/>
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

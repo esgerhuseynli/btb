@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.home.HomeFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/root"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/cardLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:background="@color/white"
+            android:orientation="vertical"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/cards_accounts_list"
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:listitem="@layout/bank_card_and_account_item" />
+
+            <me.relex.circleindicator.CircleIndicator2
+                android:id="@+id/indicator"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/twenty_dp"
+                android:layout_gravity="center"
+                android:padding="@dimen/four_dp"
+                android:visibility="visible"
+                app:ci_drawable="@drawable/ic_dots"
+                app:layout_constraintTop_toBottomOf="@id/cards_accounts_list" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/ten_dp"
+                android:layout_marginBottom="@dimen/ten_dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/card_details"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="@dimen/twenty_four_dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:background="@drawable/shape_button_enabled"
+                        android:padding="11dp"
+                        android:src="@drawable/ic_card_details" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="@string/detailed_info"
+                        android:textColor="@color/textColor"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/card_statements"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/twenty_four_dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:background="@drawable/shape_button_enabled"
+                        android:padding="11dp"
+                        android:src="@drawable/ic_card_statement" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="@string/card_statement"
+                        android:textColor="@color/textColor"
+                        android:textSize="13sp" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginBottom="72dp"
+            app:layout_constraintTop_toBottomOf="@id/cardLayout"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:id="@+id/card_items"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/mainBackground"
+                    android:orientation="vertical"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/ten_dp"
+                        android:layout_marginStart="@dimen/twenty_dp"
+                        android:text="@string/operations"
+                        android:textSize="17sp"
+                        android:textColor="@color/colorPrimaryDark" />
+
+                    <az.btb.mobilebanking.utils.HomeItemView
+                        android:id="@+id/qr_payment1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:background="?selectableItemBackground"
+                        app:image="@drawable/ic_qr_code"
+                        android:backgroundTint="#757575"
+                        app:text="@string/qr_payment" />
+
+                    <az.btb.mobilebanking.utils.HomeItemView
+                        android:id="@+id/payments"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:background="?selectableItemBackground"
+                        app:image="@drawable/ic_payments"
+                        app:text="@string/nav_menu_item_payments" />
+
+                    <az.btb.mobilebanking.utils.HomeItemView
+                        android:id="@+id/card_between_my_cards_accounts"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:background="?selectableItemBackground"
+                        app:image="@drawable/ic_between_mine"
+                        app:text="@string/nav_menu_item_transfers" />
+
+                    <az.btb.mobilebanking.utils.HomeItemView
+                        android:id="@+id/to_other_card"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:background="?selectableItemBackground"
+                        app:image="@drawable/ic_other_card"
+                        app:text="@string/to_other_card" />
+
+                    <az.btb.mobilebanking.utils.HomeItemView
+                        android:id="@+id/to_other_account"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:visibility="gone"
+                        android:background="?selectableItemBackground"
+                        app:image="@drawable/ic_to_other_account"
+                        app:text="@string/to_other_account" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/ten_dp"
+                        android:layout_marginStart="@dimen/twenty_dp"
+                        android:visibility="gone"
+                        android:text="@string/international"
+                        android:textSize="17sp"
+                        android:textColor="@color/colorPrimaryDark" />
+
+                    <az.btb.mobilebanking.utils.HomeItemView
+                        android:id="@+id/card_money_transfers"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:background="?selectableItemBackground"
+                        app:image="@drawable/ic_money_transfer"
+                        app:text="@string/money_transfer" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/account_items"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/mainBackground"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/ten_dp"
+                        android:layout_marginStart="@dimen/twenty_dp"
+                        android:text="@string/operations"
+                        android:textSize="17sp"
+                        android:textColor="@color/colorPrimaryDark" />
+
+                    <az.btb.mobilebanking.utils.HomeItemView
+                        android:id="@+id/qr_payment2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:background="?selectableItemBackground"
+                        app:image="@drawable/ic_qr_code"
+                        app:text="@string/qr_payment" />
+
+                    <az.btb.mobilebanking.utils.HomeItemView
+                        android:id="@+id/payments2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:background="?selectableItemBackground"
+                        app:image="@drawable/ic_payments"
+                        app:text="@string/nav_menu_item_payments" />
+
+                    <az.btb.mobilebanking.utils.HomeItemView
+                        android:id="@+id/card_between_my_cards_accounts2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:background="?selectableItemBackground"
+                        app:image="@drawable/ic_between_mine"
+                        app:text="@string/nav_menu_item_transfers" />
+
+                    <az.btb.mobilebanking.utils.HomeItemView
+                        android:id="@+id/to_other_card2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:visibility="gone"
+                        android:background="?selectableItemBackground"
+                        app:image="@drawable/ic_other_card"
+                        app:text="@string/to_other_card" />
+
+                    <az.btb.mobilebanking.utils.HomeItemView
+                        android:id="@+id/local_transfers"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:background="?selectableItemBackground"
+                        app:image="@drawable/ic_history_local_transfers_gray"
+                        app:text="@string/local_transfers" />
+
+                    <az.btb.mobilebanking.utils.HomeItemView
+                        android:id="@+id/international_transfers"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:background="?selectableItemBackground"
+                        app:image="@drawable/ic_history_international_transfers_gray"
+                        app:text="@string/international_transfers" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        android:layout_marginTop="@dimen/ten_dp"
+                        android:layout_marginStart="@dimen/twenty_dp"
+                        android:text="@string/international"
+                        android:textSize="17sp"
+                        android:textColor="@color/colorPrimaryDark" />
+
+                    <az.btb.mobilebanking.utils.HomeItemView
+                        android:id="@+id/account_money_transfers"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:background="?selectableItemBackground"
+                        app:image="@drawable/ic_money_transfer"
+                        app:text="@string/money_transfer" />
+                </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

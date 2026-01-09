@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/drawer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusable="true"
+        android:fitsSystemWindows="true"
+        tools:openDrawer="start"
+        tools:context=".ui.home_nav.HomeNavFragment">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent">
+
+            <RelativeLayout
+                android:id="@+id/tabLayout"
+                android:background="@color/white"
+                android:layout_height="50dp"
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/drawer"
+                    android:layout_gravity="center"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_alignParentStart="true"
+                    android:padding="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_drawer" />
+
+                <ImageView
+                    android:id="@+id/top_center_logo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    app:srcCompat="@drawable/logo" />
+
+                <ImageView
+                    android:id="@+id/notificationsPage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="26dp"
+                    android:src="@drawable/ic_nav_notify" />
+            </RelativeLayout>
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <FrameLayout
+            android:id="@+id/fragment_main_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/mainPageLayout"
+                android:layout_width="51dp"
+                android:layout_height="51dp"
+                android:layout_above="@id/bottomNavLayout"
+                android:layout_centerInParent="true"
+                android:layout_marginBottom="-36dp"
+                android:background="@drawable/shape_round"
+                android:elevation="3dp"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/mainPageIcon"
+                    android:layout_width="51dp"
+                    android:layout_height="51dp"
+                    android:padding="11dp"
+                    android:src="@drawable/ic_btb"
+                    app:tint="@color/colorPrimaryDark" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/bottomNavLayout"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/bottom_nav_height"
+                android:background="@color/white"
+                android:orientation="horizontal"
+                android:layout_alignParentBottom="true">
+
+                <TextView
+                    android:id="@+id/paymentsPage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textColor="@color/textColor"
+                    android:textSize="13sp"
+                    android:drawableTop="@drawable/ic_payments"
+                    android:drawablePadding="@dimen/eight_dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/nav_menu_item_payments" />
+
+                <TextView
+                    android:id="@+id/mainPage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="12dp"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:text="@string/nav_menu_item_main_page"
+                    android:drawablePadding="@dimen/eight_dp"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="0dp"
+                    android:textColor="@color/textColor"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/transfersPage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/ACCOUNT_TRANSFERS"
+                    android:textColor="@color/textColor"
+                    android:textSize="13sp"
+                    android:drawableTop="@drawable/ic_transfer"
+                    android:drawablePadding="@dimen/eight_dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:layout_gravity="center" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <com.google.android.material.navigation.NavigationView
+            android:id="@+id/sideNav"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            app:itemIconTint="@color/colorPrimaryDark"
+            app:headerLayout="@layout/nav_header"
+            app:menu="@menu/side_nav_menu" />
+    </androidx.drawerlayout.widget.DrawerLayout>
+</layout>
