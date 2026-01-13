@@ -38,6 +38,7 @@ class AuthBloc extends BaseBloc<AuthEvent, AuthState> {
     on<ChangeKeystoreEvent>(_onChangeKeystore);
     on<SetupPinEvent>(_onSetupPin);
     on<VerifyPinEvent>(_onVerifyPin);
+    on<VerifyBiometricEvent>(_onVerifyBiometric);
   }
 
   Future<void> _onCheckAuthStatus(
@@ -849,6 +850,153 @@ class AuthBloc extends BaseBloc<AuthEvent, AuthState> {
       }
 
       // PIN is correct - sign in with keystoreType=1
+      final signInType = int.parse(signInTypeStr);
+      final mobileUser = MobileUser(
+        username: username,
+        passwordHash: passwordHash,
+        sessionKey: null,
+        saltSignature: null,
+      );
+
+      final requestInfo = await _requestBuilder.buildRequestInfo(
+        mobileUser: mobileUser,
+      );
+
+      // Sign in with keystoreType=1
+      final signInResponse = await _authRepository.signIn(
+        requestInfo: requestInfo,
+        keystoreType: 1, // Keystore is set up
+        signInType: signInType,
+      );
+
+      if (signInResponse.isSuccess && signInResponse.responseInfo.responseType == 0) {
+        // Update session key
+        await _secureStorage.write(
+          key: AppConstants.sessionKey,
+          value: signInResponse.sessionKey!,
+        );
+        await _secureStorage.write(
+          key: AppConstants.hasActiveSession,
+          value: 'true',
+        );
+
+        // Update requestInfo with new session key
+        final updatedMobileUser = MobileUser(
+          username: username,
+          passwordHash: passwordHash,
+          sessionKey: signInResponse.sessionKey,
+          saltSignature: signInResponse.sessionKey,
+        );
+
+        final updatedRequestInfo = await _requestBuilder.buildRequestInfo(
+          mobileUser: updatedMobileUser,
+        );
+
+        // Step 1: Send FCM Token (ChangeDevicePushInfoToken) - fire and forget
+        try {
+          final prefs = await SharedPreferences.getInstance();
+          final fcmToken = prefs.getString(AppConstants.fcmNotificationToken);
+          if (fcmToken != null && fcmToken.isNotEmpty) {
+            await _authRepository.sendFCMToken(
+              requestInfo: updatedRequestInfo,
+              fcmToken: fcmToken,
+            );
+          }
+        } catch (e) {
+          debugPrint('Failed to send FCM token: $e');
+        }
+
+        // Step 2: Load Bank Cards (ListBankCards)
+        try {
+          await _authRepository.loadBankCards(
+            requestInfo: updatedRequestInfo,
+          );
+        } catch (e) {
+          debugPrint('Failed to load bank cards: $e');
+        }
+
+        // Step 3: Load Bank Accounts (ListBankAccounts)
+        try {
+          await _authRepository.loadBankAccounts(
+            requestInfo: updatedRequestInfo,
+          );
+        } catch (e) {
+          debugPrint('Failed to load bank accounts: $e');
+        }
+
+        // Step 4: Get Mobile User Data (GetMobileUserData)
+        try {
+          final mobileUserData = await _authRepository.getMobileUserData(
+            requestInfo: updatedRequestInfo,
+            signInType: signInType,
+            mobileNumber: username,
+            mobileNumberSecretCode: passwordHash,
+          );
+
+          // Store customer name if available
+          if (mobileUserData['mobileUserData'] != null) {
+            final userData = mobileUserData['mobileUserData'] as Map<String, dynamic>;
+            final customerName = userData['customerName'] as String?;
+            if (customerName != null && customerName.isNotEmpty) {
+              await _secureStorage.write(
+                key: AppConstants.customerName,
+                value: customerName,
+              );
+            }
+          }
+        } catch (e) {
+          debugPrint('Failed to get mobile user data: $e');
+        }
+
+        // User is authenticated - navigate to home
+        emit(const AuthAuthenticated());
+      } else {
+        // Handle keystore incident (responseType == 2)
+        if (signInResponse.responseInfo.responseType == 2) {
+          try {
+            final incidentRequestInfo = await _requestBuilder.buildRequestInfo(
+              mobileUser: mobileUser,
+            );
+            await _authRepository.reportKeystoreIncident(
+              requestInfo: incidentRequestInfo,
+              incidentType: 1, // OpenFaultAttempt
+              incidentCount: 0,
+            );
+          } catch (e) {
+            debugPrint('Failed to report keystore incident: $e');
+          }
+        }
+
+        emit(AuthError(
+          signInResponse.responseInfo.responseMessage ??
+              signInResponse.responseInfo.errorMessage ??
+              'Giriş uğursuz oldu',
+        ));
+      }
+    } catch (e) {
+      emit(AuthError(e.toString()));
+    }
+  }
+
+  Future<void> _onVerifyBiometric(
+    VerifyBiometricEvent event,
+    Emitter<AuthState> emit,
+  ) async {
+    emit(const AuthLoading());
+    try {
+      // Get stored credentials
+      final username = await _secureStorage.read(key: AppConstants.username);
+      final passwordHash = await _secureStorage.read(key: AppConstants.passwordHash);
+      final signInTypeStr = await _secureStorage.read(key: AppConstants.signInType);
+
+      if (username == null ||
+          passwordHash == null ||
+          signInTypeStr == null) {
+        emit(const AuthError('Missing stored credentials'));
+        return;
+      }
+
+      // Biometric authentication successful - proceed with sign in (skip PIN verification)
       final signInType = int.parse(signInTypeStr);
       final mobileUser = MobileUser(
         username: username,

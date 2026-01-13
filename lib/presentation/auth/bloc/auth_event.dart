@@ -166,3 +166,7 @@ class VerifyPinEvent extends AuthEvent {
   List<Object?> get props => [pin];
 }
 
+
+class VerifyBiometricEvent extends AuthEvent {
+  const VerifyBiometricEvent();
+}
