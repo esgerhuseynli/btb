@@ -111,7 +111,7 @@ class AppLocalizationsAz extends AppLocalizations {
   String get passwordRequired => 'Şifrə tələb olunur';
 
   @override
-  String get passwordMinLength => 'Şifrə 8 simvol olmalıdır';
+  String get passwordMinLength => 'Şifrə 8-16 simvol arasında olmalıdır';
 
   @override
   String get pleaseConfirmPassword => 'Zəhmət olmasa şifrənizi təsdiq edin';
@@ -193,4 +193,94 @@ class AppLocalizationsAz extends AppLocalizations {
   @override
   String get errorServiceUnavailable =>
       'Xidmət müvəqqəti olaraq mövcud deyil. Zəhmət olmasa daha sonra yenidən cəhd edin.';
+
+  @override
+  String get enterSmsCode => 'SMS kodunu daxil edin';
+
+  @override
+  String get weSentCodeTo => '6 rəqəmli kodu göndərdik ';
+
+  @override
+  String get enterItToContinue => '. Davam etmək üçün daxil edin';
+
+  @override
+  String get enterVerificationCode => 'Təsdiq kodunu daxil edin';
+
+  @override
+  String get resendOtp => 'OTP-ni yenidən göndər';
+
+  @override
+  String get verify => 'Təsdiq et';
+
+  @override
+  String get otpResentSuccessfully => 'OTP uğurla yenidən göndərildi';
+
+  @override
+  String get otpSentSuccessfully => 'OTP uğurla göndərildi';
+
+  @override
+  String get simaSignIn => 'SIMA ilə daxil ol';
+
+  @override
+  String get finCode => 'FIN kodu';
+
+  @override
+  String get dateOfBirth => 'Doğum tarixi';
+
+  @override
+  String get dateOfBirthHint => 'GG/AA/İİİİ';
+
+  @override
+  String get yourBalance => 'Balansınız';
+
+  @override
+  String get addMoney => 'Pul əlavə et';
+
+  @override
+  String get transfer => 'Köçürmə';
+
+  @override
+  String get payMoney => 'Ödəniş et';
+
+  @override
+  String get payments => 'Ödənişlər';
+
+  @override
+  String get statement => 'Hesabat';
+
+  @override
+  String get transactions => 'Əməliyyatlar';
+
+  @override
+  String get seeAll => 'Hamısına bax';
+
+  @override
+  String get today => 'Bu gün';
+
+  @override
+  String get groceryShopping => 'Məişət alış-verişi';
+
+  @override
+  String get foodDining => 'Yemək';
+
+  @override
+  String get creditCardPayment => 'Kredit kartı ödənişi';
+
+  @override
+  String get movie => 'Kino';
+
+  @override
+  String get moneyReceived => 'Pul alındı';
+
+  @override
+  String get shopping => 'Alış-veriş';
+
+  @override
+  String get transferTransaction => 'Köçürmə';
+
+  @override
+  String get currentAccountUsd => 'Cari USD';
+
+  @override
+  String get welcomeBack => 'Xoş gəlmisiniz!';
 }

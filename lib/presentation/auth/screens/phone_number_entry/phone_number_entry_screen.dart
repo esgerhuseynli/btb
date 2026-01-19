@@ -4,36 +4,48 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/constants/app_dimensions.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../core/widgets/primary_action_button.dart';
 import '../../bloc/auth_bloc.dart';
 import '../../bloc/auth_state.dart';
 
-// ---- FORMATTER ----
+// ---- FORMATTER (keeps +994, correct spacing, prevents wrong duplication) ----
 class AzPhoneFormatter extends TextInputFormatter {
+  static const prefix = '+994 ';
+
   @override
   TextEditingValue formatEditUpdate(
-      TextEditingValue oldValue,
-      TextEditingValue newValue,
-      ) {
-    final digits = newValue.text.replaceAll(RegExp(r'\D'), '');
+      TextEditingValue oldValue, TextEditingValue newValue) {
+    String newText = newValue.text;
 
-    final buffer = StringBuffer();
-
-    for (int i = 0; i < digits.length && i < 9; i++) {
-      buffer.write(digits[i]);
-
-      if (i == 1 || i == 4 || i == 6) {
-        buffer.write(' ');
-      }
+    // Ensure prefix exists
+    if (!newText.startsWith(prefix)) {
+      newText = prefix;
     }
 
-    final formatted = buffer.toString().trimRight();
+    // Extract only digits after prefix
+    final digits = newText.substring(prefix.length).replaceAll(RegExp(r'\D'), '');
+
+    // Build formatted string with correct spaces
+    final buffer = StringBuffer();
+    for (int i = 0; i < digits.length && i < 9; i++) {
+      buffer.write(digits[i]);
+      if (i == 1 || i == 4 || i == 6) buffer.write(' ');
+    }
+
+    final formatted = prefix + buffer.toString().trimRight();
+
+    // Prevent Flutter from looping
+    if (formatted == oldValue.text) return oldValue;
+
+    // Maintain cursor position
+    int cursorPosition = formatted.length;
 
     return TextEditingValue(
       text: formatted,
-      selection: TextSelection.collapsed(offset: formatted.length),
+      selection: TextSelection.collapsed(offset: cursorPosition),
     );
   }
 }
@@ -46,19 +58,40 @@ class PhoneInputScreen extends StatefulWidget {
   State<PhoneInputScreen> createState() => _PhoneInputScreenState();
 }
 
-class _PhoneInputScreenState extends State<PhoneInputScreen> {
+class _PhoneInputScreenState extends State<PhoneInputScreen>
+    with SingleTickerProviderStateMixin {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _phoneController =
+  TextEditingController(text: AzPhoneFormatter.prefix);
   final FocusNode _phoneFocusNode = FocusNode();
   final ValueNotifier<bool> _isButtonEnabled = ValueNotifier(false);
+
+  late AnimationController _blinkController;
+  late Animation<double> _blinkAnimation;
 
   @override
   void initState() {
     super.initState();
 
+    _blinkController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 900),
+    )..repeat(reverse: true);
+
+    _blinkAnimation = Tween<double>(begin: 0.2, end: 1).animate(
+      CurvedAnimation(parent: _blinkController, curve: Curves.easeInOut),
+    );
+
     _phoneController.addListener(() {
-      final cleaned = _phoneController.text.replaceAll(RegExp(r'\D'), '');
+      final cleaned = _phoneController.text
+          .replaceAll(AzPhoneFormatter.prefix, '')
+          .replaceAll(RegExp(r'\D'), '');
       _isButtonEnabled.value = cleaned.length == 9;
+    });
+
+    // Request focus after first frame to ensure keyboard opens
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _phoneFocusNode.requestFocus();
     });
   }
 
@@ -67,16 +100,17 @@ class _PhoneInputScreenState extends State<PhoneInputScreen> {
     _phoneController.dispose();
     _phoneFocusNode.dispose();
     _isButtonEnabled.dispose();
+    _blinkController.dispose();
     super.dispose();
   }
 
   void _handleContinue() {
-    if (!_formKey.currentState!.validate()) {
-      return;
-    }
+    if (!(_formKey.currentState?.validate() ?? false)) return;
 
-    final phone = _phoneController.text.replaceAll(RegExp(r'\D'), '');
-    // Navigate to sign-in selection screen with phone number
+    final phone = _phoneController.text
+        .replaceAll(AzPhoneFormatter.prefix, '')
+        .replaceAll(RegExp(r'\D'), '');
+
     context.go('/sign-in-selection?phone=$phone');
   }
 
@@ -93,86 +127,87 @@ class _PhoneInputScreenState extends State<PhoneInputScreen> {
       child: Scaffold(
         backgroundColor: AppTheme.mainBackground,
         resizeToAvoidBottomInset: true,
-        body: GestureDetector(
-          behavior: HitTestBehavior.opaque,
-          onTap: () {
-            FocusManager.instance.primaryFocus?.unfocus();
-          },
-          child: SafeArea(
-            child: Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SizedBox(height: 50.h),
+        body: SafeArea(
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(height: 50.h),
 
-                  // ---- TITLE ----
-                  Text(
-                    'Enter phone number',
-                    style: AppTextStyles.screenTitle(context),
-                    textAlign: TextAlign.center,
-                  ),
+                Text(
+                  'Enter phone number',
+                  style: AppTextStyles.screenTitle(context),
+                  textAlign: TextAlign.center,
+                ),
 
-                  SizedBox(height: 40.h),
-                  // ---- PHONE INPUT ROW ----
-                  Padding(
-                    padding: const EdgeInsets.only(left: 48.0, right: 48.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          '+994 ',
-                          style: AppTextStyles.phoneNumberDisplay(context),
-                        ),
+                SizedBox(height: 40.h),
 
-                        // ⬇️ BURASI ƏSAS DÜZƏLİŞ
-                        Flexible(
-                          child: TextFormField(
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 48),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Stack(
+                        alignment: Alignment.bottomLeft,
+                        children: [
+                          TextFormField(
+                            textAlign: TextAlign.center,
+                            textAlignVertical: TextAlignVertical.center,
                             controller: _phoneController,
                             focusNode: _phoneFocusNode,
                             autofocus: true,
+                            enabled: true,
                             keyboardType: TextInputType.number,
                             textInputAction: TextInputAction.done,
                             showCursor: true,
-                            inputFormatters: [
-                              FilteringTextInputFormatter.digitsOnly,
-                              AzPhoneFormatter(),
-                            ],
+                            maxLines: 1,
+                            scrollPhysics: const BouncingScrollPhysics(),
+                            inputFormatters: [AzPhoneFormatter()],
                             style: AppTextStyles.phoneNumberInput(context),
                             decoration: const InputDecoration(
                               border: InputBorder.none,
                               enabledBorder: InputBorder.none,
                               focusedBorder: InputBorder.none,
-                              fillColor: Colors.transparent,
                               isDense: true,
+                              filled: false,
+                              contentPadding: EdgeInsets.only(bottom: 12),
                             ),
-                            onFieldSubmitted: (_) {
-                              FocusManager.instance.primaryFocus?.unfocus();
-                            },
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Telefon nömrəsi daxil edin';
+                            onFieldSubmitted: (_) =>
+                                FocusManager.instance.primaryFocus?.unfocus(),
+                            onChanged: (value) {
+                              // Ensure field stays focused for input
+                              if (!_phoneFocusNode.hasFocus) {
+                                _phoneFocusNode.requestFocus();
                               }
-                              final cleaned = value.replaceAll(RegExp(r'\D'), '');
-                              if (cleaned.length != 9) {
-                                return 'Telefon nömrəsi düzgün deyil';
-                              }
-                              return null;
                             },
-                          ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Telefon nömrəsi daxil edin';
+                                }
+                                final cleaned = value
+                                    .replaceAll(AzPhoneFormatter.prefix, '')
+                                    .replaceAll(RegExp(r'\D'), '');
+                                if (cleaned.length != 9) {
+                                  return 'Telefon nömrəsi düzgün deyil';
+                                }
+                                return null;
+                              },
+                            ),
+
+                          ],
                         ),
+
                       ],
                     ),
                   ),
 
                   const Spacer(),
 
-                  // ---- DISCLAIMER ----
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16.w),
+                    padding: AppDimensions.paddingHorizontal8,
                     child: Text(
-                      '"By pressing "Continue" I accept the BTB Bank Licence Agreement conditions"',
+                      'By pressing "Continue" I accept the BTB Bank Licence Agreement conditions',
                       style: AppTextStyles.buttonTitle(context),
                       textAlign: TextAlign.center,
                     ),
@@ -180,7 +215,6 @@ class _PhoneInputScreenState extends State<PhoneInputScreen> {
 
                   SizedBox(height: 16.h),
 
-                  // ---- BUTTON ----
                   ValueListenableBuilder<bool>(
                     valueListenable: _isButtonEnabled,
                     builder: (context, isEnabled, child) {
@@ -201,7 +235,18 @@ class _PhoneInputScreenState extends State<PhoneInputScreen> {
             ),
           ),
         ),
-      ),
     );
+  }
+
+  double _calculateCursorOffset(BuildContext context) {
+    final text = _phoneController.text;
+    final textStyle = AppTextStyles.phoneNumberInput(context);
+    final tp = TextPainter(
+      text: TextSpan(text: text, style: textStyle),
+      maxLines: 1,
+      textDirection: TextDirection.ltr,
+    )..layout();
+
+    return tp.width + 2;
   }
 }

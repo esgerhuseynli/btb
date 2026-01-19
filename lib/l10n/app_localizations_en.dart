@@ -110,7 +110,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get passwordRequired => 'Password is required';
 
   @override
-  String get passwordMinLength => 'Password must be 8 characters';
+  String get passwordMinLength =>
+      'Password must be between 8 and 16 characters';
 
   @override
   String get pleaseConfirmPassword => 'Please confirm your password';
@@ -186,4 +187,94 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get errorServiceUnavailable =>
       'Service is temporarily unavailable. Please try again later.';
+
+  @override
+  String get enterSmsCode => 'Enter the SMS code';
+
+  @override
+  String get weSentCodeTo => 'We sent a 6-digit code to ';
+
+  @override
+  String get enterItToContinue => '. Enter it to continue';
+
+  @override
+  String get enterVerificationCode => 'Enter the verification code';
+
+  @override
+  String get resendOtp => 'Resend OTP';
+
+  @override
+  String get verify => 'Verify';
+
+  @override
+  String get otpResentSuccessfully => 'OTP resent successfully';
+
+  @override
+  String get otpSentSuccessfully => 'OTP sent successfully';
+
+  @override
+  String get simaSignIn => 'SIMA Sign In';
+
+  @override
+  String get finCode => 'Fin code';
+
+  @override
+  String get dateOfBirth => 'Date of birth';
+
+  @override
+  String get dateOfBirthHint => 'DD/MM/YYYY';
+
+  @override
+  String get yourBalance => 'Your Balance';
+
+  @override
+  String get addMoney => 'Add money';
+
+  @override
+  String get transfer => 'Transfer';
+
+  @override
+  String get payMoney => 'Pay money';
+
+  @override
+  String get payments => 'Payments';
+
+  @override
+  String get statement => 'Statement';
+
+  @override
+  String get transactions => 'Transactions';
+
+  @override
+  String get seeAll => 'See all';
+
+  @override
+  String get today => 'Today';
+
+  @override
+  String get groceryShopping => 'Grocery shopping';
+
+  @override
+  String get foodDining => 'Food dining';
+
+  @override
+  String get creditCardPayment => 'Credit card payment';
+
+  @override
+  String get movie => 'Movie';
+
+  @override
+  String get moneyReceived => 'Money received';
+
+  @override
+  String get shopping => 'Shopping';
+
+  @override
+  String get transferTransaction => 'Transfer';
+
+  @override
+  String get currentAccountUsd => 'Cari USD';
+
+  @override
+  String get welcomeBack => 'Welcome back!';
 }

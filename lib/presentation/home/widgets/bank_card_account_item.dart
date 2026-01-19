@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../data/models/bank_card.dart';
 import '../../../data/models/bank_account.dart';
@@ -80,101 +81,159 @@ class BankCardAccountItem extends StatelessWidget {
     final expireDate = isCard ? (item as BankCard).cardExpiryDate : null;
     final cardType = isCard ? (item as BankCard).bankCardType : null;
 
+    // Get gradient colors - all cards use red gradient, accounts use green
+    Gradient? gradient;
+    if (isCard) {
+      // All cards use the same red gradient design
+      gradient = const LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: [
+          Color(0xFF424242), // Dark gray
+          Color(0xFFEE3F3E), // Red
+        ],
+      );
+    } else if (cardColor == 2) {
+      // Green gradient for accounts
+      gradient = const LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: [
+          Color(0xFF61A778), // Green
+          Color(0xFF385D43), // Dark green
+        ],
+      );
+    }
+
     return Container(
-      width: 250,
-      height: 150,
-      padding: const EdgeInsets.all(12),
+      width: 276.w,
+      height: 157.395.h,
+      padding: EdgeInsets.symmetric(
+        horizontal: 18.649.w,
+        vertical: 25.362.h,
+      ),
       decoration: BoxDecoration(
-        color: backgroundColor,
-        borderRadius: BorderRadius.circular(8),
+        gradient: gradient ?? LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [backgroundColor, backgroundColor],
+        ),
+        borderRadius: BorderRadius.circular(12.r),
       ),
       child: Stack(
         children: [
-          // Card name at top left
+          // BTB BANK text at top left
           Positioned(
             top: 0,
             left: 0,
-            right: 40,
             child: Text(
-              altName,
-              style: const TextStyle(
+              'BTB BANK',
+              style: TextStyle(
                 color: Colors.white,
-                fontSize: 15,
-                fontWeight: FontWeight.normal,
+                fontSize: 9.82.sp,
+                fontWeight: FontWeight.w600,
+                fontFamily: 'Cormorant Garamond',
+                letterSpacing: 0,
               ),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
             ),
           ),
-          // BTB logo at top right
+          // WiFi icon at top right (rotated ~86.5 degrees)
           Positioned(
             top: 0,
             right: 0,
-            child: Image.asset(
-              'assets/images/ic_btb.png',
-              width: 40,
-              height: 20,
-              errorBuilder: (context, error, stackTrace) {
-                return const Icon(Icons.account_balance, color: Colors.white, size: 20);
-              },
+            child: Transform.rotate(
+              angle: 1.51, // ~86.5 degrees in radians
+              child: Icon(
+                Icons.wifi,
+                size: 26.697.sp,
+                color: Colors.white,
+              ),
             ),
           ),
-          // Balance centered
+          // Card number in the middle (for cards)
+          if (isCard)
+            Positioned(
+              left: 0,
+              top: 59.78.h, // Position from top
+              child: Row(
+                children: [
+                  Text(
+                    formattedNumber.split(' ')[0], // First 4 digits
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 11.94.sp,
+                      fontWeight: FontWeight.normal,
+                      fontFamily: 'Poppins',
+                      letterSpacing: 0,
+                    ),
+                  ),
+                  SizedBox(width: 8.w),
+                  Text(
+                    formattedNumber.split(' ').length > 3 
+                        ? formattedNumber.split(' ')[3] // Last 4 digits
+                        : '',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 11.94.sp,
+                      fontWeight: FontWeight.normal,
+                      fontFamily: 'Poppins',
+                      letterSpacing: 0,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          // Balance at bottom
           Positioned(
-            bottom: 30,
+            bottom: 0,
             left: 0,
-            right: 0,
             child: Text(
               _formatBalance(balance, currency),
-              style: const TextStyle(
+              style: TextStyle(
                 color: Colors.white,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
+                fontSize: 14.92.sp,
+                fontWeight: FontWeight.w600,
+                fontFamily: 'Poppins',
+                letterSpacing: 0,
               ),
-              textAlign: TextAlign.center,
             ),
           ),
-          // Card number
-          Positioned(
-            bottom: 50,
-            left: 0,
-            right: 0,
-            child: Text(
-              formattedNumber,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 11,
-              ),
-              textAlign: TextAlign.left,
-            ),
-          ),
-          // Expire date (only for cards)
-          if (isCard && expireDate != null)
+          // Account number (for accounts, not cards)
+          if (!isCard)
             Positioned(
-              bottom: 8,
               left: 0,
+              bottom: 0,
               child: Text(
-                expireDate,
-                style: const TextStyle(
+                number,
+                style: TextStyle(
                   color: Colors.white,
-                  fontSize: 9,
+                  fontSize: 11.19.sp,
+                  fontWeight: FontWeight.normal,
+                  fontFamily: 'SF Pro',
+                  letterSpacing: 0,
                 ),
               ),
             ),
-          // Card type icon (Visa/Mastercard) at bottom right
-          if (isCard && cardType != null)
+          // VISA logo at bottom right (for cards)
+          if (isCard && cardType == 1)
             Positioned(
               bottom: 0,
               right: 0,
-              child: Image.asset(
-                cardType == 1
-                    ? 'assets/images/ic_visa.png'
-                    : 'assets/images/ic_mastercard.png',
-                width: 40,
-                height: 20,
-                errorBuilder: (context, error, stackTrace) {
-                  return const SizedBox.shrink();
-                },
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(4.r),
+                ),
+                child: Text(
+                  'VISA',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 10.sp,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 1,
+                  ),
+                ),
               ),
             ),
         ],

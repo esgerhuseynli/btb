@@ -18,6 +18,7 @@ class AppTheme {
   static const Color green = Color(0xFF17CF00);
   static const Color blue = Color(0xFF001A91);
   static const Color purple = Color(0xFF9E00BB);
+  static const Color yellow = Color(0xFFFFC107);
   static const Color borderColor = Color(0xFFF5F5F5);
   static const Color bottomBarMenuItemTint = Color(0xFF848484);
 
@@ -53,6 +54,22 @@ class AppTheme {
 
   static const Color registeredOrder = Color(0xFF039BE5);
   static const Color successOrder = Color(0xFF4CAF50);
+
+  // Home Page Colors
+  static const Color homeBackground = Color(0xFFFAFAFA);
+  static const Color iconSecondary = Color(0xFF5C5757);
+  static const Color cardRedGradientStart = Color(0xFFCE3333);
+  static const Color cardRedGradientEnd = Color(0xFFB61B1F);
+  static const Color cardPurpleGradientStart = Color(0xFF4E449F);
+  static const Color cardPurpleGradientEnd = Color(0xFF352D6C);
+  static const Color buttonGradientEnd = Color(0xFFF4F4F4);
+  static const Color borderLightGray = Color(0xFFE6E6E6);
+  static const Color textSecondaryGray = Color(0xFF8F9395);
+  static const Color textDateGray = Color(0xFF516166);
+  static const Color transactionIconBackground = Color(0xFFFFF3F3);
+  static const Color transactionMerchantText = Color(0xFF071018);
+  static const Color transactionPositive = Color(0xFF2FBF71);
+  static const Color transactionNegative = Color(0xFFC4161C);
 
   static ThemeData get lightTheme {
     return ThemeData(

@@ -127,7 +127,10 @@ class _ApiService implements ApiService {
   Future<SignInResponse> signIn(SignInRequest request) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
+    final _headers = <String, dynamic>{
+      r'x-api-key': 'MOBILE_SUPER_SECRET_KEY_1215489789744153153'
+    };
+    _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(request.toJson());
     final _options = _setStreamType<SignInResponse>(Options(
@@ -137,7 +140,7 @@ class _ApiService implements ApiService {
     )
         .compose(
           _dio.options,
-          'api/SingInUp/SignIn',
+          'http://94.20.61.252:8087/api/SingInUp/SignInNew',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -234,7 +237,41 @@ class _ApiService implements ApiService {
   }
 
   @override
-  Future<ApiResponse<EmptyResponse>> forgotPassword(
+  Future<CardSendResponse> forgotPassword(Map<String, dynamic> request) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(request);
+    final _options = _setStreamType<CardSendResponse>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          'http://94.20.61.252:8087/api/SingInUp/UserForgotPassword',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late CardSendResponse _value;
+    try {
+      _value = CardSendResponse.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<ApiResponse<EmptyResponse>> changeForgotPassword(
       Map<String, dynamic> request) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -248,7 +285,7 @@ class _ApiService implements ApiService {
     )
         .compose(
           _dio.options,
-          'api/SingInUp/ForgotPassword ',
+          'http://94.20.61.252:8087/api/SingInUp/SubmitUserForgotPassword',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -276,7 +313,10 @@ class _ApiService implements ApiService {
       ChangeKeystoreRequest request) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
+    final _headers = <String, dynamic>{
+      r'x-api-key': 'MOBILE_SUPER_SECRET_KEY_1215489789744153153'
+    };
+    _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(request.toJson());
     final _options = _setStreamType<ChangeKeystoreResponse>(Options(
@@ -286,7 +326,7 @@ class _ApiService implements ApiService {
     )
         .compose(
           _dio.options,
-          'api/MobileUser/ChangeKeystore',
+          'http://94.20.61.252:8087/api/MobileUser/ChangeKeystore',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -311,7 +351,10 @@ class _ApiService implements ApiService {
       FcmTokenRequest request) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
+    final _headers = <String, dynamic>{
+      r'x-api-key': 'MOBILE_SUPER_SECRET_KEY_1215489789744153153'
+    };
+    _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(request.toJson());
     final _options = _setStreamType<ApiResponse<EmptyResponse>>(Options(
@@ -321,7 +364,7 @@ class _ApiService implements ApiService {
     )
         .compose(
           _dio.options,
-          'api/MobileUser/ChangeDevicePushInfoToken',
+          'http://94.20.61.252:8087/api/MobileUser/ChangeDevicePushInfoToken',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -345,10 +388,87 @@ class _ApiService implements ApiService {
   }
 
   @override
-  Future<BankCardsResponse> listBankCards(Map<String, dynamic> request) async {
+  Future<ApiResponse<dynamic>> sendOtp(OtpRequest request) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(request.toJson());
+    final _options = _setStreamType<ApiResponse<dynamic>>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          'http://94.20.61.252:8088/api/Otp/SendOtpMobile',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late ApiResponse<dynamic> _value;
+    try {
+      _value = ApiResponse<dynamic>.fromJson(
+        _result.data!,
+        (json) => json as dynamic,
+      );
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<ApiResponse<dynamic>> verifyOtp(OtpVerifyRequest request) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(request.toJson());
+    final _options = _setStreamType<ApiResponse<dynamic>>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          'http://94.20.61.252:8088/api/Otp/VerifyOtp',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late ApiResponse<dynamic> _value;
+    try {
+      _value = ApiResponse<dynamic>.fromJson(
+        _result.data!,
+        (json) => json as dynamic,
+      );
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<BankCardsResponse> listBankCards(Map<String, dynamic> request) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{
+      r'x-api-key': 'MOBILE_SUPER_SECRET_KEY_1215489789744153153'
+    };
+    _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(request);
     final _options = _setStreamType<BankCardsResponse>(Options(
@@ -358,7 +478,7 @@ class _ApiService implements ApiService {
     )
         .compose(
           _dio.options,
-          'api/BankAccounts/ListBankCards',
+          'http://94.20.61.252:8087/api/BankAccounts/ListBankCards',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -383,7 +503,10 @@ class _ApiService implements ApiService {
       Map<String, dynamic> request) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
+    final _headers = <String, dynamic>{
+      r'x-api-key': 'MOBILE_SUPER_SECRET_KEY_1215489789744153153'
+    };
+    _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(request);
     final _options = _setStreamType<BankAccountsResponse>(Options(
@@ -490,11 +613,55 @@ class _ApiService implements ApiService {
   }
 
   @override
+  Future<ApiResponse<dynamic>> listCardStatements(
+      Map<String, dynamic> request) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{
+      r'x-api-key': 'MOBILE_SUPER_SECRET_KEY_1215489789744153153'
+    };
+    _headers.removeWhere((k, v) => v == null);
+    final _data = <String, dynamic>{};
+    _data.addAll(request);
+    final _options = _setStreamType<ApiResponse<dynamic>>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          'api/OperationsBankCards/ListBankCardStatement',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late ApiResponse<dynamic> _value;
+    try {
+      _value = ApiResponse<dynamic>.fromJson(
+        _result.data!,
+        (json) => json as dynamic,
+      );
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
   Future<ApiResponse<dynamic>> getMobileUserData(
       Map<String, dynamic> request) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
+    final _headers = <String, dynamic>{
+      r'x-api-key': 'MOBILE_SUPER_SECRET_KEY_1215489789744153153'
+    };
+    _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(request);
     final _options = _setStreamType<ApiResponse<dynamic>>(Options(

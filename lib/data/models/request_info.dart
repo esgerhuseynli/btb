@@ -10,6 +10,12 @@ class RequestInfo {
   @JsonKey(name: 'MobileUser')
   final MobileUser? mobileUser;
 
+  @JsonKey(name: 'phoneNumber', includeIfNull: false)
+  final String? phoneNumber;
+
+  @JsonKey(name: 'pinCode', includeIfNull: false)
+  final String? pinCode;
+
   @JsonKey(name: 'DeviceInfo')
   final DeviceInfo deviceInfo;
 
@@ -21,6 +27,8 @@ class RequestInfo {
 
   RequestInfo({
     this.mobileUser,
+    this.phoneNumber,
+    this.pinCode,
     required this.deviceInfo,
     required this.appInfo,
     required this.language,

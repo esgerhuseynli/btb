@@ -301,7 +301,7 @@ abstract class AppLocalizations {
   /// No description provided for @passwordMinLength.
   ///
   /// In en, this message translates to:
-  /// **'Password must be 8 characters'**
+  /// **'Password must be between 8 and 16 characters'**
   String get passwordMinLength;
 
   /// No description provided for @pleaseConfirmPassword.
@@ -435,6 +435,186 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Service is temporarily unavailable. Please try again later.'**
   String get errorServiceUnavailable;
+
+  /// Title for SMS verification screen
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the SMS code'**
+  String get enterSmsCode;
+
+  /// Message indicating SMS code was sent to phone number
+  ///
+  /// In en, this message translates to:
+  /// **'We sent a 6-digit code to '**
+  String get weSentCodeTo;
+
+  /// Instruction to enter the code to continue
+  ///
+  /// In en, this message translates to:
+  /// **'. Enter it to continue'**
+  String get enterItToContinue;
+
+  /// Label for verification code input field
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the verification code'**
+  String get enterVerificationCode;
+
+  /// Button text to resend OTP code
+  ///
+  /// In en, this message translates to:
+  /// **'Resend OTP'**
+  String get resendOtp;
+
+  /// Button text to verify OTP code
+  ///
+  /// In en, this message translates to:
+  /// **'Verify'**
+  String get verify;
+
+  /// Success message when OTP is resent
+  ///
+  /// In en, this message translates to:
+  /// **'OTP resent successfully'**
+  String get otpResentSuccessfully;
+
+  /// Success message when OTP is sent
+  ///
+  /// In en, this message translates to:
+  /// **'OTP sent successfully'**
+  String get otpSentSuccessfully;
+
+  /// Text for SIMA sign in flow
+  ///
+  /// In en, this message translates to:
+  /// **'SIMA Sign In'**
+  String get simaSignIn;
+
+  /// Label for FIN code input field
+  ///
+  /// In en, this message translates to:
+  /// **'Fin code'**
+  String get finCode;
+
+  /// Label for date of birth input field
+  ///
+  /// In en, this message translates to:
+  /// **'Date of birth'**
+  String get dateOfBirth;
+
+  /// Hint text for date of birth input field
+  ///
+  /// In en, this message translates to:
+  /// **'DD/MM/YYYY'**
+  String get dateOfBirthHint;
+
+  /// Label for user balance section
+  ///
+  /// In en, this message translates to:
+  /// **'Your Balance'**
+  String get yourBalance;
+
+  /// Button label for adding money
+  ///
+  /// In en, this message translates to:
+  /// **'Add money'**
+  String get addMoney;
+
+  /// Button label for transfer action
+  ///
+  /// In en, this message translates to:
+  /// **'Transfer'**
+  String get transfer;
+
+  /// Button label for pay money action
+  ///
+  /// In en, this message translates to:
+  /// **'Pay money'**
+  String get payMoney;
+
+  /// Button label for payments action
+  ///
+  /// In en, this message translates to:
+  /// **'Payments'**
+  String get payments;
+
+  /// Button label for statement action
+  ///
+  /// In en, this message translates to:
+  /// **'Statement'**
+  String get statement;
+
+  /// Title for transactions section
+  ///
+  /// In en, this message translates to:
+  /// **'Transactions'**
+  String get transactions;
+
+  /// Link text to see all transactions
+  ///
+  /// In en, this message translates to:
+  /// **'See all'**
+  String get seeAll;
+
+  /// Label for today's date
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get today;
+
+  /// Transaction category for grocery shopping
+  ///
+  /// In en, this message translates to:
+  /// **'Grocery shopping'**
+  String get groceryShopping;
+
+  /// Transaction category for food dining
+  ///
+  /// In en, this message translates to:
+  /// **'Food dining'**
+  String get foodDining;
+
+  /// Transaction category for credit card payment
+  ///
+  /// In en, this message translates to:
+  /// **'Credit card payment'**
+  String get creditCardPayment;
+
+  /// Transaction category for movie
+  ///
+  /// In en, this message translates to:
+  /// **'Movie'**
+  String get movie;
+
+  /// Transaction category for money received
+  ///
+  /// In en, this message translates to:
+  /// **'Money received'**
+  String get moneyReceived;
+
+  /// Transaction category for shopping
+  ///
+  /// In en, this message translates to:
+  /// **'Shopping'**
+  String get shopping;
+
+  /// Transaction category for transfer
+  ///
+  /// In en, this message translates to:
+  /// **'Transfer'**
+  String get transferTransaction;
+
+  /// Current account USD label
+  ///
+  /// In en, this message translates to:
+  /// **'Cari USD'**
+  String get currentAccountUsd;
+
+  /// Welcome message on homepage
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome back!'**
+  String get welcomeBack;
 }
 
 class _AppLocalizationsDelegate

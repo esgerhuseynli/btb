@@ -8,6 +8,7 @@ import '../../../../core/theme/app_theme.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/localization/app_localizations_ext.dart';
 import '../../../../core/constants/app_dimensions.dart';
+import '../../../../core/constants/password_rules.dart';
 import '../../../../core/utils/phone_utils.dart';
 import '../../../../core/widgets/error_snackbar.dart';
 import '../../../../l10n/app_localizations.dart';
@@ -51,9 +52,10 @@ class _PasswordEntryScreenState extends State<PasswordEntryScreen> {
     super.dispose();
   }
 
-  /// Validates password length (8-16 characters)
+  /// Validates password length using PasswordRules
   bool _isPasswordValid(String password) {
-    return password.length >= 8 && password.length <= 16;
+    return password.length >= PasswordRules.minLength &&
+        password.length <= PasswordRules.maxLength;
   }
 
   void _onPasswordChanged() {
@@ -126,10 +128,24 @@ class _PasswordEntryScreenState extends State<PasswordEntryScreen> {
             ),
           ),
         ),
-        AppDimensions.sizedBox8,
-        // Helper text placeholder
+        AppDimensions.sizedBox4,
+        // Forgot password link
         Padding(
           padding: AppDimensions.paddingLeft8,
+          child: GestureDetector(
+            onTap: () {
+              final phone = widget.phone ?? '';
+              if (phone.isNotEmpty) {
+                context.push('/forgot-password?phone=$phone');
+              } else {
+                context.push('/forgot-password');
+              }
+            },
+            child: Text(
+              context.l10n.forgotPassword,
+              style: AppTextStyles.caption(context),
+            ),
+          ),
         ),
       ],
     );
@@ -148,7 +164,7 @@ class _PasswordEntryScreenState extends State<PasswordEntryScreen> {
         obscureText: _obscureText,
         autofocus: true,
         inputFormatters: [
-          LengthLimitingTextInputFormatter(16),
+          LengthLimitingTextInputFormatter(PasswordRules.maxLength),
         ],
         style: AppTextStyles.inputText(context, color: AppTheme.textDark),
         decoration: InputDecoration(
@@ -180,7 +196,7 @@ class _PasswordEntryScreenState extends State<PasswordEntryScreen> {
             width: 24.w,
             height: 24.h,
             colorFilter: const ColorFilter.mode(
-              Color(0xFFC4C4C4),
+              Color(0xFF6B6B6B),
               BlendMode.srcIn,
             ),
           ),
@@ -221,12 +237,9 @@ class _PasswordEntryScreenState extends State<PasswordEntryScreen> {
         if (state is AuthAuthenticated) {
           context.go('/home');
         } else if (state is OtpSent) {
-          // Navigate to SMS verification screen after OTP is sent
+          // Navigate to OTP verification screen when OTP is sent
           context.push(
-            '/sms-verification',
-            extra: {
-              'phone': widget.phone,
-            },
+            '/otp-verification?phoneNumber=${state.phoneNumber}&flowType=regularSignIn',
           );
         } else if (state is PinSetupRequired) {
           // Navigate to PIN setup screen
@@ -258,7 +271,7 @@ class _PasswordEntryScreenState extends State<PasswordEntryScreen> {
                 child: LayoutBuilder(
                   builder: (context, constraints) {
                     return SingleChildScrollView(
-                      padding: AppDimensions.paddingHorizontal24,
+                      padding: AppDimensions.paddingHorizontal12,
                       child: ConstrainedBox(
                         constraints: BoxConstraints(
                           minHeight: constraints.maxHeight,
@@ -267,7 +280,7 @@ class _PasswordEntryScreenState extends State<PasswordEntryScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              AppDimensions.sizedBox40,
+                              // AppDimensions.sizedBox4,
                               _buildTitle(context),
                               AppDimensions.sizedBox40,
                               _buildPasswordField(context),
@@ -377,10 +390,10 @@ class _LicenseAgreementText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: AppDimensions.paddingHorizontal16,
+      padding: EdgeInsets.only(right: 4, left: 4),
       child: Text(
         l10n.licenseAgreement,
-        style: AppTextStyles.buttonTitle(context, color: AppTheme.textDark),
+        style: AppTextStyles.buttonTitle(context),
         textAlign: TextAlign.center,
       ),
     );

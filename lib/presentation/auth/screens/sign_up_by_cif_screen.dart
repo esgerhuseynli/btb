@@ -10,6 +10,7 @@ import '../../../core/constants/app_constants.dart';
 import '../../core/widgets/app_button.dart';
 import '../../core/widgets/app_text_field.dart';
 import '../../core/widgets/app_app_bar.dart';
+import '../../core/widgets/back_button_widget.dart';
 import '../bloc/auth_bloc.dart';
 import '../bloc/auth_event.dart';
 import '../bloc/auth_state.dart';
@@ -55,7 +56,7 @@ class _SignUpByCifScreenState extends State<SignUpByCifScreen> {
         _dateOfBirthController.text = DateFormat('dd-MM-yyyy').format(picked);
       });
       // Auto-submit when date is selected (like Android)
-      if (_formKey.currentState!.validate()) {
+      if (_formKey.currentState?.validate() ?? false) {
         _handleSubmit();
       }
     }
@@ -80,7 +81,7 @@ class _SignUpByCifScreenState extends State<SignUpByCifScreen> {
   }
 
   Future<void> _handleSubmit() async {
-    if (!_formKey.currentState!.validate() || !_isFormValid()) {
+    if (!(_formKey.currentState?.validate() ?? false) || !_isFormValid()) {
       return;
     }
 
@@ -105,7 +106,7 @@ class _SignUpByCifScreenState extends State<SignUpByCifScreen> {
   Future<void> _openPrivacyPolicy() async {
     // Get current language
     final prefs = await SharedPreferences.getInstance();
-    final langIndex = prefs.getInt(AppConstants.appLanguage) ?? 0;
+    final langIndex = prefs.getInt(AppConstants.appLanguage) ?? 1;
     final languages = ['az', 'en', 'ru'];
     final lang = languages[langIndex];
     
@@ -119,16 +120,13 @@ class _SignUpByCifScreenState extends State<SignUpByCifScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.mainBackground,
-      appBar: AppAppBar(
-        title: 'Qeydiyyat',
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => context.pop(),
-        ),
-      ),
       body: SafeArea(
-        child: BlocListener<AuthBloc, AuthState>(
-          listener: (context, state) async {
+        child: Column(
+          children: [
+            const BackButtonWidget(),
+            Expanded(
+              child: BlocListener<AuthBloc, AuthState>(
+                listener: (context, state) async {
             if (state is AuthError) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
@@ -263,6 +261,9 @@ class _SignUpByCifScreenState extends State<SignUpByCifScreen> {
               );
             },
           ),
+                ),
+            ),
+          ],
         ),
       ),
     );

@@ -10,6 +10,7 @@ import '../../core/widgets/app_button.dart';
 import '../../core/widgets/app_text_field.dart';
 import '../../core/widgets/app_app_bar.dart';
 import '../../core/widgets/phone_text_field.dart';
+import '../../core/widgets/back_button_widget.dart';
 import '../bloc/auth_bloc.dart';
 import '../bloc/auth_event.dart';
 import '../bloc/auth_state.dart';
@@ -86,7 +87,7 @@ class _SignUpByNumberScreenState extends State<SignUpByNumberScreen> {
   }
 
   void _handleSignUp() {
-    if (!_formKey.currentState!.validate() || !_isFormValid()) {
+    if (!(_formKey.currentState?.validate() ?? false) || !_isFormValid()) {
       return;
     }
 
@@ -117,16 +118,13 @@ class _SignUpByNumberScreenState extends State<SignUpByNumberScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.mainBackground,
-      appBar: AppAppBar(
-        title: 'Qeydiyyat',
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => context.pop(),
-        ),
-      ),
       body: SafeArea(
-        child: BlocListener<AuthBloc, AuthState>(
-          listener: (context, state) {
+        child: Column(
+          children: [
+            const BackButtonWidget(),
+            Expanded(
+              child: BlocListener<AuthBloc, AuthState>(
+                listener: (context, state) {
             if (state is AuthError) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text(state.message)),
@@ -243,6 +241,9 @@ class _SignUpByNumberScreenState extends State<SignUpByNumberScreen> {
               );
             },
           ),
+                ),
+            ),
+          ],
         ),
       ),
     );

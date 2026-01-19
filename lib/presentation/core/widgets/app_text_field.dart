@@ -19,6 +19,8 @@ class AppTextField extends StatelessWidget {
   final Widget? suffixIcon;
   final List<TextInputFormatter>? inputFormatters;
   final TextCapitalization textCapitalization;
+  final FocusNode? focusNode;
+  final TextInputAction? textInputAction;
 
   const AppTextField({
     super.key,
@@ -38,12 +40,15 @@ class AppTextField extends StatelessWidget {
     this.suffixIcon,
     this.inputFormatters,
     this.textCapitalization = TextCapitalization.none,
+    this.focusNode,
+    this.textInputAction,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
+      focusNode: focusNode,
       initialValue: initialValue,
       validator: validator,
       onChanged: onChanged,
@@ -55,6 +60,7 @@ class AppTextField extends StatelessWidget {
       maxLength: maxLength,
       inputFormatters: inputFormatters,
       textCapitalization: textCapitalization,
+      textInputAction: textInputAction,
       decoration: InputDecoration(
         labelText: label,
         hintText: hint,

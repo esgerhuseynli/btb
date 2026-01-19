@@ -36,7 +36,7 @@
   "confirmPassword": "Подтвердите пароль",
   "confirmPasswordHint": "Подтвердите новый пароль",
   "passwordRequired": "Пароль обязателен",
-  "passwordMinLength": "Пароль должен содержать 8 символов",
+  "passwordMinLength": "Пароль должен содержать от 8 до 16 символов",
   "pleaseConfirmPassword": "Пожалуйста, подтвердите ваш пароль",
   "passwordsDoNotMatch": "Пароли не совпадают",
   "enterEmailAddress": "Введите ваш email адрес",
@@ -58,6 +58,45 @@
   "errorAccountLocked": "Ваш аккаунт заблокирован. Пожалуйста, свяжитесь со службой поддержки.",
   "errorAccountSuspended": "Ваш аккаунт приостановлен. Пожалуйста, свяжитесь со службой поддержки.",
   "errorServerError": "Ошибка сервера. Пожалуйста, попробуйте позже.",
-  "errorServiceUnavailable": "Сервис временно недоступен. Пожалуйста, попробуйте позже."
+  "errorServiceUnavailable": "Сервис временно недоступен. Пожалуйста, попробуйте позже.",
+  "enterSmsCode": "Введите SMS код",
+  "weSentCodeTo": "Мы отправили 6-значный код на ",
+  "enterItToContinue": ". Введите его, чтобы продолжить",
+  "enterVerificationCode": "Введите код подтверждения",
+  "resendOtp": "Отправить OTP повторно",
+  "verify": "Подтвердить",
+  "otpResentSuccessfully": "OTP успешно отправлен повторно",
+  "otpSentSuccessfully": "OTP успешно отправлен",
+  "simaSignIn": "Вход через SIMA",
+  "finCode": "FIN код",
+  "dateOfBirth": "Дата рождения",
+  "dateOfBirthHint": "ДД/ММ/ГГГГ",
+  "yourBalance": "Ваш баланс",
+  "addMoney": "Пополнить",
+  "transfer": "Перевод",
+  "payMoney": "Оплатить",
+  "payments": "Платежи",
+  "@payments": {
+    "description": "Метка кнопки платежей"
+  },
+  "statement": "Выписка",
+  "@statement": {
+    "description": "Метка кнопки выписки"
+  },
+  "transactions": "Транзакции",
+  "seeAll": "Все",
+  "today": "Сегодня",
+  "groceryShopping": "Покупки",
+  "foodDining": "Еда",
+  "creditCardPayment": "Платеж по карте",
+  "movie": "Кино",
+  "moneyReceived": "Получено",
+  "shopping": "Покупки",
+  "transferTransaction": "Перевод",
+  "currentAccountUsd": "Текущий USD",
+  "welcomeBack": "Добро пожаловать!",
+  "@welcomeBack": {
+    "description": "Приветственное сообщение на главной странице"
+  }
 }
 

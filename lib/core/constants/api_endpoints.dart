@@ -2,11 +2,11 @@ class ApiEndpoints {
   // Authentication
   static const String sendCardNumber = 'api/SingInUp/SignUp';
   static const String verifyCode = 'api/SingInUp/VerifyCode';
-  static const String signIn = 'api/SingInUp/SignIn';
+  static const String signIn = 'api/SingInUp/SignInNew';
   static const String keystoreIncident = 'api/MobileUser/KeystoreSecurityIncident';
   static const String signUp = 'api/SingInUp/RegisterMobileUser';
   static const String signOut = 'api/SingInUp/SignOut';
-  static const String forgotPassword = 'api/SingInUp/ForgotPassword ';
+  static const String forgotPassword = 'api/SingInUp/UserForgotPassword';
   static const String changeForgotPassword = 'api/SingInUp/ChangeForgottenPassword';
   static const String changeKeystore = 'api/MobileUser/ChangeKeystore';
   static const String signUpAsanImza = 'api/SingInUp/SignUpAsanImza';
@@ -40,6 +40,10 @@ class ApiEndpoints {
   static const String listMobileDevices = 'api/MobileUser/ListMobileUserDevices';
   static const String removeDevice = 'api/MobileUser/ChangeDeviceSettings';
   static const String sendFCMToken = 'api/MobileUser/ChangeDevicePushInfoToken';
+  
+  // OTP
+  static const String sendOtp = 'api/Otp/SendOtpMobile';
+  static const String verifyOtp = 'api/Otp/VerifyOtp';
   
   // Money Transfers
   static const String moneyTransferCountries = 'api/MoneyTransfers/ListMTCountries';

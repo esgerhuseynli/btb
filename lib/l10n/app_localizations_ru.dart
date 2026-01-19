@@ -111,7 +111,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get passwordRequired => 'Пароль обязателен';
 
   @override
-  String get passwordMinLength => 'Пароль должен содержать 8 символов';
+  String get passwordMinLength => 'Пароль должен содержать от 8 до 16 символов';
 
   @override
   String get pleaseConfirmPassword => 'Пожалуйста, подтвердите ваш пароль';
@@ -193,4 +193,94 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get errorServiceUnavailable =>
       'Сервис временно недоступен. Пожалуйста, попробуйте позже.';
+
+  @override
+  String get enterSmsCode => 'Введите SMS код';
+
+  @override
+  String get weSentCodeTo => 'Мы отправили 6-значный код на ';
+
+  @override
+  String get enterItToContinue => '. Введите его, чтобы продолжить';
+
+  @override
+  String get enterVerificationCode => 'Введите код подтверждения';
+
+  @override
+  String get resendOtp => 'Отправить OTP повторно';
+
+  @override
+  String get verify => 'Подтвердить';
+
+  @override
+  String get otpResentSuccessfully => 'OTP успешно отправлен повторно';
+
+  @override
+  String get otpSentSuccessfully => 'OTP успешно отправлен';
+
+  @override
+  String get simaSignIn => 'Вход через SIMA';
+
+  @override
+  String get finCode => 'FIN код';
+
+  @override
+  String get dateOfBirth => 'Дата рождения';
+
+  @override
+  String get dateOfBirthHint => 'ДД/ММ/ГГГГ';
+
+  @override
+  String get yourBalance => 'Ваш баланс';
+
+  @override
+  String get addMoney => 'Пополнить';
+
+  @override
+  String get transfer => 'Перевод';
+
+  @override
+  String get payMoney => 'Оплатить';
+
+  @override
+  String get payments => 'Платежи';
+
+  @override
+  String get statement => 'Выписка';
+
+  @override
+  String get transactions => 'Транзакции';
+
+  @override
+  String get seeAll => 'Все';
+
+  @override
+  String get today => 'Сегодня';
+
+  @override
+  String get groceryShopping => 'Покупки';
+
+  @override
+  String get foodDining => 'Еда';
+
+  @override
+  String get creditCardPayment => 'Платеж по карте';
+
+  @override
+  String get movie => 'Кино';
+
+  @override
+  String get moneyReceived => 'Получено';
+
+  @override
+  String get shopping => 'Покупки';
+
+  @override
+  String get transferTransaction => 'Перевод';
+
+  @override
+  String get currentAccountUsd => 'Текущий USD';
+
+  @override
+  String get welcomeBack => 'Добро пожаловать!';
 }

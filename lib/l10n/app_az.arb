@@ -36,7 +36,7 @@
   "confirmPassword": "Şifrəni təsdiq et",
   "confirmPasswordHint": "Yeni şifrəni təsdiq edin",
   "passwordRequired": "Şifrə tələb olunur",
-  "passwordMinLength": "Şifrə 8 simvol olmalıdır",
+  "passwordMinLength": "Şifrə 8-16 simvol arasında olmalıdır",
   "pleaseConfirmPassword": "Zəhmət olmasa şifrənizi təsdiq edin",
   "passwordsDoNotMatch": "Şifrələr uyğun gəlmir",
   "enterEmailAddress": "Email ünvanınızı daxil edin",
@@ -58,6 +58,45 @@
   "errorAccountLocked": "Hesabınız bloklanıb. Zəhmət olmasa dəstək xidməti ilə əlaqə saxlayın.",
   "errorAccountSuspended": "Hesabınız dayandırılıb. Zəhmət olmasa dəstək xidməti ilə əlaqə saxlayın.",
   "errorServerError": "Server xətası. Zəhmət olmasa daha sonra yenidən cəhd edin.",
-  "errorServiceUnavailable": "Xidmət müvəqqəti olaraq mövcud deyil. Zəhmət olmasa daha sonra yenidən cəhd edin."
+  "errorServiceUnavailable": "Xidmət müvəqqəti olaraq mövcud deyil. Zəhmət olmasa daha sonra yenidən cəhd edin.",
+  "enterSmsCode": "SMS kodunu daxil edin",
+  "weSentCodeTo": "6 rəqəmli kodu göndərdik ",
+  "enterItToContinue": ". Davam etmək üçün daxil edin",
+  "enterVerificationCode": "Təsdiq kodunu daxil edin",
+  "resendOtp": "OTP-ni yenidən göndər",
+  "verify": "Təsdiq et",
+  "otpResentSuccessfully": "OTP uğurla yenidən göndərildi",
+  "otpSentSuccessfully": "OTP uğurla göndərildi",
+  "simaSignIn": "SIMA ilə daxil ol",
+  "finCode": "FIN kodu",
+  "dateOfBirth": "Doğum tarixi",
+  "dateOfBirthHint": "GG/AA/İİİİ",
+  "yourBalance": "Balansınız",
+  "addMoney": "Pul əlavə et",
+  "transfer": "Köçürmə",
+  "payMoney": "Ödəniş et",
+  "payments": "Ödənişlər",
+  "@payments": {
+    "description": "Ödənişlər düyməsi etiketi"
+  },
+  "statement": "Hesabat",
+  "@statement": {
+    "description": "Hesabat düyməsi etiketi"
+  },
+  "transactions": "Əməliyyatlar",
+  "seeAll": "Hamısına bax",
+  "today": "Bu gün",
+  "groceryShopping": "Məişət alış-verişi",
+  "foodDining": "Yemək",
+  "creditCardPayment": "Kredit kartı ödənişi",
+  "movie": "Kino",
+  "moneyReceived": "Pul alındı",
+  "shopping": "Alış-veriş",
+  "transferTransaction": "Köçürmə",
+  "currentAccountUsd": "Cari USD",
+  "welcomeBack": "Xoş gəlmisiniz!",
+  "@welcomeBack": {
+    "description": "Ana səhifədə xoş gəlmə mesajı"
+  }
 }
 

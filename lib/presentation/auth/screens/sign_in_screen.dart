@@ -4,9 +4,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/utils/validators.dart';
+import '../../../core/widgets/error_snackbar.dart';
 import '../../core/widgets/app_button.dart';
 import '../../core/widgets/app_text_field.dart';
 import '../../core/widgets/app_app_bar.dart';
+import '../../core/widgets/back_button_widget.dart';
 import '../bloc/auth_bloc.dart';
 import '../bloc/auth_event.dart';
 import '../bloc/auth_state.dart';
@@ -50,7 +52,7 @@ class _SignInScreenState extends State<SignInScreen> {
   }
 
   void _handleSignIn() {
-    if (_formKey.currentState!.validate()) {
+    if (_formKey.currentState?.validate() ?? false) {
       String username;
       if (_isPhoneLogin) {
         // Format phone number: remove all non-digits, ensure it's 9 digits
@@ -101,22 +103,20 @@ class _SignInScreenState extends State<SignInScreen> {
         } else if (state is DeviceNeedsRegistrationDialog) {
           // This state is handled in the dialog callback
         } else if (state is AuthError) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.message),
-              backgroundColor: AppTheme.red,
-            ),
-          );
+          ErrorSnackBar.show(context, state.message);
         }
       },
       child: Scaffold(
-        appBar: const AppAppBar(title: 'Daxil ol'),
         body: SafeArea(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(24.0),
-            child: Form(
-              key: _formKey,
-              child: Column(
+          child: Column(
+            children: [
+              const BackButtonWidget(),
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.all(24.0),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   const SizedBox(height: 32),
@@ -207,7 +207,12 @@ class _SignInScreenState extends State<SignInScreen> {
                     alignment: Alignment.centerRight,
                     child: TextButton(
                       onPressed: () {
-                        context.push('/forgot-password');
+                        final phone = widget.phone ?? _phoneController.text.trim();
+                        if (phone.isNotEmpty) {
+                          context.push('/forgot-password?phone=$phone');
+                        } else {
+                          context.push('/forgot-password');
+                        }
                       },
                       child: const Text('Şifrəni unutmusunuz?'),
                     ),
@@ -236,8 +241,11 @@ class _SignInScreenState extends State<SignInScreen> {
                     ],
                   ),
                 ],
+                    ),
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
         ),
       ),
@@ -313,16 +321,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 text: 'OK',
                 onPressed: () {
                   Navigator.of(dialogContext).pop();
-                  // Navigate to sign-up types screen (like Android)
-                  context.push(
-                    '/sign-up-types',
-                    extra: {
-                      'screenType': -1, // No specific type when coming from sign-in
-                      'verifyCode': null,
-                      'phone': state.isEmail ? null : state.username,
-                      'email': state.isEmail ? state.username : null,
-                    },
-                  );
+                  // Don't navigate anywhere - just close the dialog
                 },
               ),
             ],

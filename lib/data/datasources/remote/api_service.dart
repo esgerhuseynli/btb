@@ -1,4 +1,4 @@
-import 'package:dio/dio.dart';
+import 'package:dio/dio.dart' hide Headers;
 import 'package:retrofit/retrofit.dart';
 import '../../models/api_response.dart';
 import '../../models/mobile_user.dart';
@@ -18,6 +18,8 @@ import '../../models/empty_response.dart';
 import '../../models/change_keystore_request.dart';
 import '../../models/change_keystore_response.dart';
 import '../../models/fcm_token_request.dart';
+import '../../models/otp_request.dart';
+import '../../models/otp_verify_request.dart';
 import '../../../core/constants/api_endpoints.dart';
 
 part 'api_service.g.dart';
@@ -48,7 +50,8 @@ abstract class ApiService {
   @POST(ApiEndpoints.signUp)
   Future<SignUpResponse> registerMobileUser(@Body() SignUpRequest request);
 
-  @POST(ApiEndpoints.signIn)
+  @Headers({'x-api-key': 'MOBILE_SUPER_SECRET_KEY_1215489789744153153'})
+  @POST('http://94.20.61.252:8087/api/SingInUp/SignInNew')
   Future<SignInResponse> signIn(@Body() SignInRequest request);
 
   @POST(ApiEndpoints.signOut)
@@ -59,23 +62,38 @@ abstract class ApiService {
   Future<ApiResponse<EmptyResponse>> reportKeystoreIncident(
       @Body() Map<String, dynamic> request);
 
-  @POST(ApiEndpoints.forgotPassword)
-  Future<ApiResponse<EmptyResponse>> forgotPassword(
+  @POST('http://94.20.61.252:8087/api/SingInUp/UserForgotPassword')
+  Future<CardSendResponse> forgotPassword(
       @Body() Map<String, dynamic> request);
 
-  @POST(ApiEndpoints.changeKeystore)
+  @POST('http://94.20.61.252:8087/api/SingInUp/SubmitUserForgotPassword')
+  Future<ApiResponse<EmptyResponse>> changeForgotPassword(
+      @Body() Map<String, dynamic> request);
+
+  @Headers({'x-api-key': 'MOBILE_SUPER_SECRET_KEY_1215489789744153153'})
+  @POST('http://94.20.61.252:8087/api/MobileUser/ChangeKeystore')
   Future<ChangeKeystoreResponse> changeKeystore(
       @Body() ChangeKeystoreRequest request);
 
-  @POST(ApiEndpoints.sendFCMToken)
+  @Headers({'x-api-key': 'MOBILE_SUPER_SECRET_KEY_1215489789744153153'})
+  @POST('http://94.20.61.252:8087/api/MobileUser/ChangeDevicePushInfoToken')
   Future<ApiResponse<EmptyResponse>> sendFCMToken(
       @Body() FcmTokenRequest request);
 
+  // OTP (using full URLs for different server)
+  @POST('http://94.20.61.252:8088/api/Otp/SendOtpMobile')
+  Future<ApiResponse<dynamic>> sendOtp(@Body() OtpRequest request);
+
+  @POST('http://94.20.61.252:8088/api/Otp/VerifyOtp')
+  Future<ApiResponse<dynamic>> verifyOtp(@Body() OtpVerifyRequest request);
+
   // Bank Accounts
-  @POST(ApiEndpoints.listBankCards)
+  @Headers({'x-api-key': 'MOBILE_SUPER_SECRET_KEY_1215489789744153153'})
+  @POST('http://94.20.61.252:8087/api/BankAccounts/ListBankCards')
   Future<BankCardsResponse> listBankCards(
       @Body() Map<String, dynamic> request);
 
+  @Headers({'x-api-key': 'MOBILE_SUPER_SECRET_KEY_1215489789744153153'})
   @POST(ApiEndpoints.listBankAccounts)
   Future<BankAccountsResponse> listBankAccounts(
       @Body() Map<String, dynamic> request);
@@ -88,7 +106,14 @@ abstract class ApiService {
   Future<ApiResponse<dynamic>> listBankDeposits(
       @Body() Map<String, dynamic> request);
 
+  // Operations
+  @Headers({'x-api-key': 'MOBILE_SUPER_SECRET_KEY_1215489789744153153'})
+  @POST(ApiEndpoints.listCardStatements)
+  Future<ApiResponse<dynamic>> listCardStatements(
+      @Body() Map<String, dynamic> request);
+
   // Mobile User
+  @Headers({'x-api-key': 'MOBILE_SUPER_SECRET_KEY_1215489789744153153'})
   @POST(ApiEndpoints.mobileUserData)
   Future<ApiResponse<dynamic>> getMobileUserData(
       @Body() Map<String, dynamic> request);

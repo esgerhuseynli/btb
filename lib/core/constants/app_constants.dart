@@ -1,7 +1,10 @@
 class AppConstants {
   // Base URLs
-  static const String baseUrlDev = 'https://mobilebanking.btb.az:4444/';
-  static const String baseUrlProd = 'https://mobilebanking.btb.az:4445/';
+  static const String baseUrlDev = 'http://94.20.61.252:8087/';
+  static const String baseUrlProd = 'http://94.20.61.252:8087/';
+  
+  // OTP API Base URL (different server)
+  static const String otpApiBaseUrl = 'http://94.20.61.252:8088/';
 
   // Storage Keys
   static const String keyPinFingerprintScreenBypass = 'k0';
