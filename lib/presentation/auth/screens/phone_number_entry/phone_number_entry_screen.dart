@@ -156,7 +156,6 @@ class _PhoneInputScreenState extends State<PhoneInputScreen>
                             textAlignVertical: TextAlignVertical.center,
                             controller: _phoneController,
                             focusNode: _phoneFocusNode,
-                            autofocus: true,
                             enabled: true,
                             keyboardType: TextInputType.number,
                             textInputAction: TextInputAction.done,

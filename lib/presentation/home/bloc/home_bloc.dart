@@ -362,7 +362,9 @@ class HomeBloc extends BaseBloc<HomeEvent, HomeState> {
           deviceSpecs: deviceSpecs,
         );
 
-        if (!changeKeystoreResponse.responseInfo.isSuccess || changeKeystoreResponse.passwordHash == null) {
+        if (changeKeystoreResponse.responseInfo.responseType != 0 || 
+            !changeKeystoreResponse.responseInfo.isSuccess || 
+            changeKeystoreResponse.passwordHash == null) {
           emit(HomeError(
             changeKeystoreResponse.responseInfo.errorMessage ??
                 changeKeystoreResponse.responseInfo.responseMessage ??
@@ -377,6 +379,7 @@ class HomeBloc extends BaseBloc<HomeEvent, HomeState> {
         // The new password hash from ChangeKeystore is only used for this sign-in call, not saved
 
         // Step 2: SignInNew again with keystoreType: 1 using new password hash
+        // After ChangeKeystore, signInType must be 2 (keystore-based sign-in)
         final mobileUserForSignIn = MobileUser(
           username: username,
           passwordHash: newPasswordHash,
@@ -390,10 +393,12 @@ class HomeBloc extends BaseBloc<HomeEvent, HomeState> {
         final signInResponse = await _authRepository.signIn(
           requestInfo: requestInfoForSignIn,
           keystoreType: 1,
-          signInType: signInType,
+          signInType: 2, // Keystore-based sign-in (required after ChangeKeystore)
         );
 
-        if (!signInResponse.isSuccess || signInResponse.sessionKey == null) {
+        if (!signInResponse.isSuccess || 
+            signInResponse.responseInfo.responseType != 0 || 
+            signInResponse.sessionKey == null) {
           emit(HomeError(
             signInResponse.responseInfo.errorMessage ??
                 signInResponse.responseInfo.responseMessage ??
@@ -424,7 +429,9 @@ class HomeBloc extends BaseBloc<HomeEvent, HomeState> {
         signInType: 1, // Password-based sign-in
       );
 
-      if (!signInResponse1.isSuccess || signInResponse1.sessionKey == null) {
+      if (!signInResponse1.isSuccess || 
+          signInResponse1.responseInfo.responseType != 0 || 
+          signInResponse1.sessionKey == null) {
         emit(HomeError(
           signInResponse1.responseInfo.errorMessage ??
               signInResponse1.responseInfo.responseMessage ??
@@ -454,7 +461,9 @@ class HomeBloc extends BaseBloc<HomeEvent, HomeState> {
         deviceSpecs: deviceSpecs,
       );
 
-      if (!changeKeystoreResponse.responseInfo.isSuccess || changeKeystoreResponse.passwordHash == null) {
+      if (changeKeystoreResponse.responseInfo.responseType != 0 || 
+          !changeKeystoreResponse.responseInfo.isSuccess || 
+          changeKeystoreResponse.passwordHash == null) {
         emit(HomeError(
           changeKeystoreResponse.responseInfo.errorMessage ??
               changeKeystoreResponse.responseInfo.responseMessage ??
@@ -484,7 +493,9 @@ class HomeBloc extends BaseBloc<HomeEvent, HomeState> {
         mobileNumberSecretCode: '',
       );
 
-      if (!signInResponse2.isSuccess || signInResponse2.sessionKey == null) {
+      if (!signInResponse2.isSuccess || 
+          signInResponse2.responseInfo.responseType != 0 || 
+          signInResponse2.sessionKey == null) {
         emit(HomeError(
           signInResponse2.responseInfo.errorMessage ??
               signInResponse2.responseInfo.responseMessage ??
@@ -615,27 +626,23 @@ class HomeBloc extends BaseBloc<HomeEvent, HomeState> {
           }
           
           // Parse the response and convert to TransactionData
-          // The API response has bankCardStatement at root level, not in a Data field
-          // So we need to access it from the data field if it's a Map
+          // The repository now extracts bankCardStatement and puts it directly in the data field as a List
           if (statementsResponse.responseInfo.isSuccess) {
             List<dynamic>? bankCardStatements;
             
-            // The response structure is: {"responceInfo": {...}, "bankCardStatement": [...]}
-            // ApiResponse expects {"ResponseInfo": {...}, "Data": {...}}
-            // Since the keys don't match exactly, data might contain the whole response or be null
+            // The data field now contains the bankCardStatement list directly
             if (statementsResponse.data != null) {
-              if (statementsResponse.data is Map) {
+              if (statementsResponse.data is List) {
+                bankCardStatements = statementsResponse.data as List<dynamic>;
+                debugPrint('Found bankCardStatement list with ${bankCardStatements.length} items');
+              } else if (statementsResponse.data is Map) {
+                // Fallback: try to get bankCardStatement from the data map (for backward compatibility)
                 final responseData = statementsResponse.data as Map<String, dynamic>;
-                // Try to get bankCardStatement from the data map
                 bankCardStatements = responseData['bankCardStatement'] as List<dynamic>?;
                 debugPrint('Found bankCardStatement in data map: ${bankCardStatements != null}');
                 if (bankCardStatements != null) {
                   debugPrint('bankCardStatement count: ${bankCardStatements.length}');
                 }
-              } else if (statementsResponse.data is List) {
-                // If data is directly a list, use it
-                bankCardStatements = statementsResponse.data as List<dynamic>;
-                debugPrint('Data is directly a list with ${bankCardStatements.length} items');
               }
             }
             
@@ -649,7 +656,12 @@ class HomeBloc extends BaseBloc<HomeEvent, HomeState> {
             } else {
               debugPrint('No card statements found in response');
               debugPrint('statementsResponse.data: ${statementsResponse.data}');
+              debugPrint('statementsResponse.data type: ${statementsResponse.data.runtimeType}');
             }
+          } else {
+            debugPrint('Card statements response not successful');
+            debugPrint('responseType: ${statementsResponse.responseInfo.responseType}');
+            debugPrint('responseMessage: ${statementsResponse.responseInfo.responseMessage}');
           }
         } else {
           debugPrint('No cards available to fetch statements - condition check failed');

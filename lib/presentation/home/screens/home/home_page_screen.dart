@@ -9,6 +9,7 @@ import '../../../../l10n/app_localizations.dart';
 import '../../../../presentation/core/widgets/error_widget.dart';
 import '../../widgets/bank_card_account_item.dart';
 import '../../widgets/page_indicator.dart';
+import '../../widgets/action_bottom_sheet.dart';
 import '../../../../data/models/bank_card.dart';
 import '../../../../data/models/bank_account.dart';
 import '../../../../data/models/transaction_data.dart';
@@ -28,6 +29,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
   final PageController _pageController = PageController(viewportFraction: 0.85);
   int _currentPage = 0;
   bool _isBalanceVisible = true;
+  int _currentBottomNavIndex = 0;
 
   @override
   void initState() {
@@ -90,6 +92,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
           return Scaffold(
             backgroundColor: AppTheme.homeBackground,
             body: SafeArea(
+              bottom: false,
               child: CustomScrollView(
                 slivers: [
                   // Top section with user info and balance
@@ -112,8 +115,26 @@ class _HomePageScreenState extends State<HomePageScreen> {
                   
                   // Transactions section
                   _buildTransactionsSliver(context, state),
+                  
+                  // Add bottom padding for bottom navigation bar
+                  SliverToBoxAdapter(
+                    child: SizedBox(height: 96.h),
+                  ),
                 ],
               ),
+            ),
+            bottomNavigationBar: ActionBottomSheet(
+              currentIndex: _currentBottomNavIndex,
+              onTabSelected: (index) {
+                setState(() {
+                  if (index == -1) {
+                    // Handle plus button action
+                    // You can add specific logic here
+                  } else {
+                    _currentBottomNavIndex = index;
+                  }
+                });
+              },
             ),
           );
         },
@@ -130,7 +151,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
       padding: EdgeInsets.only(
         left: 16.w,
         right: 16.w,
-        top: 10.h,
+        top: 20.h,
         bottom: 24.h,
       ),
       child: Column(
@@ -176,41 +197,46 @@ class _HomePageScreenState extends State<HomePageScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text(
+                      Transform.scale(
+                        scale: 0.85,
+                        alignment: Alignment.centerLeft,
+                        child: Text(
                         context.l10n.welcomeBack,
                         style: AppTextStyles.welcomeText(context),
+                        ),
                       ),
                       SizedBox(height: 2.h),
-                      Text(
+                      Transform.scale(
+                        scale: 0.85,
+                        alignment: Alignment.centerLeft,
+                        child: Text(
                         userName.isNotEmpty ? userName : 'User',
                         style: AppTextStyles.userName(context),
+                        ),
                       ),
                     ],
                   ),
                 ],
               ),
               // Notification icon
-              Stack(
-                clipBehavior: Clip.none,
-                children: [
-                  Icon(
-                    Icons.notifications_outlined,
-                    size: 24.sp,
-                    color: AppTheme.textColor,
-                  ),
-                  Positioned(
-                    right: -2,
-                    top: -2,
-                    child: Container(
-                      width: 8.w,
-                      height: 8.w,
-                      decoration: const BoxDecoration(
-                        color: AppTheme.mainColor,
-                        shape: BoxShape.circle,
-                      ),
-                    ),
-                  ),
-                ],
+              Builder(
+                builder: (context) {
+                  try {
+                    // Don't apply colorFilter - SVG has its own colors (red dot should stay red)
+                    return SvgPicture.asset(
+                      'assets/icons/notification.svg',
+                      width: 24.w,
+                      height: 24.h,
+                    );
+                  } catch (e) {
+                    // Fallback to icon if SVG doesn't exist
+                    return Icon(
+                      Icons.notifications_outlined,
+                      size: 24.sp,
+                      color: AppTheme.textColor,
+                    );
+                  }
+                },
               ),
             ],
           ),
@@ -239,12 +265,29 @@ class _HomePageScreenState extends State<HomePageScreen> {
                           _isBalanceVisible = !_isBalanceVisible;
                         });
                       },
-                      child: Icon(
+                      child: Builder(
+                        builder: (context) {
+                          try {
+                            return SvgPicture.asset(
+                              'assets/icons/eye.svg',
+                              width: 24.w,
+                              height: 24.h,
+                              colorFilter: ColorFilter.mode(
+                                AppTheme.iconSecondary,
+                                BlendMode.srcIn,
+                              ),
+                            );
+                          } catch (e) {
+                            // Fallback to icon if SVG doesn't exist
+                            return Icon(
                         _isBalanceVisible
                             ? Icons.visibility_outlined
                             : Icons.visibility_off_outlined,
                         size: 24.sp,
                         color: AppTheme.iconSecondary,
+                            );
+                          }
+                        },
                       ),
                     ),
                   ),
@@ -535,7 +578,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
           Expanded(
             child: _buildActionButton(
               iconPath: 'assets/icons/statements.svg',
-              label: context.l10n.statement,
+              label: 'Statements',
               onTap: () {
                 // Navigate to statement
               },
@@ -558,7 +601,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
         onTap: onTap,
         child: Container(
           height: 104.h,
-          padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 14.h),
+          padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 14.h),
           decoration: BoxDecoration(
             gradient: const LinearGradient(
               begin: Alignment.topLeft,
@@ -618,11 +661,15 @@ class _HomePageScreenState extends State<HomePageScreen> {
               SizedBox(height: 8.h),
               FittedBox(
                 fit: BoxFit.scaleDown,
-                child: Text(
-                  label.trim().replaceAll('.', ''),
-                  style: AppTextStyles.actionButtonLabel(context),
-                  textAlign: TextAlign.center,
-                  maxLines: 1,
+                child: Transform.scale(
+                  scale: 0.8,
+                  child: Text(
+                    label.trim().replaceAll('.', ''),
+                    style: AppTextStyles.actionButtonLabel(context),
+                    textAlign: TextAlign.center,
+                    maxLines: 1,
+                    overflow: TextOverflow.visible,
+                  ),
                 ),
               ),
             ],
@@ -654,10 +701,11 @@ class _HomePageScreenState extends State<HomePageScreen> {
                   Semantics(
                     label: 'View all transactions',
                     button: true,
-                    child: GestureDetector(
+                    child:                       GestureDetector(
                       onTap: () {
                         // Navigate to all transactions
                       },
+                        child: IntrinsicWidth(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
@@ -666,11 +714,11 @@ class _HomePageScreenState extends State<HomePageScreen> {
                             style: AppTextStyles.seeAllLink(context),
                           ),
                           Container(
-                            width: 38.w,
                             height: 1.h,
                             color: AppTheme.textSecondaryGray,
                           ),
                         ],
+                          ),
                       ),
                     ),
                   ),
@@ -729,6 +777,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                         onTap: () {
                           // Navigate to all transactions
                         },
+                        child: IntrinsicWidth(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
@@ -737,11 +786,11 @@ class _HomePageScreenState extends State<HomePageScreen> {
                               style: AppTextStyles.seeAllLink(context),
                             ),
                             Container(
-                              width: 38.w,
                               height: 1.h,
                               color: AppTheme.textSecondaryGray,
                             ),
                           ],
+                          ),
                         ),
                       ),
                     ],
@@ -814,7 +863,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
               ),
             ),
           ),
-          SizedBox(width: 32.w),
+          SizedBox(width: 12.w),
           // Transaction details
           Expanded(
             child: Column(
@@ -823,11 +872,16 @@ class _HomePageScreenState extends State<HomePageScreen> {
                 Text(
                   transaction.merchant,
                   style: AppTextStyles.transactionMerchant(context),
+                  maxLines: 2,
+                  overflow: TextOverflow.visible,
+                  softWrap: true,
                 ),
                 SizedBox(height: 4.h),
                 Text(
                   transaction.dateAndCategory,
                   style: AppTextStyles.transactionDate(context),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ],
             ),

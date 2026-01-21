@@ -78,6 +78,132 @@ class SimaService {
       final signature = base64Encode(signatureBytes.bytes);
       
       debugPrint('Signature calculated (base64 length: ${signature.length})');
+      debugPrint('Waiting for SIMA response... (this may take a while if user needs to verify in SIMA app)');
+      debugPrint('Platform: ${Platform.isIOS ? "iOS" : "Android"}');
+
+      // On iOS, use native method channel (SimaHandler) instead of sima package
+      // The sima package has a bug where it doesn't complete the Future on iOS
+      // On Android, use sima package
+      if (Platform.isIOS) {
+        debugPrint('Using native iOS method channel (SimaHandler)');
+        return await _signChallengeIOS(
+          challenge: challenge,
+          userFinCode: userFinCode,
+          signature: signature,
+        );
+      } else {
+        debugPrint('Using sima package for Android');
+        return await _signChallengeAndroid(
+          challenge: challenge,
+          simaChallenge: simaChallenge,
+          signature: signature,
+        );
+      }
+    } catch (e, stackTrace) {
+      debugPrint('=== SIMA Exception ===');
+      debugPrint('Error: $e');
+      debugPrint('Stack trace: $stackTrace');
+      debugPrint('=== SIMA signChallenge END (EXCEPTION) ===');
+      
+      return SimaSignChallengeResponse(
+        status: 'error',
+        message: SimaError.getErrorMessage(e.toString()),
+      );
+    }
+  }
+
+  /// Sign challenge using native iOS method channel (SimaHandler)
+  Future<SimaSignChallengeResponse> _signChallengeIOS({
+    required List<int> challenge,
+    required String userFinCode,
+    required String signature,
+  }) async {
+    try {
+      debugPrint('=== iOS Native Method Channel: signChallenge ===');
+      
+      final result = await _customChannel.invokeMethod<Map<Object?, Object?>>(
+        'signChallenge',
+        {
+          'challenge': challenge,
+          'userCode': userFinCode,
+          'clientId': int.parse(_clientId),
+          'serviceName': _serviceName,
+          'signature': signature,
+          'logo': '',
+        },
+      );
+
+      debugPrint('=== iOS Native Method Channel: Response Received ===');
+      debugPrint('Result is null: ${result == null}');
+
+      if (result == null) {
+        debugPrint('SIMA Response: NULL (operation cancelled or failed)');
+        return SimaSignChallengeResponse(
+          status: 'error',
+          message: 'SIMA operation failed or was cancelled',
+          signatureBytes: null,
+          certificateBytes: null,
+        );
+      }
+
+      final status = result['status'] as String?;
+      final message = result['message'] as String?;
+      final signatureList = result['signature'] as List<dynamic>?;
+      final certificateList = result['certificate'] as List<dynamic>?;
+
+      debugPrint('Status: $status');
+      debugPrint('Message: $message');
+      debugPrint('Signature present: ${signatureList != null}');
+      debugPrint('Certificate present: ${certificateList != null}');
+
+      if (status == 'success' && signatureList != null && certificateList != null) {
+        final signatureBytes = signatureList.cast<int>();
+        final certificateBytes = certificateList.cast<int>();
+
+        debugPrint('=== SIMA Response: SUCCESS ===');
+        debugPrint('Signature bytes: ${signatureBytes.length} bytes');
+        debugPrint('Certificate bytes: ${certificateBytes.length} bytes');
+        debugPrint('=== SIMA signChallenge END (SUCCESS) ===');
+
+        return SimaSignChallengeResponse(
+          status: 'success',
+          message: null,
+          signatureBytes: signatureBytes,
+          certificateBytes: certificateBytes,
+        );
+      } else {
+        debugPrint('=== SIMA Response: ERROR ===');
+        debugPrint('Error message: ${message ?? "Unknown error"}');
+        debugPrint('=== SIMA signChallenge END (ERROR) ===');
+        
+        return SimaSignChallengeResponse(
+          status: 'error',
+          message: message ?? 'Unknown error',
+          signatureBytes: null,
+          certificateBytes: null,
+        );
+      }
+    } catch (e, stackTrace) {
+      debugPrint('=== iOS Native Method Channel Exception ===');
+      debugPrint('Error: $e');
+      debugPrint('Stack trace: $stackTrace');
+      // Don't rethrow - return error response instead
+      return SimaSignChallengeResponse(
+        status: 'error',
+        message: SimaError.getErrorMessage(e.toString()),
+        signatureBytes: null,
+        certificateBytes: null,
+      );
+    }
+  }
+
+  /// Sign challenge using sima package (Android)
+  Future<SimaSignChallengeResponse> _signChallengeAndroid({
+    required List<int> challenge,
+    required SimaChallenge simaChallenge,
+    required String signature,
+  }) async {
+    try {
       debugPrint('Calling Sima.loginSafe...');
 
       // Use SIMA package loginSafe method to sign challenge
@@ -89,6 +215,9 @@ class SimaService {
         challenge: simaChallenge,
         signature: signature,
       );
+      
+      debugPrint('=== Sima.loginSafe() completed ===');
+      debugPrint('Result is null: ${result == null}');
 
       debugPrint('=== SIMA Response Received ===');
       debugPrint('Result is null: ${result == null}');

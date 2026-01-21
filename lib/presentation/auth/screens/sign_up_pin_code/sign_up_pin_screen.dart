@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -126,7 +127,38 @@ class _SignUpPinScreenState extends State<SignUpPinScreen> {
         value: 'true',
       );
       
-      // Navigate directly to home - no API calls needed
+      // For SIMA flow: Clear the fake session key so home_bloc will do full sign-in sequence
+      // (SignInNew → ChangeKeystore → SignInNew)
+      // The fake session key from SIMA verification is not valid for main API
+      if (widget.isComingFromSignIn) {
+        // Check if this is coming from SIMA flow (has fake session key)
+        final existingSessionKey = await _secureStorage.read(key: AppConstants.sessionKey);
+        if (existingSessionKey != null && existingSessionKey.isNotEmpty) {
+          // Check if it's a fake timestamp-based session key (from SIMA)
+          // Real session keys from the API are typically longer (128+ chars) and contain hex characters
+          // Fake SIMA session keys are numeric timestamps (13 digits)
+          try {
+            // If it's a numeric timestamp, it's fake - clear it
+            final timestamp = int.parse(existingSessionKey);
+            if (timestamp > 1000000000000 && existingSessionKey.length < 50) { 
+              // Timestamp in milliseconds and short length indicates fake key
+              await _secureStorage.delete(key: AppConstants.sessionKey);
+              debugPrint('=== Cleared fake SIMA session key - will trigger full sign-in flow ===');
+              debugPrint('Fake session key was: $existingSessionKey');
+            }
+          } catch (e) {
+            // Not a numeric timestamp, check length
+            // Real session keys are typically 128+ characters
+            if (existingSessionKey.length < 50) {
+              // Short session key might be fake - clear it to be safe
+              await _secureStorage.delete(key: AppConstants.sessionKey);
+              debugPrint('=== Cleared potentially fake session key (too short) - will trigger full sign-in flow ===');
+            }
+          }
+        }
+      }
+      
+      // Navigate to home - home_bloc will handle the sign-in flow
       if (mounted) {
         context.go('/home');
       }
@@ -201,7 +233,7 @@ class _SignUpPinScreenState extends State<SignUpPinScreen> {
         backgroundColor: AppTheme.white,
         body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.all(24.w),
+          padding: EdgeInsets.symmetric(horizontal: 24.w),
           child: Column(
             children: [
               SizedBox(height: 40.h),
@@ -213,7 +245,7 @@ class _SignUpPinScreenState extends State<SignUpPinScreen> {
                 textAlign: TextAlign.center,
               ),
 
-              SizedBox(height: 24.h),
+              SizedBox(height: 40.h),
 
               // PIN Indicators
               Row(
@@ -240,83 +272,88 @@ class _SignUpPinScreenState extends State<SignUpPinScreen> {
 
               SizedBox(height: 60.h),
 
-              // Number Pad
+              // Number Pad - Centered
               Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(24.0),
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                _buildNumberButton(context, '1'),
-                                _buildNumberButton(context, '2'),
-                                _buildNumberButton(context, '3'),
-                              ],
-                            ),
-                            const SizedBox(height: 16),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                _buildNumberButton(context, '4'),
-                                _buildNumberButton(context, '5'),
-                                _buildNumberButton(context, '6'),
-                              ],
-                            ),
-                            const SizedBox(height: 16),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                _buildNumberButton(context, '7'),
-                                _buildNumberButton(context, '8'),
-                                _buildNumberButton(context, '9'),
-                              ],
-                            ),
-                            const SizedBox(height: 16),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                _buildEmptyButton(),
-                                _buildNumberButton(context, '0'),
-                                _buildBiometricButton(),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
+                child: Center(
+                  child: LayoutBuilder(
+                    builder: (context, constraints) {
+                      // Calculate button size based on available width
+                      final availableWidth = constraints.maxWidth;
+                      final minSize = 60.w;
+                      final maxSize = 80.w;
+                      final calculatedSize = (availableWidth / 3.5);
+                      final buttonSize = calculatedSize.clamp(minSize, maxSize);
+                      final spacing = 20.h;
+                      
+                      return Column(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              _buildNumberButton(context, '1', buttonSize),
+                              _buildNumberButton(context, '2', buttonSize),
+                              _buildNumberButton(context, '3', buttonSize),
+                            ],
+                          ),
+                          SizedBox(height: spacing),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              _buildNumberButton(context, '4', buttonSize),
+                              _buildNumberButton(context, '5', buttonSize),
+                              _buildNumberButton(context, '6', buttonSize),
+                            ],
+                          ),
+                          SizedBox(height: spacing),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              _buildNumberButton(context, '7', buttonSize),
+                              _buildNumberButton(context, '8', buttonSize),
+                              _buildNumberButton(context, '9', buttonSize),
+                            ],
+                          ),
+                          SizedBox(height: spacing),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              _buildEmptyButton(buttonSize),
+                              _buildNumberButton(context, '0', buttonSize),
+                              _buildBiometricButton(buttonSize),
+                            ],
+                          ),
+                        ],
+                      );
+                    },
                   ),
                 ),
               ),
 
-              SizedBox(height: 20.h),
-
               // Bottom Actions
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  TextButton(
-                    onPressed: onLogout,
-                    child: Text(
-                      'Log out',
-                      style: AppTextStyles.caption(context, color: AppTheme.textDark),
+              Padding(
+                padding: EdgeInsets.only(bottom: 20.h, top: 20.h),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    TextButton(
+                      onPressed: onLogout,
+                      child: Text(
+                        'Log out',
+                        style: AppTextStyles.caption(context, color: AppTheme.textDark),
+                      ),
                     ),
-                  ),
-                  TextButton(
-                    onPressed: onDelete,
-                    child: Text(
-                      'Delete',
-                      style: AppTextStyles.caption(context, color: AppTheme.textDark),
+                    TextButton(
+                      onPressed: onDelete,
+                      child: Text(
+                        'Delete',
+                        style: AppTextStyles.caption(context, color: AppTheme.textDark),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-
-              SizedBox(height: 20.h),
             ],
           ),
         ),
@@ -324,10 +361,13 @@ class _SignUpPinScreenState extends State<SignUpPinScreen> {
     );
   }
 
-  Widget _buildNumberButton(BuildContext context, String number) {
-    return GestureDetector(
+  Widget _buildNumberButton(BuildContext context, String number, double buttonSize) {
+    return InkWell(
       onTap: () => onNumberPressed(number),
+      borderRadius: BorderRadius.circular(buttonSize / 2),
       child: Container(
+        width: buttonSize,
+        height: buttonSize,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: AppTheme.borderColor,
@@ -335,15 +375,21 @@ class _SignUpPinScreenState extends State<SignUpPinScreen> {
         child: Center(
           child: Text(
             number,
-            style: AppTextStyles.display(context, color: AppTheme.textDark),
+            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                  color: AppTheme.textDark,
+                  fontWeight: FontWeight.bold,
+                  fontSize: (buttonSize * 0.3).clamp(18.0, 24.0),
+                ),
           ),
         ),
       ),
     );
   }
 
-  Widget _buildEmptyButton() {
+  Widget _buildEmptyButton(double buttonSize) {
     return Container(
+      width: buttonSize,
+      height: buttonSize,
       decoration: const BoxDecoration(
         shape: BoxShape.circle,
         color: Colors.transparent,
@@ -351,23 +397,22 @@ class _SignUpPinScreenState extends State<SignUpPinScreen> {
     );
   }
 
-  Widget _buildBiometricButton() {
-    return GestureDetector(
+  Widget _buildBiometricButton(double buttonSize) {
+    return InkWell(
       onTap: onBiometric,
+      borderRadius: BorderRadius.circular(12.r),
       child: Container(
-        decoration: const BoxDecoration(
-          shape: BoxShape.circle,
+        width: buttonSize,
+        height: buttonSize,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12.r),
           color: Colors.transparent,
         ),
         child: Center(
           child: SvgPicture.asset(
             'assets/icons/face-id.svg',
-            width: 64.w,
-            height: 64.w,
-            colorFilter: ColorFilter.mode(
-              AppTheme.mainColor,
-              BlendMode.srcIn,
-            ),
+            width: buttonSize * 0.6,
+            height: buttonSize * 0.6,
           ),
         ),
       ),

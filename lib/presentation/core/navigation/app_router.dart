@@ -25,6 +25,48 @@ import '../../../core/theme/app_theme.dart';
 class AppRouter {
   static final GoRouter router = GoRouter(
     initialLocation: '/splash',
+    redirect: (context, state) {
+      // Prevent SIMA callback URLs from being treated as navigation routes
+      // These URLs should be processed by the sima package, not by the router
+      final location = state.uri.toString();
+      if (location.contains('status=success') && 
+          (location.contains('signature=') || location.contains('certificate='))) {
+        // This is a SIMA callback URL - ignore it and stay on current route
+        debugPrint('=== GoRouter: Redirecting SIMA callback URL ===');
+        debugPrint('Location: $location');
+        debugPrint('This URL should be handled by sima package, not router');
+        debugPrint('Staying on current route to allow sima package to process the callback');
+        // Return null to stay on current route - this prevents navigation error
+        // The sima package should complete Sima.loginSafe() Future
+        return null; // Stay on current route
+      }
+      return null; // No redirect needed
+    },
+    errorBuilder: (context, state) {
+      // Handle SIMA callback URLs that the sima package tries to navigate to
+      // These URLs should be processed by the sima package, not by the router
+      final location = state.uri.toString();
+      if (location.contains('status=success') && 
+          (location.contains('signature=') || location.contains('certificate='))) {
+        // This is a SIMA callback URL - ignore it and stay on current route
+        debugPrint('=== GoRouter: Ignoring SIMA callback URL in errorBuilder ===');
+        debugPrint('Location: $location');
+        debugPrint('This URL should be handled by sima package, not router');
+        // Return the current route or a safe fallback
+        return const Scaffold(
+          body: Center(
+            child: CircularProgressIndicator(),
+          ),
+        );
+      }
+      
+      // For other errors, show error page
+      return Scaffold(
+        body: Center(
+          child: Text('Route not found: ${state.uri}'),
+        ),
+      );
+    },
     routes: [
       GoRoute(
         path: '/splash',

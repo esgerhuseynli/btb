@@ -167,6 +167,11 @@ class OtpVerifiedForForgotPassword extends AuthState {
 }
 
 class PasswordChangedSuccess extends AuthState {
-  const PasswordChangedSuccess();
+  final String? phoneNumber;
+
+  const PasswordChangedSuccess({this.phoneNumber});
+
+  @override
+  List<Object?> get props => [phoneNumber];
 }
 

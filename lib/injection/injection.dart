@@ -46,7 +46,7 @@ Future<void> configureDependencies() async {
     () => AuthRepository(getIt<ApiService>()),
   );
   getIt.registerLazySingleton<BankAccountsRepository>(
-    () => BankAccountsRepository(getIt<ApiService>()),
+    () => BankAccountsRepository(getIt<ApiService>(), getIt<DioClient>().dio),
   );
 
   // Register Services

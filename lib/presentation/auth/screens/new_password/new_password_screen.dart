@@ -173,8 +173,13 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
         if (state is AuthError) {
           ErrorSnackBar.show(context, state.message);
         } else if (state is PasswordChangedSuccess) {
-          // Navigate to sign-in screen after successful password change
-          context.go('/sign-in-selection');
+          // Navigate to sign-in with password page after successful password change
+          if (state.phoneNumber != null && state.phoneNumber!.isNotEmpty) {
+            context.go('/password-entry?phone=${state.phoneNumber}');
+          } else {
+            // Fallback to sign-in selection if phone number is not available
+            context.go('/sign-in-selection');
+          }
         }
       },
       child: Scaffold(

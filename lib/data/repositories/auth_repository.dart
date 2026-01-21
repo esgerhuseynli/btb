@@ -161,13 +161,13 @@ class AuthRepository {
     String requestParametersValidationMessage = '',
     bool requestParametersValidated = true,
   }) async {
-    // Build request with camelCase keys as required by the new API
-    // Include all 7 fields for mobileUser: username, passwordHash, sessionKey, saltSignature, pinCode, phoneNumber, birthDate
+    // Build request with camelCase keys as required by the API
+    // Include all 7 fields for userInfo: username, passwordHash, sessionKey, saltSignature, pinCode, phoneNumber, birthDate
     // All fields must be present even if null/empty
     final mu = requestInfo.mobileUser;
     
-    // Build mobileUser map with all 7 fields - always include all fields
-    final mobileUserMap = <String, dynamic>{
+    // Build userInfo map with all 7 fields - always include all fields
+    final userInfoMap = <String, dynamic>{
       'username': mu?.username ?? '',
       'passwordHash': mu?.passwordHash ?? '',
       'sessionKey': mu?.sessionKey ?? '',
@@ -178,7 +178,7 @@ class AuthRepository {
     };
 
     final requestInfoMap = <String, dynamic>{
-      'mobileUser': mobileUserMap,
+      'userInfo': userInfoMap,
       'deviceInfo': {
         'deviceID': requestInfo.deviceInfo.deviceID,
         'vendor': requestInfo.deviceInfo.vendor,
@@ -206,8 +206,8 @@ class AuthRepository {
       final formattedJson = encoder.convert(request);
       debugPrint('=== Forgot Password Request ===');
       debugPrint(formattedJson);
-      debugPrint('mobileUser fields count: ${mobileUserMap.length}');
-      debugPrint('mobileUser keys: ${mobileUserMap.keys.toList()}');
+      debugPrint('userInfo fields count: ${userInfoMap.length}');
+      debugPrint('userInfo keys: ${userInfoMap.keys.toList()}');
       debugPrint('================================');
     }
 
@@ -216,29 +216,28 @@ class AuthRepository {
 
   Future<ApiResponse<dynamic>> changeForgotPassword({
     required RequestInfo requestInfo,
-    required String verificationCode,
+    required String phoneNumber,
+    required String pinCode,
     required String newPasswordHash,
     String requestParametersValidationMessage = '',
     bool requestParametersValidated = true,
   }) async {
-    // Build request with camelCase keys as required by the new API
-    // Include all 7 fields for mobileUser: username, passwordHash, sessionKey, saltSignature, pinCode, phoneNumber, birthDate
-    // All fields must be present even if null/empty
+    // Build request with camelCase keys as required by the API
+    // mobileUser should only have: username, passwordHash, sessionKey, saltSignature
     final mu = requestInfo.mobileUser;
     
-    // Build mobileUser map with all 7 fields - always include all fields
+    // Build mobileUser map with only 4 fields as per API spec
     final mobileUserMap = <String, dynamic>{
       'username': mu?.username ?? '',
       'passwordHash': mu?.passwordHash ?? '',
       'sessionKey': mu?.sessionKey ?? '',
       'saltSignature': mu?.saltSignature ?? '',
-      'pinCode': mu?.pinCode ?? '',
-      'phoneNumber': mu?.phoneNumber ?? '',
-      'birthDate': mu?.birthDate ?? '',
     };
 
     final requestInfoMap = <String, dynamic>{
       'mobileUser': mobileUserMap,
+      'phoneNumber': phoneNumber,
+      'pinCode': pinCode,
       'deviceInfo': {
         'deviceID': requestInfo.deviceInfo.deviceID,
         'vendor': requestInfo.deviceInfo.vendor,
@@ -257,7 +256,6 @@ class AuthRepository {
 
     final request = <String, dynamic>{
       'requestInfo': requestInfoMap,
-      'verificationCode': verificationCode,
       'newPasswordHash': newPasswordHash,
       'requestParametersValidationMessage': requestParametersValidationMessage,
       'requestParametersValidated': requestParametersValidated,

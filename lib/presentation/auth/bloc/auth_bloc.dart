@@ -226,13 +226,13 @@ class AuthBloc extends BaseBloc<AuthEvent, AuthState> {
         );
 
         // Step 2: ChangeKeystore - Set up device keystore
-        // Update mobileUser with saltSignature (sessionKey from SignIn)
+        // Copy session key from sign-in response and use it ONLY as saltSignature
         final sessionKey = response.sessionKey!;
         final updatedMobileUser = MobileUser(
           username: username,
           passwordHash: passwordHash, // Original password hash for ChangeKeystore
-          sessionKey: sessionKey,
-          saltSignature: sessionKey, // Set saltSignature for ChangeKeystore
+          sessionKey: null, // Don't include sessionKey in request body
+          saltSignature: sessionKey, // Use copied session key ONLY as saltSignature
         );
         
         final updatedRequestInfo = await _requestBuilder.buildRequestInfo(
@@ -250,7 +250,9 @@ class AuthBloc extends BaseBloc<AuthEvent, AuthState> {
           ),
         );
 
-        if (changeKeystoreResponse.responseInfo.responseType == 0) {
+        if (changeKeystoreResponse.responseInfo.responseType == 0 && 
+            changeKeystoreResponse.responseInfo.isSuccess && 
+            changeKeystoreResponse.passwordHash != null) {
           // Get new password hash from ChangeKeystore (used for final sign-in, not saved)
           final newPasswordHash = changeKeystoreResponse.passwordHash!;
           
@@ -263,24 +265,60 @@ class AuthBloc extends BaseBloc<AuthEvent, AuthState> {
           }
           
           // Check signInActionCode to determine next step
-          // signInActionCode == 1: OTP verification required (skipped for now)
+          // signInActionCode == 1: OTP verification required
           // signInActionCode == 0 or other: Proceed to PIN setup
-          // Skip OTP API call and proceed directly to PIN setup
-          if (kDebugMode) {
-            debugPrint('Sign-in successful - proceeding to PIN setup (signInActionCode: ${response.signInActionCode})');
-            if (response.signInActionCode == 1) {
-              debugPrint('Note: OTP verification skipped (signInActionCode: 1)');
+          if (response.signInActionCode == 1 && signInType == AppConstants.signInUpTypeNumber) {
+            // OTP verification required for phone number sign-in
+            if (kDebugMode) {
+              debugPrint('Sign-in successful - OTP verification required (signInActionCode: 1)');
+              debugPrint('Sending OTP to: $username');
             }
+            
+            // Save new password hash from ChangeKeystore temporarily (will be used after OTP verification)
+            await _secureStorage.write(
+              key: AppConstants.tempPasswordHashForPinSetup,
+              value: newPasswordHash,
+            );
+            
+            // Send OTP for phone number verification
+            try {
+              await _authRepository.sendOtp(
+                phoneNumber: username, // Already normalized with +994 prefix
+                text: 'Sign in', // OTP text for sign-in
+                type: 1, // OTP type for sign-in/verification
+                userId: username, // Use phone number as userId
+              );
+              
+              // Success - OTP sent, navigate to OTP verification screen
+              emit(OtpSent(
+                phoneNumber: username,
+                remainingMinutes: 5,
+                remainingSeconds: 0,
+                canResend: false,
+              ));
+            } catch (e) {
+              if (kDebugMode) {
+                debugPrint('Failed to send OTP: ${e.toString()}');
+              }
+              // Clean up temporary password hash on error
+              await _secureStorage.delete(key: AppConstants.tempPasswordHashForPinSetup);
+              emit(AuthError('Failed to send OTP: ${e.toString()}'));
+            }
+          } else {
+            // No OTP required - proceed directly to PIN setup
+            if (kDebugMode) {
+              debugPrint('Sign-in successful - proceeding to PIN setup (signInActionCode: ${response.signInActionCode})');
+            }
+            
+            // Navigate directly to PIN Setup Screen
+            // Use new password hash from ChangeKeystore for final sign-in after PIN setup
+            emit(PinSetupRequired(
+              username: username,
+              passwordHash: newPasswordHash, // New hash for final sign-in after PIN setup
+              signInType: signInType,
+              isComingFromSignIn: true,
+            ));
           }
-          
-          // Navigate directly to PIN Setup Screen (OTP API call skipped)
-          // Use new password hash from ChangeKeystore for final sign-in after PIN setup
-          emit(PinSetupRequired(
-            username: username,
-            passwordHash: newPasswordHash, // New hash for final sign-in after PIN setup
-            signInType: signInType,
-            isComingFromSignIn: true,
-          ));
         } else {
           emit(AuthError(
             changeKeystoreResponse.responseInfo.errorMessage ??
@@ -692,11 +730,12 @@ class AuthBloc extends BaseBloc<AuthEvent, AuthState> {
       }
 
       // Create MobileUser with saltSignature (sessionKey)
+      // Use copied session key ONLY as saltSignature, not in sessionKey field
       final mobileUser = MobileUser(
         username: username,
         passwordHash: passwordHash,
-        sessionKey: event.sessionKey,
-        saltSignature: event.sessionKey, // Set saltSignature for ChangeKeystore
+        sessionKey: null, // Don't include sessionKey in request body
+        saltSignature: event.sessionKey, // Use copied session key ONLY as saltSignature
       );
 
       final requestInfo = await _requestBuilder.buildRequestInfo(
@@ -714,7 +753,9 @@ class AuthBloc extends BaseBloc<AuthEvent, AuthState> {
         ),
       );
 
-      if (changeKeystoreResponse.responseInfo.responseType == 0) {
+      if (changeKeystoreResponse.responseInfo.responseType == 0 && 
+          changeKeystoreResponse.responseInfo.isSuccess && 
+          changeKeystoreResponse.passwordHash != null) {
         // Navigate to PIN Setup Screen
         emit(PinSetupRequired(
           username: username,
@@ -1137,10 +1178,37 @@ class AuthBloc extends BaseBloc<AuthEvent, AuthState> {
       );
 
       if (response.isSuccess && response.responseInfo.responseType == 0) {
-        // Success - emit ForgotPasswordSuccess state
-        emit(ForgotPasswordSuccess(
-          mobileNumber: response.mobileNumber,
-        ));
+        // Success - send OTP to user's phone number
+        // Use the normalized username (phone number) for sending OTP
+        if (!isEmail && username.isNotEmpty) {
+          try {
+            await _authRepository.sendOtp(
+              phoneNumber: username, // Already normalized with +994 prefix
+              text: 'Password reset', // OTP text for password reset
+              type: 2, // OTP type for password reset
+              userId: username, // Use phone number as userId
+            );
+
+            // Store username and finCode temporarily for use in change password API
+            await _secureStorage.write(
+              key: AppConstants.tempForgotPasswordUsername,
+              value: username,
+            );
+            await _secureStorage.write(
+              key: AppConstants.tempForgotPasswordFinCode,
+              value: event.finCode,
+            );
+
+            // OTP sent successfully - emit ForgotPasswordSuccess state
+            emit(ForgotPasswordSuccess(
+              mobileNumber: username, // Use the normalized phone number
+            ));
+          } catch (e) {
+            emit(AuthError('Failed to send OTP: ${e.toString()}'));
+          }
+        } else {
+          emit(AuthError('Phone number is required for password reset'));
+        }
       } else {
         emit(AuthError(
           response.responseInfo.responseMessage ??
@@ -1159,8 +1227,30 @@ class AuthBloc extends BaseBloc<AuthEvent, AuthState> {
       ) async {
     emit(const AuthLoading());
     try {
-      // Build RequestInfo without MobileUser (change password doesn't require authentication)
-      final RequestInfo requestInfo = await _requestBuilder.buildRequestInfo();
+      // Retrieve stored username and finCode from forgot password flow
+      final username = await _secureStorage.read(key: AppConstants.tempForgotPasswordUsername) ?? '';
+      final finCode = await _secureStorage.read(key: AppConstants.tempForgotPasswordFinCode) ?? '';
+
+      if (username.isEmpty || finCode.isEmpty) {
+        emit(const AuthError('Missing required information for password change'));
+        return;
+      }
+
+      // Create MobileUser with username only (other fields empty as per API spec)
+      final mobileUser = MobileUser(
+        username: username,
+        passwordHash: '',
+        sessionKey: '',
+        saltSignature: '',
+        pinCode: null,
+        phoneNumber: null,
+        birthDate: null,
+      );
+
+      // Build RequestInfo with MobileUser
+      final RequestInfo requestInfo = await _requestBuilder.buildRequestInfo(
+        mobileUser: mobileUser,
+      );
 
       // Hash the new password
       final String newPasswordHash = AppUtils.passwordHash(event.newPassword);
@@ -1168,13 +1258,19 @@ class AuthBloc extends BaseBloc<AuthEvent, AuthState> {
       // Call change forgot password API
       final ApiResponse<dynamic> response = await _authRepository.changeForgotPassword(
         requestInfo: requestInfo,
-        verificationCode: event.verificationCode,
+        phoneNumber: username,
+        pinCode: finCode,
         newPasswordHash: newPasswordHash,
       );
 
       if (response.responseInfo.responseType == 0) {
         // Success - password changed
-        emit(const PasswordChangedSuccess());
+        // Emit success with phone number before cleaning up
+        emit(PasswordChangedSuccess(phoneNumber: username));
+        
+        // Clean up temporary storage after emitting state
+        await _secureStorage.delete(key: AppConstants.tempForgotPasswordUsername);
+        await _secureStorage.delete(key: AppConstants.tempForgotPasswordFinCode);
       } else {
         emit(AuthError(
           response.responseInfo.responseMessage ??
@@ -1232,19 +1328,33 @@ class AuthBloc extends BaseBloc<AuthEvent, AuthState> {
       // Success - OTP verified
       emit(const OtpVerified());
       
-      // For regular sign-in flow, after OTP verification, proceed to PIN setup
-      if (event.flowType == OtpFlowType.regularSignIn) {
+      // For forgot password flow, emit state with verification code to navigate to new password screen
+      if (event.flowType == OtpFlowType.forgotPassword) {
+        emit(OtpVerifiedForForgotPassword(
+          verificationCode: event.otpCode,
+          phone: normalizedPhone,
+        ));
+      } else if (event.flowType == OtpFlowType.regularSignIn) {
         // Get stored credentials from sign-in
         final username = await _secureStorage.read(key: AppConstants.username) ?? '';
-        final passwordHash = await _secureStorage.read(key: AppConstants.passwordHash) ?? '';
         final signInTypeStr = await _secureStorage.read(key: AppConstants.signInType) ?? '2';
         final signInType = int.tryParse(signInTypeStr) ?? AppConstants.signInUpTypeNumber;
         
+        // Get new password hash from ChangeKeystore (saved temporarily before OTP was sent)
+        // If not found, fall back to original password hash
+        final newPasswordHash = await _secureStorage.read(key: AppConstants.tempPasswordHashForPinSetup);
+        final passwordHash = newPasswordHash ?? await _secureStorage.read(key: AppConstants.passwordHash) ?? '';
+        
         if (username.isNotEmpty && passwordHash.isNotEmpty) {
-          // Navigate to PIN setup
+          // Clean up temporary password hash
+          if (newPasswordHash != null) {
+            await _secureStorage.delete(key: AppConstants.tempPasswordHashForPinSetup);
+          }
+          
+          // Navigate to PIN setup with new password hash from ChangeKeystore
           emit(PinSetupRequired(
             username: username,
-            passwordHash: passwordHash,
+            passwordHash: passwordHash, // Use new hash from ChangeKeystore if available
             signInType: signInType,
             isComingFromSignIn: true,
           ));
@@ -1265,6 +1375,15 @@ class AuthBloc extends BaseBloc<AuthEvent, AuthState> {
       SimaAuthenticateEvent event,
       Emitter<AuthState> emit,
       ) async {
+    if (kDebugMode) {
+      debugPrint('=== _onSimaAuthenticate CALLED ===');
+      debugPrint('Event received at: ${DateTime.now()}');
+      debugPrint('Phone Number: ${event.phoneNumber}');
+      debugPrint('FIN Code: ${event.finCode}');
+      debugPrint('Certificate bytes: ${event.certificateBytes != null ? "${event.certificateBytes!.length} bytes" : "NULL"}');
+      debugPrint('Signature bytes: ${event.signatureBytes != null ? "${event.signatureBytes!.length} bytes" : "NULL"}');
+    }
+    
     emit(const AuthLoading());
     try {
       // Normalize phone number to username format (9 digits)
@@ -1272,18 +1391,31 @@ class AuthBloc extends BaseBloc<AuthEvent, AuthState> {
           .replaceAll('+994', '')
           .replaceAll(RegExp(r'\D'), '');
       
+      if (kDebugMode) {
+        debugPrint('Normalized username: $username (length: ${username.length})');
+      }
+      
       if (username.length != 9) {
+        if (kDebugMode) {
+          debugPrint('ERROR: Invalid phone number format - username length is ${username.length}, expected 9');
+        }
         emit(const AuthError('Invalid phone number format'));
         return;
       }
 
       // Verify SIMA certificate with backend API
       if (event.certificateBytes == null || event.certificateBytes!.isEmpty) {
+        if (kDebugMode) {
+          debugPrint('ERROR: SIMA certificate is missing or empty');
+        }
         emit(const AuthError('SIMA certificate is missing'));
         return;
       }
 
       if (event.finCode.isEmpty) {
+        if (kDebugMode) {
+          debugPrint('ERROR: FIN code is empty');
+        }
         emit(const AuthError('FIN code is missing'));
         return;
       }
@@ -1342,23 +1474,34 @@ class AuthBloc extends BaseBloc<AuthEvent, AuthState> {
         debugPrint('=== Calling SIMA Certificate Verification API ===');
         debugPrint('Certificate (base64) length: ${certificateBase64.length}');
         debugPrint('FIN Code (PIN): ${event.finCode}');
+        debugPrint('About to call _authRepository.verifySimaCertificate...');
       }
       
       try {
+        if (kDebugMode) {
+          debugPrint('=== BEFORE API CALL ===');
+          debugPrint('Calling verifySimaCertificate at: ${DateTime.now()}');
+        }
+        
         await _authRepository.verifySimaCertificate(
           certificate: certificateBase64,
           pinCode: event.finCode,
         );
         
         if (kDebugMode) {
+          debugPrint('=== AFTER API CALL (SUCCESS) ===');
+          debugPrint('API call completed at: ${DateTime.now()}');
           debugPrint('=== SIMA Certificate Verification Success ===');
           debugPrint('Certificate verified successfully, proceeding to PIN setup...');
           debugPrint('=============================================');
         }
-      } catch (e) {
+      } catch (e, stackTrace) {
         if (kDebugMode) {
+          debugPrint('=== AFTER API CALL (ERROR) ===');
+          debugPrint('API call failed at: ${DateTime.now()}');
           debugPrint('=== SIMA Certificate Verification Failed ===');
           debugPrint('Error: $e');
+          debugPrint('Stack trace: $stackTrace');
           debugPrint('===========================================');
         }
         emit(AuthError('SIMA certificate verification failed: ${e.toString()}'));

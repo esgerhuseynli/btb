@@ -38,6 +38,9 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
     6,
     (_) => FocusNode(),
   );
+  // Hidden TextField for SMS autofill
+  final TextEditingController _autofillController = TextEditingController();
+  final FocusNode _autofillFocusNode = FocusNode();
 
   Timer? _timer;
   int _remainingMinutes = 5;
@@ -50,6 +53,8 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
   void initState() {
     super.initState();
     _startTimer();
+    // Listen to autofill controller changes
+    _autofillController.addListener(_handleAutofillChange);
     // Auto-focus first field
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _focusNodes[0].requestFocus();
@@ -59,6 +64,9 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
   @override
   void dispose() {
     _timer?.cancel();
+    _autofillController.removeListener(_handleAutofillChange);
+    _autofillController.dispose();
+    _autofillFocusNode.dispose();
     for (var controller in _controllers) {
       controller.dispose();
     }
@@ -93,8 +101,52 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
   }
 
 
+  void _handleAutofillChange() {
+    final code = _autofillController.text.replaceAll(RegExp(r'[^\d]'), '');
+    if (code.length == 6) {
+      // Distribute the code to all fields
+      for (int i = 0; i < 6 && i < code.length; i++) {
+        _controllers[i].text = code[i];
+        _previousValues[i] = code[i];
+      }
+      // Clear autofill controller
+      _autofillController.clear();
+      // Auto-submit when all 6 digits are filled
+      if (_isAllDigitsFilled()) {
+        _handleVerify();
+      }
+    }
+  }
+
   void _onDigitChanged(int index, String value) {
-    // Only allow single digit
+    // Check if this is a paste operation (multiple characters detected)
+    // This happens when user pastes text into any field
+    if (value.length > 1) {
+      // Extract only digits from pasted text
+      final code = value.replaceAll(RegExp(r'[^\d]'), '');
+      if (code.length >= 6) {
+        // Full 6-digit code pasted - distribute to all fields
+        _handlePaste(code.substring(0, 6));
+        return;
+      } else if (code.length > 1) {
+        // Partial paste - fill from current index onwards
+        for (int i = 0; i < code.length && (index + i) < 6; i++) {
+          _controllers[index + i].text = code[i];
+          _previousValues[index + i] = code[i];
+        }
+        // Move focus to the next empty field or last field
+        final nextIndex = (index + code.length).clamp(0, 5);
+        _focusNodes[nextIndex].requestFocus();
+        // Auto-submit if all filled
+        if (_isAllDigitsFilled()) {
+          _handleVerify();
+        }
+        return;
+      }
+    }
+
+    // Normal single character input
+    // Limit to single digit
     if (value.length > 1) {
       _controllers[index].text = value.substring(value.length - 1);
       _controllers[index].selection = TextSelection.collapsed(
@@ -116,6 +168,25 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
       _handleVerify();
     }
   }
+
+  void _handlePaste(String pastedText) {
+    // Extract only digits from pasted text
+    final code = pastedText.replaceAll(RegExp(r'[^\d]'), '');
+    if (code.length == 6) {
+      // Distribute the code to all fields
+      for (int i = 0; i < 6 && i < code.length; i++) {
+        _controllers[i].text = code[i];
+        _previousValues[i] = code[i];
+      }
+      // Focus the last field
+      _focusNodes[5].requestFocus();
+      // Auto-submit when all 6 digits are filled
+      if (_isAllDigitsFilled()) {
+        _handleVerify();
+      }
+    }
+  }
+
 
   bool _isAllDigitsFilled() {
     return _controllers.every((controller) => controller.text.isNotEmpty);
@@ -147,14 +218,16 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
     final text = widget.flowType == OtpFlowType.simaSignIn
         ? context.l10n.simaSignIn
         : widget.flowType == OtpFlowType.forgotPassword
-            ? context.l10n.forgotPassword
+            ? 'Password reset' // OTP text for password reset
             : context.l10n.resendOtp;
+    
+    final otpType = widget.flowType == OtpFlowType.forgotPassword ? 2 : 1; // Type 2 for password reset, 1 for sign-in/verification
     
     context.read<AuthBloc>().add(
           SendOtpEvent(
             phoneNumber: widget.phoneNumber,
             text: text,
-            type: 1, // OTP type for sign-in/verification
+            type: otpType,
             userId: widget.phoneNumber, // Use phone number as userId
             flowType: widget.flowType,
           ),
@@ -188,6 +261,15 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
               'passwordHash': state.passwordHash,
               'signInType': state.signInType,
               'isComingFromSignIn': state.isComingFromSignIn,
+            },
+          );
+        } else if (state is OtpVerifiedForForgotPassword) {
+          // Navigate to new password screen with verification code
+          context.push(
+            '/new-password',
+            extra: {
+              'verificationCode': state.verificationCode,
+              'phone': state.phone,
             },
           );
         } else if (state is OtpVerified) {
@@ -242,55 +324,76 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                       ),
                       SizedBox(height: 12.h),
                       // OTP Input Section
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // Label - Body/Small/Inter
-                          Text(
-                            context.l10n.enterVerificationCode,
-                            style: AppTextStyles.inputLabel(context).copyWith(
-                              color: AppTheme.textTertiary,
-                            ),
-                          ),
-                          SizedBox(height: 8.h),
-                          // OTP Fields
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: List.generate(6, (index) {
-                              return Padding(
-                                padding: EdgeInsets.only(
-                                  right: index < 5 ? 12.w : 0,
-                                ),
-                                child: _buildOtpField(index),
-                              );
-                            }),
-                          ),
-                          SizedBox(height: 8.h),
-                          // Timer and Resend
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              // Timer
-                              Text(
-                                _formatTimer(),
-                                style: AppTextStyles.buttonSubtitle(context, color: AppTheme.textDark),
+                      AutofillGroup(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // Label - Body/Small/Inter
+                            Text(
+                              context.l10n.enterVerificationCode,
+                              style: AppTextStyles.inputLabel(context).copyWith(
+                                color: AppTheme.textTertiary,
                               ),
-                              // Resend OTP
-                              GestureDetector(
-                                onTap: _canResend ? _handleResend : null,
-                                child: Text(
-                                  context.l10n.resendOtp,
-                                  style: AppTextStyles.buttonSubtitle(
-                                    context,
-                                    color: _canResend
-                                        ? AppTheme.textDark
-                                        : AppTheme.textTertiary,
+                            ),
+                            SizedBox(height: 8.h),
+                            // Hidden TextField for SMS autofill
+                            Opacity(
+                              opacity: 0,
+                              child: SizedBox(
+                                height: 0,
+                                width: 0,
+                                child: TextField(
+                                  controller: _autofillController,
+                                  focusNode: _autofillFocusNode,
+                                  keyboardType: TextInputType.number,
+                                  autofillHints: const [AutofillHints.oneTimeCode],
+                                  textInputAction: TextInputAction.done,
+                                  inputFormatters: [
+                                    FilteringTextInputFormatter.digitsOnly,
+                                    LengthLimitingTextInputFormatter(6),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            // OTP Fields
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: List.generate(6, (index) {
+                                return Padding(
+                                  padding: EdgeInsets.only(
+                                    right: index < 5 ? 12.w : 0,
+                                  ),
+                                  child: _buildOtpField(index),
+                                );
+                              }),
+                            ),
+                            SizedBox(height: 8.h),
+                            // Timer and Resend
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                // Timer
+                                Text(
+                                  _formatTimer(),
+                                  style: AppTextStyles.buttonSubtitle(context, color: AppTheme.textDark),
+                                ),
+                                // Resend OTP
+                                GestureDetector(
+                                  onTap: _canResend ? _handleResend : null,
+                                  child: Text(
+                                    context.l10n.resendOtp,
+                                    style: AppTextStyles.buttonSubtitle(
+                                      context,
+                                      color: _canResend
+                                          ? AppTheme.textDark
+                                          : AppTheme.textTertiary,
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ],
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                       SizedBox(height: 56.h),
                       // Continue/Verify Button
@@ -370,7 +473,9 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
           ),
           inputFormatters: [
             FilteringTextInputFormatter.digitsOnly,
-            LengthLimitingTextInputFormatter(1),
+            // Allow up to 6 characters to detect paste events
+            // The onChanged handler will process paste vs normal input
+            LengthLimitingTextInputFormatter(6),
           ],
           decoration: InputDecoration(
             counterText: '',
@@ -394,25 +499,25 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
               _onDigitChanged(index, value);
             }
           },
-        onTap: () {
-          // Select all text when tapped
-          _controllers[index].selection = TextSelection(
-            baseOffset: 0,
-            extentOffset: _controllers[index].text.length,
-          );
-        },
-        onSubmitted: (_) {
-          if (index < 5) {
-            _focusNodes[index + 1].requestFocus();
-          } else {
-            _handleVerify();
-          }
-        },
-        onEditingComplete: () {
-          if (index < 5) {
-            _focusNodes[index + 1].requestFocus();
-          }
-        },
+          onTap: () {
+            // Select all text when tapped
+            _controllers[index].selection = TextSelection(
+              baseOffset: 0,
+              extentOffset: _controllers[index].text.length,
+            );
+          },
+          onSubmitted: (_) {
+            if (index < 5) {
+              _focusNodes[index + 1].requestFocus();
+            } else {
+              _handleVerify();
+            }
+          },
+          onEditingComplete: () {
+            if (index < 5) {
+              _focusNodes[index + 1].requestFocus();
+            }
+          },
           ),
         ),
       ),

@@ -116,11 +116,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           );
         } else if (state is ForgotPasswordSuccess && !_hasNavigated) {
           _hasNavigated = true;
+          // Navigate to OTP verification screen for forgot password flow
           context.push(
-            '/new-password',
-            extra: {
-              'phone': state.mobileNumber,
-            },
+            '/otp-verification?phoneNumber=${state.mobileNumber ?? ''}&flowType=forgotPassword',
           );
         }
       },
@@ -140,10 +138,10 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                         constraints: BoxConstraints(
                           minHeight: constraints.maxHeight,
                         ),
-                        child: IntrinsicHeight(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
                               // SizedBox(height: 40.h),
                               // Title - H2/Medium style
                               Text(
@@ -345,7 +343,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                   SizedBox(height: 8.h),
                                 ],
                               ),
-                              const Spacer(),
+                              SizedBox(height: 24.h),
                             // License agreement text
                               Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 16.w),
@@ -376,8 +374,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                             ],
                           ),
                         ),
-                      ),
-                    );
+                      );
                   },
                 ),
               ),

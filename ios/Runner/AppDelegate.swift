@@ -27,11 +27,27 @@ import UIKit
     open url: URL,
     options: [UIApplication.OpenURLOptionsKey: Any] = [:]
   ) -> Bool {
-    // Handle SIMA callback
+    // Debug logging
+    print("=== AppDelegate: URL callback received ===")
+    print("URL scheme: \(url.scheme ?? "nil")")
+    print("URL: \(url.absoluteString)")
+    print("App state: \(app.applicationState.rawValue)") // 0=active, 1=inactive, 2=background
+    
+    // Handle SIMA callback URLs (btbmobile://)
+    // We use native SimaHandler method channel on iOS instead of sima package
+    // because the sima package has a bug where it doesn't complete the Future on iOS
     if url.scheme == "btbmobile" {
-      return simaHandler?.handleUrlCallback(url: url) ?? false
+      print("Handling SIMA callback with native SimaHandler")
+      let handled = simaHandler?.handleUrlCallback(url: url) ?? false
+      print("Handled by SimaHandler: \(handled)")
+      print("=== AppDelegate: URL callback handling complete ===")
+      return handled
     }
     
-    return super.application(app, open: url, options: options)
+    // For other URLs, let the parent handle it (for sima package or other handlers)
+    let handledByParent = super.application(app, open: url, options: options)
+    print("Handled by parent: \(handledByParent)")
+    print("=== AppDelegate: URL callback handling complete ===")
+    return handledByParent
   }
 }

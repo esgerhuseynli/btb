@@ -157,26 +157,28 @@ class _PasswordEntryScreenState extends State<PasswordEntryScreen> {
 
   Widget _buildPasswordInput(BuildContext context) {
     return Expanded(
-      child: TextFormField(
-        controller: _passwordController,
-        focusNode: _passwordFocusNode,
-        keyboardType: TextInputType.text,
-        obscureText: _obscureText,
-        autofocus: true,
-        inputFormatters: [
-          LengthLimitingTextInputFormatter(PasswordRules.maxLength),
-        ],
-        style: AppTextStyles.inputText(context, color: AppTheme.textDark),
-        decoration: InputDecoration(
-          border: InputBorder.none,
-          enabledBorder: InputBorder.none,
-          focusedBorder: InputBorder.none,
-          errorBorder: InputBorder.none,
-          focusedErrorBorder: InputBorder.none,
-          contentPadding: EdgeInsets.zero,
-          isDense: true,
-          hintText: '••••••••',
-          hintStyle: AppTextStyles.inputHint(context),
+      child: SizedBox(
+        width: double.infinity,
+        child: TextFormField(
+          controller: _passwordController,
+          focusNode: _passwordFocusNode,
+          keyboardType: TextInputType.text,
+          obscureText: _obscureText,
+          inputFormatters: [
+            LengthLimitingTextInputFormatter(PasswordRules.maxLength),
+          ],
+          style: AppTextStyles.inputText(context, color: AppTheme.textDark),
+          decoration: InputDecoration(
+            border: InputBorder.none,
+            enabledBorder: InputBorder.none,
+            focusedBorder: InputBorder.none,
+            errorBorder: InputBorder.none,
+            focusedErrorBorder: InputBorder.none,
+            contentPadding: EdgeInsets.zero,
+            isDense: true,
+            hintText: '••••••••',
+            hintStyle: AppTextStyles.inputHint(context),
+          ),
         ),
       ),
     );

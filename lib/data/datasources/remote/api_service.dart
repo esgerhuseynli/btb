@@ -62,10 +62,12 @@ abstract class ApiService {
   Future<ApiResponse<EmptyResponse>> reportKeystoreIncident(
       @Body() Map<String, dynamic> request);
 
+  @Headers({'x-api-key': 'MOBILE_SUPER_SECRET_KEY_1215489789744153153'})
   @POST('http://94.20.61.252:8087/api/SingInUp/UserForgotPassword')
   Future<CardSendResponse> forgotPassword(
       @Body() Map<String, dynamic> request);
 
+  @Headers({'x-api-key': 'MOBILE_SUPER_SECRET_KEY_1215489789744153153'})
   @POST('http://94.20.61.252:8087/api/SingInUp/SubmitUserForgotPassword')
   Future<ApiResponse<EmptyResponse>> changeForgotPassword(
       @Body() Map<String, dynamic> request);

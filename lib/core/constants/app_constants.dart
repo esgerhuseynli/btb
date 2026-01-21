@@ -19,6 +19,9 @@ class AppConstants {
   static const String customerName = 'd8';
   static const String lastLogin = 'd9';
   static const String appLanguage = 'd11';
+  static const String tempPasswordHashForPinSetup = 'd12'; // Temporary storage for new password hash from ChangeKeystore (used after OTP verification)
+  static const String tempForgotPasswordUsername = 'd13'; // Temporary storage for username during forgot password flow
+  static const String tempForgotPasswordFinCode = 'd14'; // Temporary storage for finCode during forgot password flow
 
   // Cookie Key (matches Android Constants.COOKIE_KEY)
   static const String cookieKey = 'Cookie';

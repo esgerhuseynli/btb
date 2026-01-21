@@ -85,6 +85,11 @@ class _SignInScreenState extends State<SignInScreen> {
       listener: (context, state) {
         if (state is AuthAuthenticated) {
           context.go('/home');
+        } else if (state is OtpSent) {
+          // Navigate to OTP verification screen when OTP is sent
+          context.push(
+            '/otp-verification?phoneNumber=${state.phoneNumber}&flowType=regularSignIn',
+          );
         } else if (state is PinSetupRequired) {
           // Navigate to PIN setup screen
           context.push(

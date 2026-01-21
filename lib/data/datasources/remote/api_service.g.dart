@@ -240,7 +240,10 @@ class _ApiService implements ApiService {
   Future<CardSendResponse> forgotPassword(Map<String, dynamic> request) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
+    final _headers = <String, dynamic>{
+      r'x-api-key': 'MOBILE_SUPER_SECRET_KEY_1215489789744153153'
+    };
+    _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(request);
     final _options = _setStreamType<CardSendResponse>(Options(
@@ -275,7 +278,10 @@ class _ApiService implements ApiService {
       Map<String, dynamic> request) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
+    final _headers = <String, dynamic>{
+      r'x-api-key': 'MOBILE_SUPER_SECRET_KEY_1215489789744153153'
+    };
+    _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(request);
     final _options = _setStreamType<ApiResponse<EmptyResponse>>(Options(

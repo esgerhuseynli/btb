@@ -208,7 +208,7 @@ class AppTextStyles {
   /// Used for action button labels on home page
   static TextStyle actionButtonLabel(BuildContext context, {Color? color}) {
     return Theme.of(context).textTheme.labelLarge!.copyWith(
-      fontFamily: 'SF Pro',
+      fontFamily: 'SFPro',
       fontWeight: FontWeight.w600,
       color: color ?? AppTheme.textDark,
     );
