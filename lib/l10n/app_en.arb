@@ -1,0 +1,183 @@
+{
+  "@@locale": "en",
+  "appTitle": "BTB Mobile Banking",
+  "@appTitle": {
+    "description": "The title of the application"
+  },
+  "mobileBanking": "BTB Mobile Banking",
+  "accessBankingServices": "Access banking services with ease",
+  "securePayments": "Secure Payments",
+  "secureAndFastPayments": "Make secure and fast payments",
+  "transfers": "Transfers",
+  "easyMoneyTransfers": "Make money transfers easily",
+  "start": "Start",
+  "continueButton": "Continue",
+  "next": "Next",
+  "phoneNumber": "Phone Number",
+  "email": "Email",
+  "password": "Password",
+  "enterPassword": "Enter password",
+  "enterYourPassword": "Enter your password",
+  "forgotPassword": "Forgot password?",
+  "passwordReset": "Password reset?",
+  "enterDateOfBirthOrFin": "Please enter your date of birth or FIN code",
+  "signIn": "Sign In",
+  "signUp": "Sign Up",
+  "dontHaveAccount": "Don't have an account? ",
+  "register": "Register",
+  "licenseAgreement": "By pressing \"Continue\" I accept the BTB Bank Licence Agreement conditions",
+  "youNeedToSignUp": "You need to sign up",
+  "ok": "OK",
+  "wrongPinCode": "Wrong PIN code",
+  "setNewPassword": "Set new password",
+  "enterNewPassword": "Please enter your new password",
+  "newPassword": "New password",
+  "enterNewPasswordHint": "Enter new password",
+  "confirmPassword": "Confirm password",
+  "confirmPasswordHint": "Confirm new password",
+  "passwordRequired": "Password is required",
+  "passwordMinLength": "Password must be between 8 and 16 characters",
+  "pleaseConfirmPassword": "Please confirm your password",
+  "passwordsDoNotMatch": "Passwords do not match",
+  "enterEmailAddress": "Enter your email address",
+  "phoneNumberHint": "XX XXX XX XX",
+  "mobileNumber": "Mobile Number",
+  "errorGeneric": "An error occurred. Please try again.",
+  "errorNetwork": "Network connection error. Please check your internet connection.",
+  "errorInvalidPassword": "Invalid password. Please try again.",
+  "errorWrongPassword": "Incorrect password. Please try again.",
+  "errorInvalidUsername": "Invalid username or phone number.",
+  "errorUserNotFound": "User not found. Please check your credentials.",
+  "errorAuthenticationFailed": "Authentication failed. Please try again.",
+  "errorWrongPin": "Incorrect PIN code. Please try again.",
+  "errorInvalidCode": "Invalid verification code. Please try again.",
+  "errorCodeExpired": "Verification code has expired. Please request a new one.",
+  "errorInvalidOtp": "Invalid OTP code. Please try again.",
+  "errorOtpExpired": "OTP code has expired. Please request a new one.",
+  "errorDeviceNotRegistered": "Device is not registered. Please complete registration.",
+  "errorAccountLocked": "Your account has been locked. Please contact support.",
+  "errorAccountSuspended": "Your account has been suspended. Please contact support.",
+  "errorServerError": "Server error. Please try again later.",
+  "errorServiceUnavailable": "Service is temporarily unavailable. Please try again later.",
+  "enterSmsCode": "Enter the SMS code",
+  "@enterSmsCode": {
+    "description": "Title for SMS verification screen"
+  },
+  "weSentCodeTo": "We sent a 6-digit code to ",
+  "@weSentCodeTo": {
+    "description": "Message indicating SMS code was sent to phone number"
+  },
+  "enterItToContinue": ". Enter it to continue",
+  "@enterItToContinue": {
+    "description": "Instruction to enter the code to continue"
+  },
+  "enterVerificationCode": "Enter the verification code",
+  "@enterVerificationCode": {
+    "description": "Label for verification code input field"
+  },
+  "resendOtp": "Resend OTP",
+  "@resendOtp": {
+    "description": "Button text to resend OTP code"
+  },
+  "verify": "Verify",
+  "@verify": {
+    "description": "Button text to verify OTP code"
+  },
+  "otpResentSuccessfully": "OTP resent successfully",
+  "@otpResentSuccessfully": {
+    "description": "Success message when OTP is resent"
+  },
+  "otpSentSuccessfully": "OTP sent successfully",
+  "@otpSentSuccessfully": {
+    "description": "Success message when OTP is sent"
+  },
+  "simaSignIn": "SIMA Sign In",
+  "@simaSignIn": {
+    "description": "Text for SIMA sign in flow"
+  },
+  "finCode": "Fin code",
+  "@finCode": {
+    "description": "Label for FIN code input field"
+  },
+  "dateOfBirth": "Date of birth",
+  "@dateOfBirth": {
+    "description": "Label for date of birth input field"
+  },
+  "dateOfBirthHint": "DD/MM/YYYY",
+  "@dateOfBirthHint": {
+    "description": "Hint text for date of birth input field"
+  },
+  "yourBalance": "Your Balance",
+  "@yourBalance": {
+    "description": "Label for user balance section"
+  },
+  "addMoney": "Add money",
+  "@addMoney": {
+    "description": "Button label for adding money"
+  },
+  "transfer": "Transfer",
+  "@transfer": {
+    "description": "Button label for transfer action"
+  },
+  "payMoney": "Pay money",
+  "@payMoney": {
+    "description": "Button label for pay money action"
+  },
+  "payments": "Payments",
+  "@payments": {
+    "description": "Button label for payments action"
+  },
+  "statement": "Statement",
+  "@statement": {
+    "description": "Button label for statement action"
+  },
+  "transactions": "Transactions",
+  "@transactions": {
+    "description": "Title for transactions section"
+  },
+  "seeAll": "See all",
+  "@seeAll": {
+    "description": "Link text to see all transactions"
+  },
+  "today": "Today",
+  "@today": {
+    "description": "Label for today's date"
+  },
+  "groceryShopping": "Grocery shopping",
+  "@groceryShopping": {
+    "description": "Transaction category for grocery shopping"
+  },
+  "foodDining": "Food dining",
+  "@foodDining": {
+    "description": "Transaction category for food dining"
+  },
+  "creditCardPayment": "Credit card payment",
+  "@creditCardPayment": {
+    "description": "Transaction category for credit card payment"
+  },
+  "movie": "Movie",
+  "@movie": {
+    "description": "Transaction category for movie"
+  },
+  "moneyReceived": "Money received",
+  "@moneyReceived": {
+    "description": "Transaction category for money received"
+  },
+  "shopping": "Shopping",
+  "@shopping": {
+    "description": "Transaction category for shopping"
+  },
+  "transferTransaction": "Transfer",
+  "@transferTransaction": {
+    "description": "Transaction category for transfer"
+  },
+  "currentAccountUsd": "Cari USD",
+  "@currentAccountUsd": {
+    "description": "Current account USD label"
+  },
+  "welcomeBack": "Welcome back!",
+  "@welcomeBack": {
+    "description": "Welcome message on homepage"
+  }
+}
+

@@ -9,8 +9,11 @@ part of 'mobile_user.dart';
 MobileUser _$MobileUserFromJson(Map<String, dynamic> json) => MobileUser(
       username: json['Username'] as String?,
       passwordHash: json['PasswordHash'] as String?,
-      sessionKey: json['SessionKey'] as String?,
+      sessionKey: json['sessionKey'] as String?,
       saltSignature: json['SaltSignature'] as String?,
+      pinCode: json['pinCode'] as String?,
+      phoneNumber: json['phoneNumber'] as String?,
+      birthDate: json['birthDate'] as String?,
     );
 
 Map<String, dynamic> _$MobileUserToJson(MobileUser instance) {
@@ -24,7 +27,10 @@ Map<String, dynamic> _$MobileUserToJson(MobileUser instance) {
 
   writeNotNull('Username', instance.username);
   writeNotNull('PasswordHash', instance.passwordHash);
-  writeNotNull('SessionKey', instance.sessionKey);
+  writeNotNull('sessionKey', instance.sessionKey);
   writeNotNull('SaltSignature', instance.saltSignature);
+  writeNotNull('pinCode', instance.pinCode);
+  writeNotNull('phoneNumber', instance.phoneNumber);
+  writeNotNull('birthDate', instance.birthDate);
   return val;
 }

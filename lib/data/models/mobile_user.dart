@@ -10,17 +10,29 @@ class MobileUser {
   @JsonKey(name: 'PasswordHash')
   final String? passwordHash;
 
-  @JsonKey(name: 'SessionKey', includeIfNull: false)
+  @JsonKey(name: 'sessionKey', includeIfNull: false)
   final String? sessionKey;
 
   @JsonKey(name: 'SaltSignature', includeIfNull: false)
   final String? saltSignature;
+
+  @JsonKey(name: 'pinCode', includeIfNull: false)
+  final String? pinCode;
+
+  @JsonKey(name: 'phoneNumber', includeIfNull: false)
+  final String? phoneNumber;
+
+  @JsonKey(name: 'birthDate', includeIfNull: false)
+  final String? birthDate;
 
   MobileUser({
     this.username,
     this.passwordHash,
     this.sessionKey,
     this.saltSignature,
+    this.pinCode,
+    this.phoneNumber,
+    this.birthDate,
   });
 
   factory MobileUser.fromJson(Map<String, dynamic> json) =>

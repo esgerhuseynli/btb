@@ -20,12 +20,20 @@ class SignInRequest {
   @JsonKey(name: 'MobileNumberSecretCode', includeIfNull: false)
   final String? mobileNumberSecretCode;
 
+  @JsonKey(name: 'requestParametersValidationMessage', includeIfNull: false)
+  final String? requestParametersValidationMessage;
+
+  @JsonKey(name: 'requestParametersValidated', includeIfNull: false)
+  final bool? requestParametersValidated;
+
   SignInRequest({
     required this.requestInfo,
     required this.keystoreType,
     required this.signInType,
     this.mobileNumber,
     this.mobileNumberSecretCode,
+    this.requestParametersValidationMessage,
+    this.requestParametersValidated,
   });
 
   factory SignInRequest.fromJson(Map<String, dynamic> json) =>

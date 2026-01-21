@@ -9,6 +9,7 @@ import '../../../core/constants/app_constants.dart';
 import '../../core/widgets/app_button.dart';
 import '../../core/widgets/app_text_field.dart';
 import '../../core/widgets/app_app_bar.dart';
+import '../../core/widgets/back_button_widget.dart';
 import '../bloc/auth_bloc.dart';
 import '../bloc/auth_event.dart';
 import '../bloc/auth_state.dart';
@@ -94,7 +95,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
   }
 
   void _handleVerify() {
-    if (!_formKey.currentState!.validate()) {
+    if (!(_formKey.currentState?.validate() ?? false)) {
       return;
     }
 
@@ -150,17 +151,14 @@ class _VerificationScreenState extends State<VerificationScreen> {
 
     return Scaffold(
       backgroundColor: AppTheme.mainBackground,
-      appBar: AppAppBar(
-        title: 'Təsdiq',
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => context.pop(),
-        ),
-      ),
       body: SafeArea(
-        child: BlocListener<AuthBloc, AuthState>(
-          listener: (context, state) {
-            if (state is AuthError) {
+        child: Column(
+          children: [
+            const BackButtonWidget(),
+            Expanded(
+              child: BlocListener<AuthBloc, AuthState>(
+                listener: (context, state) {
+                  if (state is AuthError) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(state.message),
@@ -189,16 +187,16 @@ class _VerificationScreenState extends State<VerificationScreen> {
                   },
                 );
               }
-            } else if (state is CodeSent) {
-              // Code resent successfully
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Təsdiq kodu yenidən göndərildi'),
-                ),
-              );
-            }
-          },
-          child: BlocBuilder<AuthBloc, AuthState>(
+                  } else if (state is CodeSent) {
+                    // Code resent successfully
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Təsdiq kodu yenidən göndərildi'),
+                      ),
+                    );
+                  }
+                },
+                child: BlocBuilder<AuthBloc, AuthState>(
             builder: (context, state) {
               final isLoading = state is AuthLoading;
 
@@ -304,6 +302,9 @@ class _VerificationScreenState extends State<VerificationScreen> {
               );
             },
           ),
+              ),
+            ),
+          ],
         ),
       ),
     );

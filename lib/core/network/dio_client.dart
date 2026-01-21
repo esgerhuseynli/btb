@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../constants/app_constants.dart';
 import 'interceptors/auth_interceptor.dart';
 import 'interceptors/error_interceptor.dart';
+import 'interceptors/api_logging_interceptor.dart';
 
 class DioClient {
   late Dio _dio;
@@ -50,6 +51,7 @@ class DioClient {
         RequestCookiesInterceptor(_prefs!),
         AuthInterceptor(_secureStorage, _prefs!),
         ErrorInterceptor(),
+        ApiLoggingInterceptor(), // Custom logging interceptor for better visibility
         LogInterceptor(requestBody: true, responseBody: true, error: true),
       ]);
       

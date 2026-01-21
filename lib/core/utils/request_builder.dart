@@ -24,7 +24,7 @@ class RequestBuilder {
 
   /// Get language code for API requests
   /// Returns: 1 for Azerbaijani (az), 2 for English (en), 3 for Russian (ru)
-  /// Defaults to 1 (Azerbaijani)
+  /// Defaults to 2 (English)
   /// Android code: getAppLanguageReversed(Lingver.getInstance().getLanguage()) + 1
   /// If stored index is 0 (az), we return 1
   /// If stored index is 1 (en), we return 2
@@ -32,12 +32,12 @@ class RequestBuilder {
   Future<int> _getLanguageCode() async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      final langIndex = prefs.getInt(AppConstants.appLanguage) ?? 0;
+      final langIndex = prefs.getInt(AppConstants.appLanguage) ?? 1;
       // API expects: 1=az, 2=en, 3=ru (stored index + 1)
       return langIndex + 1;
     } catch (e) {
-      // Default to Azerbaijani (1) - API requirement
-      return 1;
+      // Default to English (2) - API requirement
+      return 2;
     }
   }
 
@@ -153,12 +153,13 @@ class RequestBuilder {
     // Android: requestInfo.getMobileUser().setUsername("")
     // Android: requestInfo.getMobileUser().setPasswordHash("")
     // Create new MobileUser with sessionKey as SaltSignature and empty Username/PasswordHash
+    // Note: sessionKey should NOT be included in request body, only SaltSignature
     MobileUser? updatedMobileUser;
     if (sessionKey != null) {
       updatedMobileUser = MobileUser(
         username: '', // Android: setUsername("")
         passwordHash: '', // Android: setPasswordHash("")
-        sessionKey: sessionKey,
+        sessionKey: null, // Don't include sessionKey in request body
         saltSignature: sessionKey, // Android: setSaltSignature(AppData.getInstance().getSessionKey())
       );
     }

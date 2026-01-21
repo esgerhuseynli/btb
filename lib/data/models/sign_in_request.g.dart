@@ -14,6 +14,9 @@ SignInRequest _$SignInRequestFromJson(Map<String, dynamic> json) =>
       signInType: (json['SignInType'] as num).toInt(),
       mobileNumber: json['MobileNumber'] as String?,
       mobileNumberSecretCode: json['MobileNumberSecretCode'] as String?,
+      requestParametersValidationMessage:
+          json['requestParametersValidationMessage'] as String?,
+      requestParametersValidated: json['requestParametersValidated'] as bool?,
     );
 
 Map<String, dynamic> _$SignInRequestToJson(SignInRequest instance) {
@@ -31,5 +34,9 @@ Map<String, dynamic> _$SignInRequestToJson(SignInRequest instance) {
 
   writeNotNull('MobileNumber', instance.mobileNumber);
   writeNotNull('MobileNumberSecretCode', instance.mobileNumberSecretCode);
+  writeNotNull('requestParametersValidationMessage',
+      instance.requestParametersValidationMessage);
+  writeNotNull(
+      'requestParametersValidated', instance.requestParametersValidated);
   return val;
 }

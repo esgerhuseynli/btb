@@ -121,3 +121,57 @@ class PinVerificationRequired extends AuthState {
   List<Object?> get props => [username, passwordHash, signInType];
 }
 
+class OtpSent extends AuthState {
+  final String phoneNumber;
+  final int remainingMinutes;
+  final int remainingSeconds;
+  final bool canResend;
+
+  const OtpSent({
+    required this.phoneNumber,
+    this.remainingMinutes = 5,
+    this.remainingSeconds = 0,
+    this.canResend = false,
+  });
+
+  @override
+  List<Object?> get props => [phoneNumber, remainingMinutes, remainingSeconds, canResend];
+}
+
+class OtpVerified extends AuthState {
+  const OtpVerified();
+}
+
+class ForgotPasswordSuccess extends AuthState {
+  final String? mobileNumber;
+
+  const ForgotPasswordSuccess({
+    this.mobileNumber,
+  });
+
+  @override
+  List<Object?> get props => [mobileNumber];
+}
+
+class OtpVerifiedForForgotPassword extends AuthState {
+  final String verificationCode;
+  final String? phone;
+
+  const OtpVerifiedForForgotPassword({
+    required this.verificationCode,
+    this.phone,
+  });
+
+  @override
+  List<Object?> get props => [verificationCode, phone];
+}
+
+class PasswordChangedSuccess extends AuthState {
+  final String? phoneNumber;
+
+  const PasswordChangedSuccess({this.phoneNumber});
+
+  @override
+  List<Object?> get props => [phoneNumber];
+}
+

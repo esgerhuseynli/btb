@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/constants/app_constants.dart';
 import '../../core/widgets/app_app_bar.dart';
+import '../../core/widgets/back_button_widget.dart';
 
 class SignUpTypesScreen extends StatelessWidget {
   final int? screenType;
@@ -24,19 +25,16 @@ class SignUpTypesScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: AppTheme.mainBackground,
-      appBar: AppAppBar(
-        title: 'Qeydiyyat',
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => context.pop(),
-        ),
-      ),
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(24.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
+        child: Column(
+          children: [
+            const BackButtonWidget(),
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(24.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
               const SizedBox(height: 32),
               if (hasVerifyCode) ...[
                 // After verification code - show phone/email options
@@ -116,8 +114,11 @@ class SignUpTypesScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 16),
-            ],
-          ),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

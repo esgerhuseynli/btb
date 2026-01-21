@@ -1,11 +1,13 @@
 import 'package:get_it/get_it.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:local_auth/local_auth.dart';
 
 import '../core/network/dio_client.dart';
 import '../data/datasources/remote/api_service.dart';
 import '../data/repositories/auth_repository.dart';
 import '../data/repositories/bank_accounts_repository.dart';
+import '../data/services/sima_service.dart';
 import '../core/utils/request_builder.dart';
 import '../presentation/auth/bloc/auth_bloc.dart';
 import '../presentation/home/bloc/home_bloc.dart';
@@ -44,7 +46,15 @@ Future<void> configureDependencies() async {
     () => AuthRepository(getIt<ApiService>()),
   );
   getIt.registerLazySingleton<BankAccountsRepository>(
-    () => BankAccountsRepository(getIt<ApiService>()),
+    () => BankAccountsRepository(getIt<ApiService>(), getIt<DioClient>().dio),
+  );
+
+  // Register Services
+  getIt.registerLazySingleton<SimaService>(
+    () => SimaService(),
+  );
+  getIt.registerLazySingleton<LocalAuthentication>(
+    () => LocalAuthentication(),
   );
 
   // Register BLoCs (depend on repositories and other services)
@@ -58,7 +68,10 @@ Future<void> configureDependencies() async {
   getIt.registerFactory<HomeBloc>(
     () => HomeBloc(
       getIt<BankAccountsRepository>(),
+      getIt<AuthRepository>(),
       getIt<RequestBuilder>(),
+      getIt<FlutterSecureStorage>(),
+      getIt<LocalAuthentication>(),
     ),
   );
 }

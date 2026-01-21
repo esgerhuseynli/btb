@@ -5,7 +5,7 @@ part 'api_response.g.dart';
 
 @JsonSerializable(genericArgumentFactories: true)
 class ApiResponse<T> {
-  @JsonKey(name: 'ResponseInfo')
+  @JsonKey(name: 'responceInfo') // Note: API has typo "responceInfo" instead of "responseInfo"
   final ResponseInfo responseInfo;
 
   @JsonKey(name: 'Data')
